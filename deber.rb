@@ -2,12 +2,13 @@ class Deber < Formula
   desc "Debian packaging with Docker"
   homepage "https://github.com/dawidd6/deber"
   head "#{homepage}.git"
-  url "https://github.com/dawidd6/deber/archive/0.6.tar.gz"
-  sha256 "2d05864c15a12db3aa542d1cda77de7a71ffb79adae86b1a3c8ca40095a39b59"
+  url "https://github.com/dawidd6/deber/archive/0.6.2.tar.gz"
+  sha256 "1c1e75bf36b6a2b412faec793f904f09b65c6e1ebf00f718096ea6a6698be359"
+
   depends_on "go" => :build
 
   def install
-    system "go", "build", "-v", "-o", "#{bin}/#{name}"
+    system "go", "build", "-mod=vendor", "-o", "#{bin}/#{name}"
   end
 
   test do
