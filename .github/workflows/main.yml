@@ -41,6 +41,8 @@ jobs:
         env:
           # secret bintray API key
           HOMEBREW_BINTRAY_KEY: ${{ secrets.HOMEBREW_BINTRAY_KEY }}
+          # this url is needed for proper check if filename_already_published
+          HOMEBREW_BOTTLE_DOMAIN: https://bintray.com/dawidd6
         run: |
           # gracefully exit if no bottles
           test -z "$(find . -name '*.bottle.*')" && exit
