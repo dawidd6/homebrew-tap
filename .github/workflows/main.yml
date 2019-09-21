@@ -7,19 +7,30 @@ jobs:
     name: Main
     runs-on: ubuntu-latest
     container: linuxbrew/brew
+    env:
+      # Invalid cross-device link error
+      # Seems like github is mounting some volume as home
+      HOMEBREW_CACHE: /tmp
+      HOMEBREW_TAP: dawidd6/tap
+      HOMEBREW_BINTRAY_USER: dawidd6
+      HOMEBREW_BINTRAY_KEY: ${{ secrets.HOMEBREW_BINTRAY_KEY }}
+      HOMEBREW_BINTRAY_URL: https://bintray.com/dawidd6/bottles-tap
     steps:
-      - name: Bottle
-        #if: success()
-        env:
-          HOMEBREW_TAP: dawidd6/tap
-          HOMEBREW_BINTRAY_USER: dawidd6
-          HOMEBREW_BINTRAY_KEY: ${{ secrets.HOMEBREW_BINTRAY_KEY }}
-          HOMEBREW_BINTRAY_URL: https://bintray.com/dawidd6/bottles-tap
+      - name: Setup git
         run: |
-          #test -z "$(find . -name '*.bottle.*')" && exit
           git config --global user.email "dawidd0811@gmail.com"
           git config --global user.name "dawidd6"
+      - name: Build bottle
+        run: |
           brew test-bot \
             --bintray-org=$HOMEBREW_BINTRAY_USER \
             --root-url=$HOMEBREW_BINTRAY_URL \
             --tap=$HOMEBREW_TAP
+      - name: Upload bottle
+        if: success()
+        run: |
+          brew test-bot \
+            --bintray-org=$HOMEBREW_BINTRAY_USER \
+            --root-url=$HOMEBREW_BINTRAY_URL \
+            --tap=$HOMEBREW_TAP \
+            --ci-upload
