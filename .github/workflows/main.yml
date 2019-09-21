@@ -21,4 +21,5 @@ jobs:
           brew test-bot \
             --bintray-org=$HOMEBREW_BINTRAY_USER \
             --root-url=$HOMEBREW_BINTRAY_URL \
+            --git-name=dawidd6 --git-email=dawidd0811@gmail.com \
             --tap=$HOMEBREW_TAP
