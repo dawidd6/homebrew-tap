@@ -13,7 +13,7 @@ jobs:
         # Setting these help avoiding "Invalid cross-device link" errors.
         HOMEBREW_CACHE: /home/linuxbrew/.cache
         HOMEBREW_TEMP: /home/linuxbrew/.tmp
-        HOMEBREW_TAP: dawidd6/tap
+        HOMEBREW_TAP: dawidd6/homebrew-tap
         HOMEBREW_BINTRAY_USER: dawidd6
         HOMEBREW_BINTRAY_REPO: dawidd6/bottles-tap
         HOMEBREW_BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
@@ -40,6 +40,7 @@ jobs:
         # Only upload if build was successful.
         if: success()
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Secret bintray API key. Set in Github repo settings.
           HOMEBREW_BINTRAY_KEY: ${{ secrets.HOMEBREW_BINTRAY_KEY }}
           # Non-interactive jfrog utility.
@@ -56,8 +57,9 @@ jobs:
           brew update
           # Install this utility so we can create packages on bintray.
           brew install jfrog-cli-go
-          # Get package name.
+          # Get package name and version.
           PACKAGE="$(ls *bottle.json | awk -F '--' '{print $1}')"
+          VERSION="$(ls *bottle.json | awk -F '--' '{print $2}' | awk -F '.x86_64_linux.' '{print $1}')"
           # Create package on bintray if it doesn't exist.
           jfrog bt package-show \
             --user=$HOMEBREW_BINTRAY_USER \
@@ -75,3 +77,10 @@ jobs:
             --bintray-org=$HOMEBREW_BINTRAY_USER \
             --root-url=$HOMEBREW_BINTRAY_URL \
             --ci-upload
+          # Publish bottle on bintray.
+          jfrog bt version-publish
+            --user=$HOMEBREW_BINTRAY_USER \
+            --key=$HOMEBREW_BINTRAY_KEY \
+            $HOMEBREW_BINTRAY_REPO/$PACKAGE/$VERSION
+          # Push changes.
+          git push https://${GITHUB_TOKEN}@github.com/${HOMEBREW_TAP}.git master
