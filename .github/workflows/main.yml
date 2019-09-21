@@ -1,0 +1,16 @@
+name: Main
+
+on: push
+
+jobs:
+  main:
+    name: Main
+    runs-on: ubuntu-latest
+    container: linuxbrew/brew
+    steps:
+      - name: Test
+        run: |
+          brew test-bot \
+            --bintray-org=dawidd6 \
+            --root-url=https://bintray.com/dawidd6/bottles-tap \
+            --tap=dawidd6/tap
