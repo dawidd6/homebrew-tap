@@ -60,6 +60,9 @@ jobs:
           # Get package name and version.
           PACKAGE="$(ls *bottle.json | awk -F '--' '{print $1}')"
           VERSION="$(ls *bottle.json | awk -F '--' '{print $2}' | awk -F '.x86_64_linux.' '{print $1}')"
+          # Print vars
+          echo "PACKAGE: $PACKAGE"
+          echo "VERSION: $VERSION"
           # Create package on bintray if it doesn't exist.
           jfrog bt package-show \
             --user=$HOMEBREW_BINTRAY_USER \
@@ -78,7 +81,7 @@ jobs:
             --root-url=$HOMEBREW_BINTRAY_URL \
             --ci-upload
           # Publish bottle on bintray.
-          jfrog bt version-publish
+          jfrog bt version-publish \
             --user=$HOMEBREW_BINTRAY_USER \
             --key=$HOMEBREW_BINTRAY_KEY \
             $HOMEBREW_BINTRAY_REPO/$PACKAGE/$VERSION
