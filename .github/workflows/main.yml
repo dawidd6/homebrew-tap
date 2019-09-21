@@ -14,6 +14,7 @@ jobs:
         HOMEBREW_CACHE: /home/linuxbrew/.cache
         HOMEBREW_TEMP: /home/linuxbrew/.tmp
         HOMEBREW_TAP: dawidd6/tap
+        HOMEBREW_BINTRAY_REPO: dawidd6/bottles-tap
         HOMEBREW_BINTRAY_USER: dawidd6
         HOMEBREW_BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
     steps:
@@ -49,6 +50,21 @@ jobs:
           # run `brew update` so we hopefully avoid:
           # "Formula loading disabled by HOMEBREW_DISABLE_LOAD_FORMULA!"
           brew update
+          # install this utility so we can create packages
+          brew install jfrog-cli-go
+          # get package name
+          PACKAGE="$(ls *bottle.json | cut -d- -f1)"
+          # create package if it doesn't exist
+          jfrog bt package-show \
+            --user=$HOMEBREW_BINTRAY_USER \
+            --key=$HOMEBREW_BINTRAY_KEY \
+						$HOMEBREW_BINTRAY_REPO/$PACKAGE || \
+          jfrog bt package-create \
+            --user=$HOMEBREW_BINTRAY_USER \
+						--key=$HOMEBREW_BINTRAY_KEY \
+						--vcs-url=$GITHUB_REPOSITORY \
+						--licenses=MIT \
+						$HOMEBREW_BINTRAY_REPO/$PACKAGE
           # upload bottle from current directory
           brew test-bot \
             --verbose \
