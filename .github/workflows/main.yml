@@ -11,7 +11,7 @@ jobs:
       env:
         # Invalid cross-device link error
         # Seems like github is mounting some volume as home
-        HOMEBREW_CACHE: /tmp
+        HOMEBREW_CACHE: $PWD
         HOMEBREW_TAP: dawidd6/tap
         HOMEBREW_BINTRAY_USER: dawidd6
         HOMEBREW_BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
@@ -25,7 +25,8 @@ jobs:
           brew test-bot \
             --bintray-org=$HOMEBREW_BINTRAY_USER \
             --root-url=$HOMEBREW_BINTRAY_URL \
-            --tap=$HOMEBREW_TAP
+            --tap=$HOMEBREW_TAP \
+            --verbose
       - name: Upload bottle
         if: success()
         env:
@@ -35,4 +36,5 @@ jobs:
             --bintray-org=$HOMEBREW_BINTRAY_USER \
             --root-url=$HOMEBREW_BINTRAY_URL \
             --tap=$HOMEBREW_TAP \
+            --verbose \
             --ci-upload
