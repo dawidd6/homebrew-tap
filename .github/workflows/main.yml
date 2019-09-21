@@ -42,8 +42,8 @@ jobs:
         env:
           # secret bintray API key
           HOMEBREW_BINTRAY_KEY: ${{ secrets.HOMEBREW_BINTRAY_KEY }}
-          # this url is needed for proper check if filename_already_published
-          HOMEBREW_BOTTLE_DOMAIN: https://bintray.com/dawidd6
+          # non-interactive jfrog
+          JFROG_CLI_OFFER_CONFIG: false
         run: |
           # gracefully exit if no bottles
           test -z "$(find . -name '*.bottle.*')" && exit
@@ -53,7 +53,7 @@ jobs:
           # install this utility so we can create packages
           brew install jfrog-cli-go
           # get package name
-          PACKAGE="$(ls *bottle.json | cut -d- -f1)"
+          PACKAGE="$(ls *bottle.json | awk -F '--' '{print $1}')"
           # create package if it doesn't exist
           jfrog bt package-show \
             --user=$HOMEBREW_BINTRAY_USER \
