@@ -44,6 +44,9 @@ jobs:
         run: |
           # gracefully exit if no bottles
           test -z "$(find . -name '*.bottle.*')" && exit
+          # run `brew update` so we hopefully avoid:
+          # "Formula loading disabled by HOMEBREW_DISABLE_LOAD_FORMULA!"
+          brew update
           # upload bottle from current directory
           brew test-bot \
             --verbose \
