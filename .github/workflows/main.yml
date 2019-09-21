@@ -40,7 +40,6 @@ jobs:
         # Only upload if build was successful.
         if: success()
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Secret bintray API key. Set in Github repo settings.
           HOMEBREW_BINTRAY_KEY: ${{ secrets.HOMEBREW_BINTRAY_KEY }}
           # Non-interactive jfrog utility.
@@ -85,5 +84,13 @@ jobs:
             --user=$HOMEBREW_BINTRAY_USER \
             --key=$HOMEBREW_BINTRAY_KEY \
             $HOMEBREW_BINTRAY_REPO/$PACKAGE/$VERSION
-          # Push changes.
-          git push https://${GITHUB_TOKEN}@github.com/${HOMEBREW_TAP}.git master
+      - name: Push changes
+        # Only I can push.
+        if: github.actor == 'dawidd6' && success()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git \
+            -C "$(brew --repository $HOMEBREW_TAP)" \
+            push \
+            https://${GITHUB_TOKEN}@github.com/${HOMEBREW_TAP}.git master
