@@ -18,8 +18,9 @@ jobs:
           HOMEBREW_BINTRAY_URL: https://bintray.com/dawidd6/bottles-tap
         run: |
           #test -z "$(find . -name '*.bottle.*')" && exit
+          git config --global user.email "dawidd0811@gmail.com"
+          git config --global user.name "dawidd6"
           brew test-bot \
             --bintray-org=$HOMEBREW_BINTRAY_USER \
             --root-url=$HOMEBREW_BINTRAY_URL \
-            --git-name=dawidd6 --git-email=dawidd0811@gmail.com \
             --tap=$HOMEBREW_TAP
