@@ -10,7 +10,7 @@ jobs:
       image: linuxbrew/brew
       env:
         # Invalid cross-device link error
-        # Seems like github is mounting some volume as home
+        # Seems like github is mounting some volumes in home and workdir place
         HOMEBREW_CACHE: /home/linuxbrew/.cache
         HOMEBREW_TEMP: /home/linuxbrew/.tmp
         HOMEBREW_TAP: dawidd6/tap
@@ -25,10 +25,10 @@ jobs:
         working-directory: /home/linuxbrew
         run: |
           brew test-bot \
+            --verbose \
             --bintray-org=$HOMEBREW_BINTRAY_USER \
             --root-url=$HOMEBREW_BINTRAY_URL \
-            --tap=$HOMEBREW_TAP \
-            --verbose
+            --tap=$HOMEBREW_TAP
       - name: Upload bottle
         working-directory: /home/linuxbrew
         if: success()
@@ -36,8 +36,7 @@ jobs:
           HOMEBREW_BINTRAY_KEY: ${{ secrets.HOMEBREW_BINTRAY_KEY }}
         run: |
           brew test-bot \
+            --verbose \
             --bintray-org=$HOMEBREW_BINTRAY_USER \
             --root-url=$HOMEBREW_BINTRAY_URL \
-            --tap=$HOMEBREW_TAP \
-            --verbose \
             --ci-upload
