@@ -1,26 +1,77 @@
 name: Main
 
-on: push
+on: pull_request
 
 jobs:
   main:
     name: Main
     runs-on: ubuntu-latest
-    container: linuxbrew/brew
+    container:
+      image: linuxbrew/brew
+      env:
+        # Seems like Github is mounting some volumes in home and workdir place.
+        # Setting these help avoiding "Invalid cross-device link" errors.
+        HOMEBREW_CACHE: /home/linuxbrew/.cache
+        HOMEBREW_TEMP: /home/linuxbrew/.tmp
+        HOMEBREW_TAP: dawidd6/tap
+        HOMEBREW_BINTRAY_USER: dawidd6
+        HOMEBREW_BINTRAY_REPO: dawidd6/bottles-tap
+        HOMEBREW_BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
     steps:
+      - name: Setup git
+        run: |
+          git config --global user.email "testbot@linuxbrew.sh"
+          git config --global user.name "LinuxbrewTestBot"
       - name: Build bottle
+        # Consistent working directory for both steps.
+        # Avoiding: "Invalid cross-device link error.
+        working-directory: /home/linuxbrew
         run: |
-          brew test-bot
-      - name: Upload bottle
-        env:
-          HOMEBREW_TAP: dawidd6/tap
-          HOMEBREW_BINTRAY_USER: dawidd6
-          HOMEBREW_BINTRAY_KEY: ${{ secrets.HOMEBREW_BINTRAY_KEY }}
-          HOMEBREW_BINTRAY_URL: https://bintray.com/dawidd6/bottles-tap
-        run: |
-          test -z "$(find . -name '*.bottle.*')" && exit
+          # build bottle
           brew test-bot \
+            --verbose \
             --bintray-org=$HOMEBREW_BINTRAY_USER \
             --root-url=$HOMEBREW_BINTRAY_URL \
-            --tap=$HOMEBREW_TAP \
+            --tap=$HOMEBREW_TAP
+      - name: Upload bottle
+        # Consistent working directory for both steps.
+        # Avoiding: "Invalid cross-device link error.
+        working-directory: /home/linuxbrew
+        # Only upload if build was successful.
+        if: success()
+        env:
+          # Secret bintray API key. Set in Github repo settings.
+          HOMEBREW_BINTRAY_KEY: ${{ secrets.HOMEBREW_BINTRAY_KEY }}
+          # Non-interactive jfrog utility.
+          JFROG_CLI_OFFER_CONFIG: false
+        # This whole thing with jfrog is a workaround.
+        # Dunno why, but homebrew-core seems to have some special
+        # treatment from bintray, as it does not have problems with
+        # creating new packages even without vcs-url set.
+        run: |
+          # Gracefully exit if no bottles are present.
+          test -z "$(find . -name '*.bottle.*')" && exit
+          # Run `brew update` so we hopefully avoid:
+          # "Formula loading disabled by HOMEBREW_DISABLE_LOAD_FORMULA!".
+          brew update
+          # Install this utility so we can create packages on bintray.
+          brew install jfrog-cli-go
+          # Get package name.
+          PACKAGE="$(ls *bottle.json | awk -F '--' '{print $1}')"
+          # Create package on bintray if it doesn't exist.
+          jfrog bt package-show \
+            --user=$HOMEBREW_BINTRAY_USER \
+            --key=$HOMEBREW_BINTRAY_KEY \
+            $HOMEBREW_BINTRAY_REPO/$PACKAGE || \
+          jfrog bt package-create \
+            --user=$HOMEBREW_BINTRAY_USER \
+            --key=$HOMEBREW_BINTRAY_KEY \
+            --vcs-url=$GITHUB_REPOSITORY \
+            --licenses=MIT \
+            $HOMEBREW_BINTRAY_REPO/$PACKAGE
+          # Upload bottle from current directory.
+          brew test-bot \
+            --verbose \
+            --bintray-org=$HOMEBREW_BINTRAY_USER \
+            --root-url=$HOMEBREW_BINTRAY_URL \
             --ci-upload
