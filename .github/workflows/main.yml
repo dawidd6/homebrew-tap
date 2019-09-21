@@ -1,6 +1,6 @@
 name: Main
 
-on: push
+on: pull_request
 
 jobs:
   main:
@@ -8,19 +8,17 @@ jobs:
     runs-on: ubuntu-latest
     container: linuxbrew/brew
     steps:
-      - name: Build bottle
-        run: |
-          brew test-bot
-      - name: Upload bottle
+      - name: Bottle
+        #if: success()
         env:
           HOMEBREW_TAP: dawidd6/tap
           HOMEBREW_BINTRAY_USER: dawidd6
           HOMEBREW_BINTRAY_KEY: ${{ secrets.HOMEBREW_BINTRAY_KEY }}
+          HOMEBREW_BOTTLE_DOMAIN: https://bintray.com
           HOMEBREW_BINTRAY_URL: https://bintray.com/dawidd6/bottles-tap
         run: |
-          test -z "$(find . -name '*.bottle.*')" && exit
+          #test -z "$(find . -name '*.bottle.*')" && exit
           brew test-bot \
             --bintray-org=$HOMEBREW_BINTRAY_USER \
             --root-url=$HOMEBREW_BINTRAY_URL \
-            --tap=$HOMEBREW_TAP \
-            --ci-upload
+            --tap=$HOMEBREW_TAP
