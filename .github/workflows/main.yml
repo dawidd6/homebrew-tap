@@ -49,8 +49,6 @@ jobs:
         # treatment from bintray, as it does not have problems with
         # creating new packages even without vcs-url set.
         run: |
-          # Gracefully exit if no bottles are present.
-          test -z "$(find . -name '*.bottle.*')" && exit
           # Run `brew update` so we hopefully avoid:
           # "Formula loading disabled by HOMEBREW_DISABLE_LOAD_FORMULA!".
           brew update
