@@ -58,13 +58,13 @@ jobs:
           jfrog bt package-show \
             --user=$HOMEBREW_BINTRAY_USER \
             --key=$HOMEBREW_BINTRAY_KEY \
-						$HOMEBREW_BINTRAY_REPO/$PACKAGE || \
+            $HOMEBREW_BINTRAY_REPO/$PACKAGE || \
           jfrog bt package-create \
             --user=$HOMEBREW_BINTRAY_USER \
-						--key=$HOMEBREW_BINTRAY_KEY \
-						--vcs-url=$GITHUB_REPOSITORY \
-						--licenses=MIT \
-						$HOMEBREW_BINTRAY_REPO/$PACKAGE
+            --key=$HOMEBREW_BINTRAY_KEY \
+            --vcs-url=$GITHUB_REPOSITORY \
+            --licenses=MIT \
+            $HOMEBREW_BINTRAY_REPO/$PACKAGE
           # upload bottle from current directory
           brew test-bot \
             --verbose \
