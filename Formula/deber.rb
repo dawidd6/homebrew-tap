@@ -9,6 +9,7 @@ class Deber < Formula
 
   def install
     system "go", "build", "-mod=vendor", "-o", "#{bin}/#{name}"
+    system "echo", "TESTINGGGGGGGGGGGGGGGGGGGGGGGGG"
   end
 
   test do
