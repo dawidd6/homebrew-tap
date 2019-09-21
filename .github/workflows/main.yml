@@ -8,9 +8,19 @@ jobs:
     runs-on: ubuntu-latest
     container: linuxbrew/brew
     steps:
-      - name: Test
+      - name: Build bottle
         run: |
+          brew test-bot
+      - name: Upload bottle
+        env:
+          HOMEBREW_TAP: dawidd6/tap
+          HOMEBREW_BINTRAY_USER: dawidd6
+          HOMEBREW_BINTRAY_KEY: ${{ secrets.HOMEBREW_BINTRAY_KEY }}
+          HOMEBREW_BINTRAY_URL: https://bintray.com/dawidd6/bottles-tap
+        run: |
+          test -z "$(find . -name '*.bottle.*')" && exit
           brew test-bot \
-            --bintray-org=dawidd6 \
-            --root-url=https://bintray.com/dawidd6/bottles-tap \
-            --tap=dawidd6/tap
+            --bintray-org=$HOMEBREW_BINTRAY_USER \
+            --root-url=$HOMEBREW_BINTRAY_URL \
+            --tap=$HOMEBREW_TAP \
+            --ci-upload
