@@ -22,19 +22,29 @@ jobs:
           git config --global user.email "dawidd0811@gmail.com"
           git config --global user.name "dawidd6"
       - name: Build bottle
+        # consistent working directory for both steps
+        # to workaround: Invalid cross-device link error
         working-directory: /home/linuxbrew
         run: |
+          # build bottle
           brew test-bot \
             --verbose \
             --bintray-org=$HOMEBREW_BINTRAY_USER \
             --root-url=$HOMEBREW_BINTRAY_URL \
             --tap=$HOMEBREW_TAP
       - name: Upload bottle
+        # consistent working directory for both steps
+        # to workaround: Invalid cross-device link error
         working-directory: /home/linuxbrew
+        # only run if build was successful
         if: success()
         env:
+          # secret bintray API key
           HOMEBREW_BINTRAY_KEY: ${{ secrets.HOMEBREW_BINTRAY_KEY }}
         run: |
+          # gracefully exit if no bottles
+          test -z "$(find . -name '*.bottle.*')" && exit
+          # upload bottle from current directory
           brew test-bot \
             --verbose \
             --bintray-org=$HOMEBREW_BINTRAY_USER \
