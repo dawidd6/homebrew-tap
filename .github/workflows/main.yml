@@ -14,7 +14,6 @@ jobs:
           HOMEBREW_TAP: dawidd6/tap
           HOMEBREW_BINTRAY_USER: dawidd6
           HOMEBREW_BINTRAY_KEY: ${{ secrets.HOMEBREW_BINTRAY_KEY }}
-          HOMEBREW_BOTTLE_DOMAIN: https://bintray.com
           HOMEBREW_BINTRAY_URL: https://bintray.com/dawidd6/bottles-tap
         run: |
           #test -z "$(find . -name '*.bottle.*')" && exit
