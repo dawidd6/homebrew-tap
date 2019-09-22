@@ -29,4 +29,3 @@ class GitBuildpackage < Formula
     system "#{bin}/gbp", "--version"
   end
 end
-# Build bottle
