@@ -17,11 +17,11 @@ jobs:
         HOMEBREW_BINTRAY_USER: dawidd6
         HOMEBREW_BINTRAY_REPO: dawidd6/bottles-tap
         HOMEBREW_BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
-        GIT_COMMITER_NAME: BrewTestBot
-        GIT_COMMITER_EMAIL: testbot@homebrew.sh
-        GIT_AUTHOR_NAME: BrewTestBot
-        GIT_AUTHOR_EMAIL: testbot@homebrew.sh
     steps:
+      - name: Setup git
+        run: |
+          git config --global user.email "testbot@homebrew.sh"
+          git config --global user.name "BrewTestBot"
       - name: Build bottle
         # Consistent working directory for both steps.
         # Avoiding: "Invalid cross-device link error.
