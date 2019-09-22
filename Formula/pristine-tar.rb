@@ -1,6 +1,6 @@
 class PristineTar < Formula
   desc "Regenerate pristine tarballs"
-  homepage "http://kitenet.net/~joey/code/pristine-tar"
+  homepage "https://kitenet.net/~joey/code/pristine-tar"
   url "https://salsa.debian.org/debian/pristine-tar.git",
       :tag      => "1.46",
       :revision => "92bd92a9192a6739472e8ee67c293f910f4cd6d1"
@@ -26,6 +26,7 @@ class PristineTar < Formula
   end
 
   test do
-    system "#{bin}/pristine-tar", "--help"
+    assert_predicate bin/"pristine-tar", :exist?
   end
 end
+# Build bottle
