@@ -40,6 +40,7 @@ jobs:
         # Only upload if build was successful.
         if: success()
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # Secret bintray API key. Set in Github repo settings.
           HOMEBREW_BINTRAY_KEY: ${{ secrets.HOMEBREW_BINTRAY_KEY }}
           # Non-interactive jfrog utility.
@@ -77,18 +78,14 @@ jobs:
             --bintray-org=$HOMEBREW_BINTRAY_USER \
             --root-url=$HOMEBREW_BINTRAY_URL \
             --ci-upload
+          # Push changes.
+          cd "$(brew --repository $HOMEBREW_TAP)"
+          git checkout -B ${GITHUB_REF}-bottle
+          git push https://dawidd6:${GITHUB_TOKEN}@github.com/${HOMEBREW_TAP}.git ${GITHUB_REF}-bottle
           # Publish bottle on bintray.
-          jfrog bt version-publish \
-            --user=$HOMEBREW_BINTRAY_USER \
-            --key=$HOMEBREW_BINTRAY_KEY \
-            $HOMEBREW_BINTRAY_REPO/$PACKAGE/$VERSION
-      - name: Push changes
-        # Only I can push.
-        if: github.actor == 'dawidd6' && success()
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git \
-            -C "$(brew --repository $HOMEBREW_TAP)" \
-            push \
-            https://dawidd6:${GITHUB_TOKEN}@github.com/${HOMEBREW_TAP}.git master
+          #jfrog bt version-publish \
+          #  --user=$HOMEBREW_BINTRAY_USER \
+          #  --key=$HOMEBREW_BINTRAY_KEY \
+          #  $HOMEBREW_BINTRAY_REPO/$PACKAGE/$VERSION
+          # Push changes.
+
