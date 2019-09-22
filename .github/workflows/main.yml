@@ -22,6 +22,10 @@ jobs:
         run: |
           git config --global user.email "testbot@homebrew.sh"
           git config --global user.name "BrewTestBot"
+      # Needed for some formulas.
+      - name: Tap linuxbrew/xorg
+        run: |
+          brew tap linuxbrew/xorg
       - name: Build bottle
         # Consistent working directory for both steps.
         # Avoiding: "Invalid cross-device link error.
