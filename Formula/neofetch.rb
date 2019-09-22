@@ -14,3 +14,4 @@ class Neofetch < Formula
                               "--disable", "wm", "de", "term", "gpu"
   end
 end
+# Build
