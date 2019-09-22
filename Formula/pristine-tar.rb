@@ -5,6 +5,11 @@ class PristineTar < Formula
       :tag      => "1.46",
       :revision => "92bd92a9192a6739472e8ee67c293f910f4cd6d1"
 
+  bottle do
+    root_url "https://dl.bintray.com/dawidd6/bottles-tap"
+    sha256 "a630000a237d12d875b225638ab3d8aecd5f5b10eff8a71a2dd77cb2008e9942" => :x86_64_linux
+  end
+
   depends_on "perl" => :build
   depends_on "shunit2" => :build
   depends_on "bzip2"
