@@ -91,4 +91,4 @@ jobs:
           git \
             -C "$(brew --repository $HOMEBREW_TAP)" \
             push \
-            https://${GITHUB_TOKEN}@github.com/${HOMEBREW_TAP}.git master
+            https://dawidd6:${GITHUB_TOKEN}@github.com/${HOMEBREW_TAP}.git master
