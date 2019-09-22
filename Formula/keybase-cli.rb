@@ -13,6 +13,7 @@ class KeybaseCli < Formula
   end
 
   test do
+    ENV["KEYBASE_ALLOW_ROOT"] = true
     system bin/"keybase", "--standalone", "id", "homebrew"
   end
 end
