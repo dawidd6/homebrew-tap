@@ -19,6 +19,8 @@ jobs:
         HOMEBREW_BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
         GIT_COMMITER_NAME: BrewTestBot
         GIT_COMMITER_EMAIL: testbot@homebrew.sh
+        GIT_AUTHOR_NAME: BrewTestBot
+        GIT_AUTHOR_EMAIL: testbot@homebrew.sh
     steps:
       - name: Build bottle
         # Consistent working directory for both steps.
