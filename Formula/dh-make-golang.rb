@@ -1,3 +1,4 @@
+# Build
 class DhMakeGolang < Formula
   desc "Automatically creates Debian packaging for Go packages"
   homepage "https://github.com/Debian/dh-make-golang"
