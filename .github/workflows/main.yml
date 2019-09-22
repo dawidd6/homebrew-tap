@@ -55,6 +55,8 @@ jobs:
         # treatment from bintray, as it does not have problems with
         # creating new packages even without vcs-url set.
         run: |
+          # Exit immediately if any command fails.
+          set -e
           # Run `brew update` so we hopefully avoid:
           # "Formula loading disabled by HOMEBREW_DISABLE_LOAD_FORMULA!".
           brew update
