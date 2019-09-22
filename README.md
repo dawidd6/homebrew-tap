@@ -18,6 +18,7 @@ Bottles creation process (for people with push access):
 1. Make a new branch locally and switch to it.
 2. Modify one existing Formula or add a new one.
 3. CI will start and try to first build a bottle with [`brew test-bot`](https://github.com/Homebrew/homebrew-test-bot) and then upload it to [bintray](https://bintray.com/dawidd6/bottles-tap) and force push a new branch named `pr-$PR_NUMBER` to this git repository.
+  - If something went wrong, just rebase your PR and force push branch. Stay at one commit per PR. This ensures no merge conflicts.
 4. If the maintainer (me) is satisfied with the PR, then he runs locally on his machine [a wrapper of `brew pull`](https://github.com/dawidd6/bin/blob/master/brew-pull-tap) and observes how smoothly things are going.
 5. ???
 6. Profit.
