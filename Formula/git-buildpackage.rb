@@ -7,6 +7,7 @@ class GitBuildpackage < Formula
       :tag      => "debian/0.9.15",
       :revision => "1ab6cf44e6c412ad0e309283ce375f3c9b8bdb57"
 
+  depends_on "dpkg"
   depends_on "pristine-tar"
   depends_on "python"
 
