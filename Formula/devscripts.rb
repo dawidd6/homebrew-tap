@@ -1,7 +1,7 @@
 class Devscripts < Formula
   desc "Scripts to make the life of a Debian maintainer easier"
   homepage "https://salsa.debian.org/debian/devscripts"
-  url "http://deb.debian.org/debian/pool/main/d/devscripts/devscripts_2.19.6.tar.xz"
+  url "https://deb.debian.org/debian/pool/main/d/devscripts/devscripts_2.19.6.tar.xz"
   sha256 "3196092bd274db9aa1e34e68a0c94c6edb49a481dded1656fd9785831bfdcec4"
 
   def scripts
@@ -13,6 +13,12 @@ class Devscripts < Formula
   end
 
   depends_on "perl" => :build
+  depends_on "dpkg"
+
+  patch do
+    url "https://gist.githubusercontent.com/dawidd6/1d295844f148c7bcdae93c37a2851282/raw/901764a254a9cf80fa81e9ec607eb0f9f44d4ba4/devscripts.patch"
+    sha256 "62e7387dd5bbcba355d908eff27f4698c81fd11d02d9d1acb8155d4a83231dee"
+  end
 
   resource "String-ShellQuote" do
     url "https://cpan.metacpan.org/authors/id/R/RO/ROSCH/String-ShellQuote-1.04.tar.gz"
@@ -152,6 +158,7 @@ class Devscripts < Formula
   def install
     ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5"
     ENV.prepend_path "PERL5LIB", libexec/"lib"
+    ENV.prepend_path "PERL5LIB", Formula["dpkg"].opt_libexec/"lib/perl5"
 
     resource("Class-XSAccessor").stage do
       system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
@@ -328,7 +335,7 @@ class Devscripts < Formula
 
   def caveats; <<~EOS
     Only scripts are installed, no docs.
-    Currently only these scripts are installed: #{scripts.join(', ')}
+    Currently only these scripts are installed: #{scripts.join(", ")}
   EOS
   end
 
@@ -338,3 +345,4 @@ class Devscripts < Formula
     end
   end
 end
+# Build bottle
