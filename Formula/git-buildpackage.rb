@@ -7,6 +7,12 @@ class GitBuildpackage < Formula
       :tag      => "debian/0.9.15",
       :revision => "1ab6cf44e6c412ad0e309283ce375f3c9b8bdb57"
 
+  bottle do
+    root_url "https://dl.bintray.com/dawidd6/bottles-tap"
+    cellar :any_skip_relocation
+    sha256 "01cb237c79cb1d5dd9b5c65287306bafffb9ec40f317c583101fadec528656f9" => :x86_64_linux
+  end
+
   depends_on "dpkg"
   depends_on "pristine-tar"
   depends_on "python"
