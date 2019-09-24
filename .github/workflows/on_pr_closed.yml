@@ -1,0 +1,25 @@
+name: Delete branches when PR is closed
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete pr-* branch
+        uses: dawidd6/action-delete-branch@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: pr-PR_NUMBER
+          be_kind: true
+      - name: Delete pr head branch
+        uses: dawidd6/action-delete-branch@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: PR_HEAD_BRANCH
+          be_kind: true

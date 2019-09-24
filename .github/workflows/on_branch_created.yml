@@ -1,0 +1,16 @@
+name: Create PR when new branch is pushed
+
+on: create
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if not branch pr-*
+        uses: actions/bin/filter@master
+        with:
+          args: not branch pr-*
+      - name: Create PR
+        uses: dawidd6/action-auto-pull-request@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
