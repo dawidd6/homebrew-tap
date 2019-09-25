@@ -15,8 +15,8 @@ jobs:
         run: |
           brew tap ${{github.repository}}
           cd $(brew --repository ${{github.repository}})
-          git fetch origin ${{github.event.pull_request.head.ref}}
-          git checkout ${{github.event.pull_request.head.ref}}
+          git fetch origin ${{github.event.pull_request.head.ref}}:pr
+          git checkout pr
       - name: Build bottles
         env:
           # Seems like Github is mounting some volumes in home and workdir place.
@@ -48,8 +48,8 @@ jobs:
         run: |
           brew tap ${{github.repository}}
           cd $(brew --repository ${{github.repository}})
-          git fetch origin ${{github.event.pull_request.head.ref}}
-          git checkout ${{github.event.pull_request.head.ref}}
+          git fetch origin ${{github.event.pull_request.head.ref}}:pr
+          git checkout pr
       - name: Build bottles
         env:
           HOMEBREW_BINTRAY_USER: dawidd6
