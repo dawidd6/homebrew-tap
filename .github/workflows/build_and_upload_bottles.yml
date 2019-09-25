@@ -11,8 +11,10 @@ jobs:
         run: |
           git config --global user.email "testbot@homebrew.sh"
           git config --global user.name "BrewTestBot"
-      - name: Tap linuxbrew/xorg
-        run: brew tap linuxbrew/xorg
+      - name: Checkout PR
+        run: |
+          brew tap $GITHUB_REPOSITORY
+          git -C $(brew --repository $GITHUB_REPOSITORY) checkout $GITHUB_REF
       - name: Build bottles
         env:
           # Seems like Github is mounting some volumes in home and workdir place.
@@ -22,10 +24,12 @@ jobs:
           HOMEBREW_BINTRAY_USER: dawidd6
           HOMEBREW_BINTRAY_REPO: bottles-tap
         run: |
-          brew test-bot \
-            --verbose \
-            --root-url=https://dl.bintray.com/${HOMEBREW_BINTRAY_USER}/${HOMEBREW_BINTRAY_REPO} \
-            --tap=${GITHUB_REPOSITORY}
+          # workaround, github mounts a volume in $HOME and brew complains about it
+          cd $(brew --prefix)
+          # workaround, GITHUB_ACTIONS is not set in containers, only in VMs
+          GITHUB_ACTIONS=true brew test-bot --root-url=https://dl.bintray.com/${HOMEBREW_BINTRAY_USER}/${HOMEBREW_BINTRAY_REPO}
+          # workaround, github mounts a volume in $HOME and brew complains about it
+          cp $(brew --prefix)/*.bottle.* $HOME
       - name: Cache bottles
         uses: actions/upload-artifact@v1
         with:
@@ -38,15 +42,16 @@ jobs:
         run: |
           git config --global user.email "testbot@homebrew.sh"
           git config --global user.name "BrewTestBot"
+      - name: Checkout PR
+        run: |
+          brew tap $GITHUB_REPOSITORY
+          git -C $(brew --repository $GITHUB_REPOSITORY) checkout $GITHUB_REF
       - name: Build bottles
         env:
           HOMEBREW_BINTRAY_USER: dawidd6
           HOMEBREW_BINTRAY_REPO: bottles-tap
         run: |
-          brew test-bot \
-            --verbose \
-            --root-url=https://dl.bintray.com/${HOMEBREW_BINTRAY_USER}/${HOMEBREW_BINTRAY_REPO} \
-            --tap=${GITHUB_REPOSITORY}
+          brew test-bot --root-url=https://dl.bintray.com/${HOMEBREW_BINTRAY_USER}/${HOMEBREW_BINTRAY_REPO}
       - name: Cache bottles
         uses: actions/upload-artifact@v1
         with:
