@@ -1,0 +1,15 @@
+name: Create pull request
+
+on: create
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    if: startsWith(github.event.ref, 'pr-') == false && github.event.ref_type == 'branch'
+    steps:
+      - name: Create pull request
+        uses: dawidd6/action-create-pull-request@v1.0.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          head_branch: ${{ github.event.ref }}

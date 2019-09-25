@@ -1,0 +1,22 @@
+name: Clean branches
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete head branch
+        uses: dawidd6/action-delete-branch@v1.0.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.event.pull_request.head.ref }}
+      - name: Delete pr-* branch
+        uses: dawidd6/action-delete-branch@v1.0.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: pr-${{ github.event.pull_request.number }}
+          be_kind: true
