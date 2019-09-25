@@ -13,8 +13,10 @@ jobs:
           git config --global user.name "BrewTestBot"
       - name: Checkout PR
         run: |
-          brew tap $GITHUB_REPOSITORY
-          git -C $(brew --repository $GITHUB_REPOSITORY) checkout $GITHUB_REF
+          brew tap ${{github.repository}}
+          cd $(brew --repository ${{github.repository}})
+          git fetch origin ${{github.event.ref}}
+          git checkout ${{github.event.ref}}
       - name: Build bottles
         env:
           # Seems like Github is mounting some volumes in home and workdir place.
@@ -44,8 +46,10 @@ jobs:
           git config --global user.name "BrewTestBot"
       - name: Checkout PR
         run: |
-          brew tap $GITHUB_REPOSITORY
-          git -C $(brew --repository $GITHUB_REPOSITORY) checkout $GITHUB_REF
+          brew tap ${{github.repository}}
+          cd $(brew --repository ${{github.repository}})
+          git fetch origin ${{github.event.ref}}
+          git checkout ${{github.event.ref}}
       - name: Build bottles
         env:
           HOMEBREW_BINTRAY_USER: dawidd6
@@ -71,8 +75,8 @@ jobs:
         env:
           HOMEBREW_BINTRAY_USER: dawidd6
           HOMEBREW_BINTRAY_REPO: bottles-tap
-          HOMEBREW_BINTRAY_KEY: ${{ secrets.HOMEBREW_BINTRAY_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           JFROG_CLI_OFFER_CONFIG: false
         run: |
           # Exit immediately if any command fails.
