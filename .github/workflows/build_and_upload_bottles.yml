@@ -25,7 +25,7 @@ jobs:
           # workaround, GITHUB_ACTIONS is not set in containers, only in VMs
           brew test-bot --verbose --root-url=https://dl.bintray.com/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO
           # workaround, github mounts a volume in workspace dir and brew complains about it
-          if ls *.bottle.* && cp $(brew --prefix)/*.bottle.* $GITHUB_WORKSPACE || true
+          ls *.bottle.* && cp $(brew --prefix)/*.bottle.* $GITHUB_WORKSPACE || true
       - name: Cache bottles
         uses: actions/upload-artifact@v1
         with:
