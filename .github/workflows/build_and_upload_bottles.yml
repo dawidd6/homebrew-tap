@@ -11,6 +11,14 @@ jobs:
         run: |
           git config --global user.email "testbot@homebrew.sh"
           git config --global user.name "BrewTestBot"
+      - name: Pull patch
+        run: |
+          brew pull --clean ${{github.event.pull_request.patch_url}}
+      - name: Tap dawidd6/test-bot
+        run: |
+          brew tap dawidd6/test-bot
+          cd $(brew --repository dawidd6/test-bot)/../..
+          mv dawidd6/homebrew-test-bot homebrew
       - name: Build bottles
         env:
           # Seems like Github is mounting some volumes in home and workdir place.
@@ -38,13 +46,14 @@ jobs:
         run: |
           git config --global user.email "testbot@homebrew.sh"
           git config --global user.name "BrewTestBot"
-      - name: Checkout PR
+      - name: Pull patch
         run: |
-          brew tap ${{github.repository}}
-          cd $(brew --repository ${{github.repository}})
-          git checkout -b pr-test
-          git fetch origin master:master ${{github.event.pull_request.head.ref}}:pr
-          git checkout pr
+          brew pull --clean ${{github.event.pull_request.patch_url}}
+      - name: Tap dawidd6/test-bot
+        run: |
+          brew tap dawidd6/test-bot
+          cd $(brew --repository dawidd6/test-bot)/../..
+          mv dawidd6/homebrew-test-bot homebrew
       - name: Build bottles
         env:
           HOMEBREW_BINTRAY_USER: dawidd6
