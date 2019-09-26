@@ -7,6 +7,15 @@ jobs:
     runs-on: ubuntu-latest
     container: linuxbrew/brew
     steps:
+      - name: Print env vars
+        run: |
+          echo "GITHUB_ACTIONS    $GITHUB_ACTIONS"
+          echo "GITHUB_BASE_REF   $GITHUB_BASE_REF"
+          echo "GITHUB_EVENT_NAME $GITHUB_EVENT_NAME"
+          echo "GITHUB_REF        $GITHUB_REF"
+          echo "GITHUB_REPOSITORY $GITHUB_REPOSITORY"
+          echo "GITHUB_SHA        $GITHUB_SHA"
+          echo "HEAD_GITHUB_REF   $HEAD_GITHUB_REF"
       - name: Setup git
         run: |
           git config --global user.email "testbot@homebrew.sh"
@@ -43,6 +52,15 @@ jobs:
   build-macos:
     runs-on: macos-latest
     steps:
+      - name: Print env vars
+        run: |
+          echo "GITHUB_ACTIONS    $GITHUB_ACTIONS"
+          echo "GITHUB_BASE_REF   $GITHUB_BASE_REF"
+          echo "GITHUB_EVENT_NAME $GITHUB_EVENT_NAME"
+          echo "GITHUB_REF        $GITHUB_REF"
+          echo "GITHUB_REPOSITORY $GITHUB_REPOSITORY"
+          echo "GITHUB_SHA        $GITHUB_SHA"
+          echo "HEAD_GITHUB_REF   $HEAD_GITHUB_REF"
       - name: Setup git
         run: |
           git config --global user.email "testbot@homebrew.sh"
