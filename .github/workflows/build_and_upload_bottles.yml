@@ -95,25 +95,27 @@ jobs:
           set -e
           # Should exit if no bottles.
           ls
-          ls *bottle.json || exit 0
+          ls *.bottle.* 2>1 >/dev/null || exit 0
           # Run `brew update` so we hopefully avoid:
           # "Formula loading disabled by HOMEBREW_DISABLE_LOAD_FORMULA!".
           brew update
           # Install this utility so we can create packages on bintray.
           brew install jfrog-cli-go
-          # Get package name.
-          PACKAGE="$(ls *bottle.json | awk -F '--' '{print $1}')"
-          # Create package on bintray if it doesn't exist.
-          jfrog bt package-show \
-            --user=$HOMEBREW_BINTRAY_USER \
-            --key=$HOMEBREW_BINTRAY_KEY \
-            $HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO/$PACKAGE || \
-          jfrog bt package-create \
-            --user=$HOMEBREW_BINTRAY_USER \
-            --key=$HOMEBREW_BINTRAY_KEY \
-            --vcs-url=${{github.repository}} \
-            --licenses=MIT \
-            $HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO/$PACKAGE
+          # Get packages names.
+          PACKAGES=($(ls -1 *bottle.json | awk -F '--' '{print $1}' | uniq))
+          # Create packages on bintray if they don't exist.
+          for package in ${PACKAGES[@]}; do
+            jfrog bt package-show \
+              --user=$HOMEBREW_BINTRAY_USER \
+              --key=$HOMEBREW_BINTRAY_KEY \
+              $HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO/$package || \
+            jfrog bt package-create \
+              --user=$HOMEBREW_BINTRAY_USER \
+              --key=$HOMEBREW_BINTRAY_KEY \
+              --vcs-url=${{github.repository}} \
+              --licenses=MIT \
+              $HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO/$package
+          done
           # Upload bottles from current directory.
           brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload
           # Push changes.
