@@ -75,10 +75,12 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: bottles-linux
+          path: ./
       - name: Get bottles-macos
         uses: actions/download-artifact@v1
         with:
           name: bottles-macos
+          path: ./
       - name: Upload bottles
         env:
           HOMEBREW_BINTRAY_USER: dawidd6
