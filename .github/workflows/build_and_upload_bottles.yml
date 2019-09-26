@@ -15,7 +15,8 @@ jobs:
         run: |
           brew tap ${{github.repository}}
           cd $(brew --repository ${{github.repository}})
-          git fetch origin ${{github.event.pull_request.head.ref}}:pr
+          git checkout -b pr-test
+          git fetch origin master:master ${{github.event.pull_request.head.ref}}:pr
           git checkout pr
       - name: Build bottles
         env:
@@ -26,12 +27,16 @@ jobs:
           HOMEBREW_BINTRAY_USER: dawidd6
           HOMEBREW_BINTRAY_REPO: bottles-tap
         run: |
-          # workaround, github mounts a volume in $HOME and brew complains about it
+          # workaround, github mounts a volume in workspace dir and brew complains about it
           cd $(brew --prefix)
           # workaround, GITHUB_ACTIONS is not set in containers, only in VMs
           GITHUB_ACTIONS=true brew test-bot --root-url=https://dl.bintray.com/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO
-          # workaround, github mounts a volume in $HOME and brew complains about it
-          ls *.bottle.* && cp $(brew --prefix)/*.bottle.* $GITHUB_WORKSPACE
+          # workaround, github mounts a volume in workspace dir and brew complains about it
+          if ls *.bottle.*; then
+            cp $(brew --prefix)/*.bottle.* $GITHUB_WORKSPACE
+          else
+            exit
+          fi
       - name: Cache bottles
         uses: actions/upload-artifact@v1
         with:
@@ -48,7 +53,8 @@ jobs:
         run: |
           brew tap ${{github.repository}}
           cd $(brew --repository ${{github.repository}})
-          git fetch origin ${{github.event.pull_request.head.ref}}:pr
+          git checkout -b pr-test
+          git fetch origin master:master ${{github.event.pull_request.head.ref}}:pr
           git checkout pr
       - name: Build bottles
         env:
