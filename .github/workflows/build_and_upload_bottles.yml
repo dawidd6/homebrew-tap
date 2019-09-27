@@ -7,42 +7,23 @@ jobs:
     runs-on: ubuntu-latest
     container: linuxbrew/brew
     steps:
-      - name: Print env vars
-        run: |
-          echo "GITHUB_ACTIONS    $GITHUB_ACTIONS"
-          echo "GITHUB_BASE_REF   $GITHUB_BASE_REF"
-          echo "GITHUB_EVENT_NAME $GITHUB_EVENT_NAME"
-          echo "GITHUB_REF        $GITHUB_REF"
-          echo "GITHUB_REPOSITORY $GITHUB_REPOSITORY"
-          echo "GITHUB_SHA        $GITHUB_SHA"
-          echo "HEAD_GITHUB_REF   $HEAD_GITHUB_REF"
-      - name: Setup git
-        run: |
-          git config --global user.email "testbot@homebrew.sh"
-          git config --global user.name "BrewTestBot"
-      - name: Pull patch
-        run: |
-          brew pull --clean ${{github.event.pull_request.patch_url}}
-          #- name: Tap dawidd6/test-bot
-          #  run: |
-          #    brew tap dawidd6/test-bot
-          #    cd $(brew --repository dawidd6/test-bot)/../..
-          #    mv dawidd6/homebrew-test-bot homebrew
+      - name: Checkout tap
+        uses: actions/checkout@v1
+        with:
+          path: /home/linuxbrew/.linuxbrew/Homebrew/Library/Taps/${{github.repository}}
       - name: Build bottles
         env:
           # Seems like Github is mounting some volumes in home and workdir place.
           # Setting these help avoiding "Invalid cross-device link" errors.
           HOMEBREW_CACHE: /home/linuxbrew/.cache
           HOMEBREW_TEMP: /home/linuxbrew/.tmp
-          HOMEBREW_BINTRAY_USER: dawidd6
-          HOMEBREW_BINTRAY_REPO: bottles-tap
         run: |
           # workaround, github mounts a volume in workspace dir and brew complains about it
           cd $(brew --prefix)
           # workaround, GITHUB_ACTIONS is not set in containers, only in VMs
-          GITHUB_ACTIONS=true brew test-bot --root-url=https://dl.bintray.com/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO
+          GITHUB_ACTIONS=true brew test-bot --root-url=https://dl.bintray.com/dawidd6/bottles-tap
           # workaround, github mounts a volume in workspace dir and brew complains about it
-          ls *.bottle.* && cp $(brew --prefix)/*.bottle.* $GITHUB_WORKSPACE || true
+          ls *.bottle.* && cp $(brew --prefix)/*.bottle.* $GITHUB_WORKSPACE
       - name: Cache bottles
         if: success()
         uses: actions/upload-artifact@v1
@@ -52,33 +33,13 @@ jobs:
   build-macos:
     runs-on: macos-latest
     steps:
-      - name: Print env vars
-        run: |
-          echo "GITHUB_ACTIONS    $GITHUB_ACTIONS"
-          echo "GITHUB_BASE_REF   $GITHUB_BASE_REF"
-          echo "GITHUB_EVENT_NAME $GITHUB_EVENT_NAME"
-          echo "GITHUB_REF        $GITHUB_REF"
-          echo "GITHUB_REPOSITORY $GITHUB_REPOSITORY"
-          echo "GITHUB_SHA        $GITHUB_SHA"
-          echo "HEAD_GITHUB_REF   $HEAD_GITHUB_REF"
-      - name: Setup git
-        run: |
-          git config --global user.email "testbot@homebrew.sh"
-          git config --global user.name "BrewTestBot"
-      - name: Pull patch
-        run: |
-          brew pull --clean ${{github.event.pull_request.patch_url}}
-          # - name: Tap dawidd6/test-bot
-          #   run: |
-          #     brew tap dawidd6/test-bot
-          #     cd $(brew --repository dawidd6/test-bot)/../..
-          #     mv dawidd6/homebrew-test-bot homebrew
+      - name: Checkout tap
+        uses: actions/checkout@v1
+        with:
+          path: /usr/local/Homebrew/Library/Taps/${{github.repository}}
       - name: Build bottles
-        env:
-          HOMEBREW_BINTRAY_USER: dawidd6
-          HOMEBREW_BINTRAY_REPO: bottles-tap
         run: |
-          brew test-bot --root-url=https://dl.bintray.com/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO
+          brew test-bot --root-url=https://dl.bintray.com/dawidd6/bottles-tap
       - name: Cache bottles
         if: success()
         uses: actions/upload-artifact@v1
@@ -103,38 +64,34 @@ jobs:
           path: ./
       - name: Upload bottles
         env:
+          HOMEBREW_BOTTLE_DOMAIN: https://dl.bintray.com/dawidd6
           HOMEBREW_BINTRAY_USER: dawidd6
           HOMEBREW_BINTRAY_REPO: bottles-tap
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          JFROG_CLI_OFFER_CONFIG: false
         run: |
           # Exit immediately if any command fails.
           set -e
           # Should exit if no bottles.
-          ls
-          ls *.bottle.* 2>1 >/dev/null || exit 0
-          # Run `brew update` so we hopefully avoid:
-          # "Formula loading disabled by HOMEBREW_DISABLE_LOAD_FORMULA!".
-          brew update
-          # Install this utility so we can create packages on bintray.
-          brew install jfrog-cli-go
+          ls *.bottle.* || exit 0
           # Get packages names.
           PACKAGES=($(ls -1 *bottle.json | awk -F '--' '{print $1}' | uniq))
           # Create packages on bintray if they don't exist.
           for package in ${PACKAGES[@]}; do
-            jfrog bt package-show \
-              --user=$HOMEBREW_BINTRAY_USER \
-              --key=$HOMEBREW_BINTRAY_KEY \
-              $HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO/$package || \
-            jfrog bt package-create \
-              --user=$HOMEBREW_BINTRAY_USER \
-              --key=$HOMEBREW_BINTRAY_KEY \
-              --vcs-url=${{github.repository}} \
-              --licenses=MIT \
-              $HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO/$package
+            curl \
+              --user $HOMEBREW_BINTRAY_USER:$HOMEBREW_BINTRAY_KEY \
+              --header "Content-Type: application/json" \
+              --data " \
+                {\"name\": \"$package\", \
+                \"vcs_url\": \"$GITHUB_REPOSITORY\", \
+                \"licenses\": [\"MIT\"], \
+                \"public_download_numbers\": true, \
+                \"public_stats\": true \
+                }" \
+              https://api.bintray.com/packages/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO || true
           done
           # Upload bottles from current directory.
+          brew update
           brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload
           # Push changes.
           cd $(brew --repository ${{github.repository}})
