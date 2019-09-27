@@ -11,7 +11,6 @@ jobs:
         uses: actions/checkout@v1
       - name: Setup tap
         run: |
-          brew update-reset "$(brew --prefix)"
           mkdir -p "$(brew --prefix)/Homebrew/Library/Taps/dawidd6"
           ln -s "$PWD" "$(brew --prefix)/Homebrew/Library/Taps/$GITHUB_REPOSITORY"
       - name: Build bottles
@@ -20,19 +19,19 @@ jobs:
           # Setting these help avoiding "Invalid cross-device link" errors.
           HOMEBREW_CACHE: /home/linuxbrew/.cache
           HOMEBREW_TEMP: /home/linuxbrew/.tmp
+          HOMEBREW_BINTRAY_USER: dawidd6
+          HOMEBREW_BINTRAY_REPO: bottles-tap
         run: |
-          # workaround, github mounts a volume in workspace dir and brew complains about it
-          cd $(brew --prefix)
-          # workaround, GITHUB_ACTIONS is not set in containers, only in VMs
-          GITHUB_ACTIONS=true brew test-bot --root-url=https://dl.bintray.com/dawidd6/bottles-tap
-          # workaround, github mounts a volume in workspace dir and brew complains about it
-          ls *.bottle.* && cp $(brew --prefix)/*.bottle.* $GITHUB_WORKSPACE
+          mkdir /bottles
+          cd /bottles
+          GITHUB_ACTIONS=true brew test-bot --root-url=https://dl.bintray.com/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO
+          ls *.bottle.* && mkdir $GITHUB_WORKSPACE/bottles && mv *.bottle.* $GITHUB_WORKSPACE/bottles
       - name: Cache bottles
         if: success()
         uses: actions/upload-artifact@v1
         with:
           name: bottles-linux
-          path: ./
+          path: bottles
   build-macos:
     runs-on: macos-latest
     steps:
@@ -40,7 +39,6 @@ jobs:
         uses: actions/checkout@v1
       - name: Setup tap
         run: |
-          brew update-reset "$(brew --prefix)"
           mkdir -p "$(brew --prefix)/Homebrew/Library/Taps/dawidd6"
           ln -s "$PWD" "$(brew --prefix)/Homebrew/Library/Taps/$GITHUB_REPOSITORY"
       - name: Tap dawidd6/test-bot
@@ -49,14 +47,19 @@ jobs:
           cd $(brew --repository dawidd6/test-bot)/../..
           mv dawidd6/homebrew-test-bot homebrew
       - name: Build bottles
+        env:
+          HOMEBREW_BINTRAY_USER: dawidd6
+          HOMEBREW_BINTRAY_REPO: bottles-tap
         run: |
-          brew test-bot --root-url=https://dl.bintray.com/dawidd6/bottles-tap
+          mkdir bottles
+          cd bottles
+          brew test-bot --root-url=https://dl.bintray.com/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO
       - name: Cache bottles
         if: success()
         uses: actions/upload-artifact@v1
         with:
           name: bottles-macos
-          path: ./
+          path: bottles
   upload:
     runs-on: macos-latest
     needs:
@@ -85,10 +88,8 @@ jobs:
           set -e
           # Should exit if no bottles.
           ls *.bottle.* || exit 0
-          # Get packages names.
-          PACKAGES=($(ls -1 *bottle.json | awk -F '--' '{print $1}' | uniq))
           # Create packages on bintray if they don't exist.
-          for package in ${PACKAGES[@]}; do
+          for package in $(ls -1 *.bottle.* | awk -F '--' '{print $1}' | uniq); do
             curl \
               --user $HOMEBREW_BINTRAY_USER:$HOMEBREW_BINTRAY_KEY \
               --header "Content-Type: application/json" \
@@ -105,9 +106,9 @@ jobs:
           brew update
           brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload
           # Push changes.
-          cd $(brew --repository ${{github.repository}})
+          cd $(brew --repository $GITHUB_REPOSITORY)
           git checkout -B \
             pr-${{github.event.pull_request.number}}
           git push --force \
-            https://$HOMEBREW_BINTRAY_USER:$GITHUB_TOKEN@github.com/${{github.repository}}.git \
+            https://$HOMEBREW_BINTRAY_USER:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git \
             pr-${{github.event.pull_request.number}}
