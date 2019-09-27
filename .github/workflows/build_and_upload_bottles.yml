@@ -43,6 +43,11 @@ jobs:
           brew update-reset "$(brew --prefix)"
           mkdir -p "$(brew --prefix)/Homebrew/Library/Taps/dawidd6"
           ln -s "$PWD" "$(brew --prefix)/Homebrew/Library/Taps/$GITHUB_REPOSITORY"
+      - name: Tap dawidd6/test-bot
+        run: |
+          brew tap dawidd6/test-bot
+          cd $(brew --repository dawidd6/test-bot)/../..
+          mv dawidd6/homebrew-test-bot homebrew
       - name: Build bottles
         run: |
           brew test-bot --root-url=https://dl.bintray.com/dawidd6/bottles-tap
