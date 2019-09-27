@@ -11,6 +11,7 @@ jobs:
         uses: actions/checkout@v1
       - name: Setup tap
         run: |
+          brew update-reset "$(brew --prefix)"
           mkdir -p "$(brew --prefix)/Homebrew/Library/Taps/dawidd6"
           ln -s "$PWD" "$(brew --prefix)/Homebrew/Library/Taps/$GITHUB_REPOSITORY"
       - name: Build bottles
@@ -39,6 +40,7 @@ jobs:
         uses: actions/checkout@v1
       - name: Setup tap
         run: |
+          brew update-reset "$(brew --prefix)"
           mkdir -p "$(brew --prefix)/Homebrew/Library/Taps/dawidd6"
           ln -s "$PWD" "$(brew --prefix)/Homebrew/Library/Taps/$GITHUB_REPOSITORY"
       - name: Build bottles
