@@ -11,17 +11,17 @@ jobs:
     steps:
       - name: Check commit
         id: closing
-        uses: dawidd6/action-closing-commit@v1.0.0
+        uses: dawidd6/action-closing-commit@v1.0.1
       - name: Delete head branch
         if: steps.closing.outputs.number != '' && steps.closing.outputs.branch != ''
-        uses: dawidd6/action-delete-branch@v1.0.2
+        uses: dawidd6/action-delete-branch@v1.0.3
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
           branch: ${{steps.closing.outputs.branch}}
           be_kind: true
       - name: Delete pr-* branch
         if: steps.closing.outputs.number != ''
-        uses: dawidd6/action-delete-branch@v1.0.2
+        uses: dawidd6/action-delete-branch@v1.0.3
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
           branch: pr-${{steps.closing.outputs.number}}
