@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  main:
+  clean:
     runs-on: ubuntu-latest
     steps:
       - name: Check commit
