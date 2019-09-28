@@ -7,8 +7,11 @@ class DhMakeGolang < Formula
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
+    prefix "/home/linuxbrew/.linuxbrew"
     cellar :any_skip_relocation
-    sha256 "13729000eda823e3bd73dc3059aeb58603dcb08e7d6239909f89ced55cc1869e" => :x86_64_linux
+    rebuild 1
+    sha256 "4f1c4b8576690a12f2ae435ccd6c0f1c90feb796783b049a40b34d3b50585792" => :mojave
+    sha256 "a5496d27c217569b33b551923cf73ba3f3ca1548986a97fdd479df27e71332a2" => :x86_64_linux
   end
 
   depends_on "go" => :build
