@@ -1,4 +1,3 @@
-# Build
 class Deber < Formula
   desc "Debian packaging with Docker"
   homepage "https://github.com/dawidd6/deber"
