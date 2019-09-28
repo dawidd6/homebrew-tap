@@ -8,9 +8,9 @@ class Neofetch < Formula
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
     cellar :any_skip_relocation
-    rebuild 3
-    sha256 "7abf103cf5cf73ccf9a71ce668cd0341b7dddcee325f48087cc1cba07e3fff7f" => :mojave
-    sha256 "cf931db43c2d3ff38e2b395a94e14e02ac90eb93444a94d8c8a288b1ae577fa5" => :x86_64_linux
+    rebuild 4
+    sha256 "12a65b470230e14ee73a937609504fc78357bdbe0f7b8eb3f957af2ff7de668b" => :mojave
+    sha256 "2f1cef4e6634169e2933ff3da1d4f35292fcaea9d4f104253d7bc43c9e3373de" => :x86_64_linux
   end
 
   def install
