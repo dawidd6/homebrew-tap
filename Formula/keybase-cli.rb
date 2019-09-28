@@ -23,4 +23,3 @@ class KeybaseCli < Formula
     system bin/"keybase", "--standalone", "id", "homebrew"
   end
 end
-# Build bottle
