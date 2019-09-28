@@ -1,22 +1,28 @@
 name: Clean branches
 
 on:
-  pull_request:
-    types:
-      - closed
+  push:
+    branches:
+      - master
 
 jobs:
   main:
     runs-on: ubuntu-latest
     steps:
+      - name: Check commit
+        id: closing
+        uses: dawidd6@action-closing-commit@v1.0.0
       - name: Delete head branch
-        uses: dawidd6/action-delete-branch@v1.0.1
+        if: steps.closing.outputs.number != '' && steps.closing.outputs.branch != ''
+        uses: dawidd6/action-delete-branch@v1.0.2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.event.pull_request.head.ref }}
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          branch: ${{steps.closing.outputs.branch}}
+          be_kind: true
       - name: Delete pr-* branch
-        uses: dawidd6/action-delete-branch@v1.0.1
+        if: steps.closing.outputs.number != ''
+        uses: dawidd6/action-delete-branch@v1.0.2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: pr-${{ github.event.pull_request.number }}
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          branch: pr-${{steps.closing.outputs.number}}
           be_kind: true
