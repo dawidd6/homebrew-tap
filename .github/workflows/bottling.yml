@@ -25,9 +25,11 @@ jobs:
           mkdir /bottles
           cd /bottles
           GITHUB_ACTIONS=true brew test-bot --root-url=https://dl.bintray.com/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO
-          ls *.bottle.* && mkdir $GITHUB_WORKSPACE/bottles && mv *.bottle.* $GITHUB_WORKSPACE/bottles
+          if ls *.bottle.*; then
+            mkdir $GITHUB_WORKSPACE/bottles
+            mv *.bottle.* $GITHUB_WORKSPACE/bottles
+          fi || true
       - name: Cache bottles
-        if: success()
         uses: actions/upload-artifact@v1
         with:
           name: bottles-linux
@@ -41,11 +43,6 @@ jobs:
         run: |
           mkdir -p "$(brew --prefix)/Homebrew/Library/Taps/dawidd6"
           ln -s "$PWD" "$(brew --prefix)/Homebrew/Library/Taps/$GITHUB_REPOSITORY"
-      - name: Tap dawidd6/test-bot
-        run: |
-          brew tap dawidd6/test-bot
-          cd $(brew --repository dawidd6/test-bot)/../..
-          mv dawidd6/homebrew-test-bot homebrew
       - name: Build bottles
         env:
           HOMEBREW_BINTRAY_USER: dawidd6
@@ -55,7 +52,6 @@ jobs:
           cd bottles
           brew test-bot --root-url=https://dl.bintray.com/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO
       - name: Cache bottles
-        if: success()
         uses: actions/upload-artifact@v1
         with:
           name: bottles-macos
@@ -76,7 +72,17 @@ jobs:
         with:
           name: bottles-macos
           path: ./
+      - name: Check bottles
+        id: check
+        run: |
+          if ls *.bottle.*; then
+            exist=true
+          else
+            exist=false
+          fi || true
+          echo "::set-output name=exist::$exist"
       - name: Upload bottles
+        if: steps.check.outputs.exist
         env:
           HOMEBREW_BOTTLE_DOMAIN: https://dl.bintray.com/dawidd6
           HOMEBREW_BINTRAY_USER: dawidd6
@@ -84,10 +90,6 @@ jobs:
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
-          # Exit immediately if any command fails.
-          set -e
-          # Should exit if no bottles.
-          ls *.bottle.* || exit 0
           # Create packages on bintray if they don't exist.
           for package in $(ls -1 *.bottle.* | awk -F '--' '{print $1}' | uniq); do
             curl \
@@ -106,9 +108,9 @@ jobs:
           brew update
           brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload
           # Push changes.
-          cd $(brew --repository $GITHUB_REPOSITORY)
-          git checkout -B \
-            pr-${{github.event.pull_request.number}}
-          git push --force \
+          git \
+            -C "$(brew --repository $GITHUB_REPOSITORY)" \
+            push \
+            --force \
             https://$HOMEBREW_BINTRAY_USER:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git \
-            pr-${{github.event.pull_request.number}}
+            HEAD:pr-${{github.event.pull_request.number}}
