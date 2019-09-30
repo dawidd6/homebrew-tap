@@ -22,7 +22,7 @@ jobs:
           branch: ${{steps.closing.outputs.branch}}
           be_kind: true
       - name: Delete pr-* branch
-        if: steps.closing.outputs.number != ''
+        if: steps.closing.outputs.number != '' && steps.closing.outputs.branch != ''
         uses: dawidd6/action-delete-branch@v1.0.3
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
