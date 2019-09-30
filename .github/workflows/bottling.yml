@@ -9,22 +9,23 @@ jobs:
     steps:
       - name: Checkout tap
         uses: actions/checkout@v1
+      - name: Update Homebrew
+        run: brew update-reset "$(brew --repository)"
       - name: Setup tap
         run: |
           mkdir -p "$(brew --prefix)/Homebrew/Library/Taps/dawidd6"
           ln -s "$PWD" "$(brew --prefix)/Homebrew/Library/Taps/$GITHUB_REPOSITORY"
       - name: Build bottles
         env:
-          # Seems like Github is mounting some volumes in home and workdir place.
-          # Setting these help avoiding "Invalid cross-device link" errors.
-          HOMEBREW_CACHE: /home/linuxbrew/.cache
-          HOMEBREW_TEMP: /home/linuxbrew/.tmp
           HOMEBREW_BINTRAY_USER: dawidd6
           HOMEBREW_BINTRAY_REPO: bottles-tap
         run: |
           mkdir /bottles
           cd /bottles
-          GITHUB_ACTIONS=true brew test-bot --root-url=https://dl.bintray.com/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO
+          GITHUB_ACTIONS=true \
+          HOMEBREW_CACHE=/home/linuxbrew/.cache \
+          HOMEBREW_TEMP=/home/linuxbrew/.tmp \
+            brew test-bot --root-url=https://dl.bintray.com/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO
           if ls *.bottle.*; then
             mkdir $GITHUB_WORKSPACE/bottles
             mv *.bottle.* $GITHUB_WORKSPACE/bottles
@@ -39,6 +40,8 @@ jobs:
     steps:
       - name: Checkout tap
         uses: actions/checkout@v1
+      - name: Update Homebrew
+        run: brew update-reset "$(brew --repository)"
       - name: Setup tap
         run: |
           mkdir -p "$(brew --prefix)/Homebrew/Library/Taps/dawidd6"
