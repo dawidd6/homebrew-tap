@@ -12,12 +12,34 @@ class Devscripts < Formula
     ]
   end
 
-  depends_on "perl" => :build
+  depends_on "bash-completion@2" => :build
+  depends_on "pkg-config" => :build
   depends_on "dpkg"
+  depends_on "perl"
 
-  patch do
-    url "https://gist.githubusercontent.com/dawidd6/1d295844f148c7bcdae93c37a2851282/raw/901764a254a9cf80fa81e9ec607eb0f9f44d4ba4/devscripts.patch"
-    sha256 "62e7387dd5bbcba355d908eff27f4698c81fd11d02d9d1acb8155d4a83231dee"
+  resource "inc-latest" do
+    url "https://cpan.metacpan.org/authors/id/D/DA/DAGOLDEN/inc-latest-0.500.tar.gz"
+    sha256 "daa905f363c6a748deb7c408473870563fcac79b9e3e95b26e130a4a8dc3c611"
+  end
+
+  resource "Module-Build" do
+    url "https://cpan.metacpan.org/authors/id/L/LE/LEONT/Module-Build-0.4222.tar.gz"
+    sha256 "e74b45d9a74736472b74830599cec0d1123f992760f9cd97104f94bee800b160"
+  end
+
+  resource "ExtUtils-Depends" do
+    url "https://cpan.metacpan.org/authors/id/X/XA/XAOC/ExtUtils-Depends-0.8000.tar.gz"
+    sha256 "780ff72128c04c2a22e6801187aa9c58cab298407f6e9d062706af1c250bbe98"
+  end
+
+  resource "DynaLoader-Functions" do
+    url "https://cpan.metacpan.org/authors/id/Z/ZE/ZEFRAM/DynaLoader-Functions-0.003.tar.gz"
+    sha256 "3eb2347214bce796ffad8d57e29b206094f0557446aeba4f8b334920121ea183"
+  end
+
+  resource "Devel-CallChecker" do
+    url "https://cpan.metacpan.org/authors/id/Z/ZE/ZEFRAM/Devel-CallChecker-0.008.tar.gz"
+    sha256 "5d584e0bf55942517fbb13bea5bff0bdf0d0287c0912030e853fa028a69011dc"
   end
 
   resource "String-ShellQuote" do
@@ -150,176 +172,49 @@ class Devscripts < Formula
     sha256 "d535b7954d64da1ac1305b1fadf98202769e3599376854b2ced90c382beac056"
   end
 
-  resource "ExtUtils-Depends" do
-    url "https://cpan.metacpan.org/authors/id/X/XA/XAOC/ExtUtils-Depends-0.8000.tar.gz"
-    sha256 "780ff72128c04c2a22e6801187aa9c58cab298407f6e9d062706af1c250bbe98"
+  resource "HTTP-Message" do
+    url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/HTTP-Message-6.18.tar.gz"
+    sha256 "d060d170d388b694c58c14f4d13ed908a2807f0e581146cef45726641d809112"
+  end
+
+  resource "URI" do
+    url "https://cpan.metacpan.org/authors/id/O/OA/OALDERS/URI-1.76.tar.gz"
+    sha256 "b2c98e1d50d6f572483ee538a6f4ccc8d9185f91f0073fd8af7390898254413e"
+  end
+
+  resource "HTTP-Date" do
+    url "https://cpan.metacpan.org/authors/id/G/GA/GAAS/HTTP-Date-6.02.tar.gz"
+    sha256 "e8b9941da0f9f0c9c01068401a5e81341f0e3707d1c754f8e11f42a7e629e333"
+  end
+
+  resource "IPC-Run" do
+    url "https://cpan.metacpan.org/authors/id/T/TO/TODDR/IPC-Run-20180523.0.tar.gz"
+    sha256 "3850d7edf8a4671391c6e99bb770698e1c45da55b323b31c76310913349b6c2f"
   end
 
   def install
     ENV.prepend_create_path "PERL5LIB", libexec/"lib/perl5"
     ENV.prepend_path "PERL5LIB", libexec/"lib"
     ENV.prepend_path "PERL5LIB", Formula["dpkg"].opt_libexec/"lib/perl5"
+    ENV.prepend_path "PKG_CONFIG_PATH", Formula["bash-completion@2"].opt_share/"pkgconfig"
 
-    resource("Class-XSAccessor").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
+    inreplace "scripts/Makefile", "/usr/share/dpkg/vendor.mk", "#{Formula["dpkg"].opt_libexec}/share/dpkg/vendor.mk"
+    inreplace "scripts/Makefile", "sed -i", "sed -i ''" if OS.mac?
 
-    resource("Class-Method-Modifiers").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("Import-Into").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("Params-Classify").stage do
-      system "perl", "Build.PL"
-      system "./Build"
-      system "./Build", "install"
-    end
-
-    resource("Devel-CallChecker").stage do
-      system "perl", "Build.PL"
-      system "./Build"
-      system "./Build", "install"
-    end
-
-    resource("ExtUtils-Depends").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("B-Hooks-OP-Check").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("DynaLoader-Functions").stage do
-      system "perl", "Build.PL"
-      system "./Build"
-      system "./Build", "install"
-    end
-
-    resource("Role-Tiny").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("strictures").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("Sub-Name").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("Sub-Quote").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("Sub-Exporter").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("Sub-Install").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("Test-Fatal").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("Try-Tiny").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("Data-OptList").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("Params-Util").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("Scope-Guard").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("File-Which").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("libwww-perl").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("Moo").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("Module-Runtime").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("Devel-GlobalDestruction").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("Sub-Exporter-Progressive").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("File-HomeDir").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
-    end
-
-    resource("String-ShellQuote").stage do
-      system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
-      system "make"
-      system "make", "install"
+    resources.each do |r|
+      r.stage do
+        if File.exist?("Makefile.PL")
+          system "perl", "Makefile.PL", "INSTALL_BASE=#{libexec}"
+          system "make"
+          system "make", "install"
+        elsif File.exist?("Build.PL")
+          system "perl", "Build.PL", "--install_base", libexec
+          system "./Build"
+          system "./Build", "install"
+        else
+          raise "UNKNOWN BUILD SYSTEM"
+        end
+      end
     end
 
     cd "scripts" do
@@ -334,12 +229,14 @@ class Devscripts < Formula
   end
 
   def caveats; <<~EOS
-    Only scripts are installed, no docs.
+    No docs are installed.
     Currently only these scripts are installed: #{scripts.join(", ")}
   EOS
   end
 
   test do
+    return if OS.mac?
+
     scripts.each do |script|
       system bin/script, "--help"
     end
