@@ -34,4 +34,3 @@ class PristineTar < Formula
     assert_predicate bin/"pristine-tar", :exist?
   end
 end
-# Build bottle
