@@ -4,6 +4,13 @@ class Devscripts < Formula
   url "https://deb.debian.org/debian/pool/main/d/devscripts/devscripts_2.19.6.tar.xz"
   sha256 "3196092bd274db9aa1e34e68a0c94c6edb49a481dded1656fd9785831bfdcec4"
 
+  bottle do
+    root_url "https://dl.bintray.com/dawidd6/bottles-tap"
+    cellar :any_skip_relocation
+    sha256 "7521925306f42a52449612b9d90748a933a47956698062aed9eba72056951839" => :mojave
+    sha256 "d12bb3536695775efe245fdbfecee59522af68207f56668871ecb74e9e852850" => :x86_64_linux
+  end
+
   def scripts
     %w[
       uscan
