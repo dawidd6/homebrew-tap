@@ -21,7 +21,7 @@ class Devscripts < Formula
 
   depends_on "bash-completion@2" => :build
   depends_on "pkg-config" => :build
-  depends_on "dpkg"
+  depends_on "dpkg" => :test
   depends_on "perl"
 
   resource "inc-latest" do
