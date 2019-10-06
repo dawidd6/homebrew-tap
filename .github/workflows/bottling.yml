@@ -26,10 +26,7 @@ jobs:
           HOMEBREW_CACHE=/home/linuxbrew/.cache \
           HOMEBREW_TEMP=/home/linuxbrew/.tmp \
             brew test-bot --root-url=https://dl.bintray.com/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO
-          if ls *.bottle.*; then
-            mkdir $GITHUB_WORKSPACE/bottles
-            mv *.bottle.* $GITHUB_WORKSPACE/bottles
-          fi || true
+          mv /bottles $GITHUB_WORKSPACE
       - name: Cache bottles
         uses: actions/upload-artifact@v1
         with:
