@@ -63,11 +63,13 @@ jobs:
       - build-macos
     steps:
       - name: Get bottles-linux
+        continue-on-error: true
         uses: actions/download-artifact@v1
         with:
           name: bottles-linux
           path: ./
       - name: Get bottles-macos
+        continue-on-error: true
         uses: actions/download-artifact@v1
         with:
           name: bottles-macos
