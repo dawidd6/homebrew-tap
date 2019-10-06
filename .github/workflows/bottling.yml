@@ -84,7 +84,7 @@ jobs:
           fi || true
           echo "::set-output name=exist::$exist"
       - name: Upload bottles
-        if: steps.check.outputs.exist
+        if: steps.check.outputs.exist == 'true'
         env:
           HOMEBREW_BOTTLE_DOMAIN: https://dl.bintray.com/dawidd6
           HOMEBREW_BINTRAY_USER: dawidd6
