@@ -1,0 +1,13 @@
+name: Cleaning branches
+description: Remove head PR branch and pr-* branch after closing commit
+author: dawidd6
+branding:
+  icon: git-commit
+  color: blue
+inputs:
+  github_token:
+    description: Github token
+    required: true
+runs:
+  using: docker
+  image: Dockerfile

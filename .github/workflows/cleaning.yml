@@ -9,22 +9,7 @@ jobs:
   clean:
     runs-on: ubuntu-latest
     steps:
-      - name: Check commit
-        id: closing
-        uses: dawidd6/action-closing-commit@v1.0.1
+      - name: Clean branches
+        uses: ./.github/actions/cleaning
         with:
           github_token: ${{secrets.GITHUB_TOKEN}}
-      - name: Delete head branch
-        if: steps.closing.outputs.number != '' && steps.closing.outputs.branch != ''
-        uses: dawidd6/action-delete-branch@v1.0.3
-        with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
-          branch: ${{steps.closing.outputs.branch}}
-          be_kind: true
-      - name: Delete pr-* branch
-        if: steps.closing.outputs.number != '' && steps.closing.outputs.branch != ''
-        uses: dawidd6/action-delete-branch@v1.0.3
-        with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
-          branch: pr-${{steps.closing.outputs.number}}
-          be_kind: true
