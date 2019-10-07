@@ -40,7 +40,7 @@ json['commits'].each do |commit|
         else
           puts "==> Branch \"#{branch}\" deletion failure"
         end
-      rescue e
+      rescue StandardError => e
         puts "==> Error: #{e.message}"
       end
     end
