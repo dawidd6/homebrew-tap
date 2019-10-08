@@ -5,7 +5,7 @@ on: pull_request
 jobs:
   build-linux:
     runs-on: ubuntu-latest
-    container: linuxbrew/brew
+    container: homebrew/brew
     steps:
       - name: Checkout tap
         uses: actions/checkout@v1
