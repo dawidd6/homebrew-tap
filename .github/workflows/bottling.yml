@@ -107,7 +107,7 @@ jobs:
               https://api.bintray.com/packages/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO || true
           done
           # Upload bottles from current directory.
-          brew update
+          brew update-reset
           brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload
           # Push changes.
           git \
