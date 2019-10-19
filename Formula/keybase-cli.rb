@@ -7,8 +7,8 @@ class KeybaseCli < Formula
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
     cellar :any_skip_relocation
-    sha256 "03e9f65161b93e6516daa20eb1345a79d8d6915bf8c73f946e78cf676bca63a1" => :mojave
-    sha256 "4e1e26a313659f11d0c9cbd4fc56d10d80acd045bed577ff43faf79052af0270" => :x86_64_linux
+    sha256 "7841784896f70c474b6de477826da3f731136853297ba104d379a5e39338220b" => :mojave
+    sha256 "808df878283b27d4cb57567e78b58dfee0626f44c80d6823dac3df6a14c08cf1" => :x86_64_linux
   end
 
   depends_on "go" => :build
