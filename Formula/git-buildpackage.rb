@@ -13,7 +13,6 @@ class GitBuildpackage < Formula
     sha256 "01cb237c79cb1d5dd9b5c65287306bafffb9ec40f317c583101fadec528656f9" => :x86_64_linux
   end
 
-  depends_on "dpkg"
   depends_on "pristine-tar"
   depends_on "python"
 
