@@ -11,7 +11,7 @@ def get_number(line)
 end
 
 repo = ENV["GITHUB_REPOSITORY"]
-token = ENV["INPUT_GITHUB_TOKEN"]
+token = ENV["GITHUB_TOKEN"]
 path = ENV["GITHUB_EVENT_PATH"]
 client = Octokit::Client.new(:access_token => token)
 file = File.read(path)
@@ -36,9 +36,9 @@ json['commits'].each do |commit|
     branches.each do |branch|
       begin
         if client.delete_branch(repo, branch)
-          puts "==> Branch \"#{branch}\" deletion successful"
+          puts "  ==> Branch \"#{branch}\" deletion successful"
         else
-          puts "==> Branch \"#{branch}\" deletion failure"
+          puts "  ==> Branch \"#{branch}\" deletion failure"
         end
       rescue StandardError => e
         puts "==> Error: #{e.message}"
