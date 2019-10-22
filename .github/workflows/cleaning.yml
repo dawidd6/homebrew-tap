@@ -11,6 +11,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+      - name: Setup Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.6.x
       - name: Install octokit
         run: gem install octokit
       - name: Clean branches
