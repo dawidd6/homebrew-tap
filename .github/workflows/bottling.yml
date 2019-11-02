@@ -93,7 +93,7 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
           # Create packages on bintray if they don't exist.
-          for package in $(ls -1 *.bottle.* | awk -F '--' '{print $1}' | uniq); do
+          for package in $(ls -1 *.bottle.* | awk -F '--' '{print $1}' | uniq | tr '@' ':'); do
             curl \
               --user $HOMEBREW_BINTRAY_USER:$HOMEBREW_BINTRAY_KEY \
               --header "Content-Type: application/json" \
