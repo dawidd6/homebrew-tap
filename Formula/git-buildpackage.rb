@@ -4,8 +4,8 @@ class GitBuildpackage < Formula
   desc "Suite to help with Debian (and RPM) packages in Git repos"
   homepage "https://honk.sigxcpu.org/piki/projects/git-buildpackage/"
   url "https://github.com/agx/git-buildpackage.git",
-      :tag      => "debian/0.9.15",
-      :revision => "1ab6cf44e6c412ad0e309283ce375f3c9b8bdb57"
+      :tag      => "debian/0.9.17",
+      :revision => "d4ca59b3d9a2be8657b08b1073b44b68b2d55742"
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
