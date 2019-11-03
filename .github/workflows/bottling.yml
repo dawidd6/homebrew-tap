@@ -22,13 +22,12 @@ jobs:
         env:
           HOMEBREW_BINTRAY_USER: dawidd6
           HOMEBREW_BINTRAY_REPO: bottles-tap
+          HOMEBREW_CACHE: /home/linuxbrew/.cache
+          HOMEBREW_TEMP: /home/linuxbrew/.tmp
         run: |
           mkdir /bottles
           cd /bottles
-          GITHUB_ACTIONS=true \
-          HOMEBREW_CACHE=/home/linuxbrew/.cache \
-          HOMEBREW_TEMP=/home/linuxbrew/.tmp \
-            brew test-bot --root-url=https://dl.bintray.com/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO
+          brew test-bot --root-url=https://dl.bintray.com/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO
           mv /bottles $GITHUB_WORKSPACE
       - name: Cache bottles
         uses: actions/upload-artifact@v1
