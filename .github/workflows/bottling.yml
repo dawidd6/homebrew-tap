@@ -1,6 +1,9 @@
 name: Build and upload bottles
 
-on: pull_request
+on:
+  pull_request:
+    paths:
+      - 'Formula/*.rb'
 
 jobs:
   build-linux:
@@ -63,28 +66,16 @@ jobs:
       - build-macos
     steps:
       - name: Get bottles-linux
-        continue-on-error: true
         uses: actions/download-artifact@v1
         with:
           name: bottles-linux
           path: ./
       - name: Get bottles-macos
-        continue-on-error: true
         uses: actions/download-artifact@v1
         with:
           name: bottles-macos
           path: ./
-      - name: Check bottles
-        id: check
-        run: |
-          if ls *.bottle.*; then
-            exist=true
-          else
-            exist=false
-          fi || true
-          echo "::set-output name=exist::$exist"
       - name: Upload bottles
-        if: steps.check.outputs.exist == 'true'
         env:
           HOMEBREW_BOTTLE_DOMAIN: https://dl.bintray.com/dawidd6
           HOMEBREW_BINTRAY_USER: dawidd6
