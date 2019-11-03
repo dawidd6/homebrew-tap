@@ -1,6 +1,7 @@
-#:  * `pull-tap`
+#:  * `pull-tap` PR_NUMBERS
 #:
-#:  Pull bottles from my tap. The argument should be comma separated PR numbers.
+#:  Pull bottles from my tap.
+#:  The argument should be comma separated PR numbers.
 
 require 'json'
 
