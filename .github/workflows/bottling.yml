@@ -17,7 +17,7 @@ jobs:
       - name: Setup tap
         run: |
           mkdir -p "$(dirname $(brew --repository $GITHUB_REPOSITORY))"
-          cp -a "$PWD" "$(brew --repository $GITHUB_REPOSITORY)"
+          ln -s "$PWD" "$(brew --repository $GITHUB_REPOSITORY)"
       - name: Build bottles
         # TODO test if still necessary
         env:
@@ -43,7 +43,7 @@ jobs:
       - name: Setup tap
         run: |
           mkdir -p "$(dirname $(brew --repository $GITHUB_REPOSITORY))"
-          cp -a "$PWD" "$(brew --repository $GITHUB_REPOSITORY)"
+          ln -s "$PWD" "$(brew --repository $GITHUB_REPOSITORY)"
       - name: Build bottles
         run: |
           mkdir bottles
@@ -70,13 +70,11 @@ jobs:
         with:
           name: bottles-macos
           path: ./
-      - name: Upload bottles
+      - name: Create package
         env:
-          HOMEBREW_BOTTLE_DOMAIN: https://dl.bintray.com/dawidd6
-          HOMEBREW_BINTRAY_USER: dawidd6
           HOMEBREW_BINTRAY_REPO: bottles-tap
+          HOMEBREW_BINTRAY_USER: dawidd6
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
           # Create packages on bintray if they don't exist.
           for package in $(ls -1 *.bottle.* | awk -F '--' '{print $1}' | uniq | tr '@' ':'); do
@@ -92,13 +90,17 @@ jobs:
                 }" \
               https://api.bintray.com/packages/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO || true
           done
-          # Upload bottles from current directory.
+      - name: Upload bottles
+        env:
+          HOMEBREW_BOTTLE_DOMAIN: https://dl.bintray.com/dawidd6
+          HOMEBREW_BINTRAY_USER: dawidd6
+          HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
+        run: |
           brew update-reset
           brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload
-          # Push changes.
-          git \
-            -C "$(brew --repository $GITHUB_REPOSITORY)" \
-            push \
-            --force \
-            https://$HOMEBREW_BINTRAY_USER:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git \
-            HEAD:pr-${{github.event.pull_request.number}}
+      - name: Push branch
+        env:
+          GITHUB_USER: dawidd6
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          BRANCH: pr-${{github.event.pull_request.number}}
+        run: git -C $(brew --repository $GITHUB_REPOSITORY) push -f https://$GITHUB_USER:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git HEAD:$BRANCH
