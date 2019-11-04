@@ -20,9 +20,9 @@ jobs:
           ln -s "$PWD" "$(brew --repository $GITHUB_REPOSITORY)"
       - name: Build bottles
         # TODO test if still necessary
-        env:
-          HOMEBREW_CACHE: /home/linuxbrew/.cache
-          HOMEBREW_TEMP: /home/linuxbrew/.tmp
+        #env:
+        #  HOMEBREW_CACHE: /home/linuxbrew/.cache
+        #  HOMEBREW_TEMP: /home/linuxbrew/.tmp
         run: |
           mkdir /bottles
           cd /bottles
