@@ -93,14 +93,14 @@ jobs:
                 }" \
               https://api.bintray.com/packages/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO || true
           done
+      - name: Update Homebrew
+        run: brew update-reset
       - name: Upload bottles
         env:
           HOMEBREW_BOTTLE_DOMAIN: https://dl.bintray.com/dawidd6
           HOMEBREW_BINTRAY_USER: dawidd6
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
-        run: |
-          brew update-reset
-          brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload
+        run: brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload
       - name: Push branch
         env:
           GITHUB_USER: dawidd6
