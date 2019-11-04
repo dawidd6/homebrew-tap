@@ -13,19 +13,22 @@ jobs:
       - name: Checkout tap
         uses: actions/checkout@v1
       - name: Update Homebrew
-        run: brew update-reset "$(brew --repository)"
+        run: brew update-reset $(brew --repository)
       - name: Setup tap
         run: |
-          mkdir -p "$(dirname $(brew --repository $GITHUB_REPOSITORY))"
-          ln -s "$PWD" "$(brew --repository $GITHUB_REPOSITORY)"
+          mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
+          ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
       - name: Build bottles
         env:
+          HOMEBREW_BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
+          # workaround for error: invalid cross-device link
           HOMEBREW_CACHE: /home/linuxbrew/.cache
           HOMEBREW_TEMP: /home/linuxbrew/.tmp
         run: |
-          mkdir bottles
-          cd bottles
-          brew test-bot --root-url=https://dl.bintray.com/dawidd6/bottles-tap
+          mkdir /tmp/bottles
+          cd /tmp/bottles
+          brew test-bot --root-url=$HOMEBREW_BINTRAY_URL
+          mv /tmp/bottles $GITHUB_WORKSPACE
       - name: Cache bottles
         uses: actions/upload-artifact@v1
         with:
@@ -37,16 +40,19 @@ jobs:
       - name: Checkout tap
         uses: actions/checkout@v1
       - name: Update Homebrew
-        run: brew update-reset "$(brew --repository)"
+        run: brew update-reset $(brew --repository)
       - name: Setup tap
         run: |
-          mkdir -p "$(dirname $(brew --repository $GITHUB_REPOSITORY))"
-          ln -s "$PWD" "$(brew --repository $GITHUB_REPOSITORY)"
+          mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
+          ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
       - name: Build bottles
+        env:
+          HOMEBREW_BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
         run: |
-          mkdir bottles
-          cd bottles
-          brew test-bot --root-url=https://dl.bintray.com/dawidd6/bottles-tap
+          mkdir /tmp/bottles
+          cd /tmp/bottles
+          brew test-bot --root-url=$HOMEBREW_BINTRAY_URL
+          mv /tmp/bottles $GITHUB_WORKSPACE
       - name: Cache bottles
         uses: actions/upload-artifact@v1
         with:
@@ -74,7 +80,6 @@ jobs:
           HOMEBREW_BINTRAY_USER: dawidd6
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
         run: |
-          # Create packages on bintray if they don't exist.
           for package in $(ls -1 *.bottle.* | awk -F '--' '{print $1}' | uniq | tr '@' ':'); do
             curl \
               --user $HOMEBREW_BINTRAY_USER:$HOMEBREW_BINTRAY_KEY \
