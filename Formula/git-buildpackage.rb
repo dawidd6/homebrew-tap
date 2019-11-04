@@ -33,6 +33,7 @@ class GitBuildpackage < Formula
   end
 
   test do
-    system "#{bin}/gbp", "--version"
+    v = shell_output "#{bin}/gbp --version"
+    assert_match "gbp #{version}", v
   end
 end
