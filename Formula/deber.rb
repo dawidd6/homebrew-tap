@@ -9,9 +9,8 @@ class Deber < Formula
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
     cellar :any_skip_relocation
-    rebuild 1
-    sha256 "afff04e105fc85d1da706e794781c97aa4920c1c7e9c41610b87636e0d713b1b" => :mojave
-    sha256 "c4142aeeb6f2f4cda54251cc46027de1dbf59a3478a6eb53662547232f56bce8" => :x86_64_linux
+    sha256 "00725ee967473f897c926022892aba9f346f59116bf0a11345bec7022b56dbdb" => :catalina
+    sha256 "0b443f2b2c4c97eac81cb82de16ce5acc5075b5a1a5631288e8140dcfb196e51" => :x86_64_linux
   end
 
   depends_on "go" => :build
