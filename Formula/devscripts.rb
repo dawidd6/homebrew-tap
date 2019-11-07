@@ -4,6 +4,7 @@ class Devscripts < Formula
   url "https://salsa.debian.org/debian/devscripts.git",
     :tag      => "v2.19.7",
     :revision => "6daac7f2c9eae3971deb93ebd3b66787a3bb6d19"
+  revision 1
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
