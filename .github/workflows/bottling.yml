@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'Formula/*.rb'
+      - '!.github/workflows/*'
 
 jobs:
   build-linux:
