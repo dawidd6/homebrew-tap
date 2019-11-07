@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-linux:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     container: homebrew/brew
     steps:
       - name: Checkout tap
@@ -35,7 +35,7 @@ jobs:
           name: bottles-linux
           path: bottles
   build-macos:
-    runs-on: macos-latest
+    runs-on: macos-10.15
     steps:
       - name: Checkout tap
         uses: actions/checkout@v1
