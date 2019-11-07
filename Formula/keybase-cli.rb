@@ -3,6 +3,7 @@ class KeybaseCli < Formula
   homepage "https://keybase.io"
   url "https://github.com/keybase/client/archive/v4.7.2.tar.gz"
   sha256 "d6cf2ac1f13bd95c713a534ec504fe20556bd8da93bb5cfe1cdcb6287ed1fc4d"
+  revision 1
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
