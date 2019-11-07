@@ -4,6 +4,7 @@ class DhMakeGolang < Formula
   url "https://github.com/dawidd6/dh-make-golang.git",
     :tag     => "v19.09.13",
     :revison => "420dcab5daa95a7919bded78e297706f20a25b59"
+  revision 1
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
