@@ -9,8 +9,8 @@ class Devscripts < Formula
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
     cellar :any_skip_relocation
-    sha256 "e61659756198da4881c8e55c071efe9b09c928f9cf520f6e8ef4b447d0189195" => :mojave
-    sha256 "deca1b4a8fade53f5b9d0d1769b1a5e56738e1f6276138b2184792e573ecc3fe" => :x86_64_linux
+    sha256 "898571ff1da53befb15c526f53a1743caf7231a445bb1508f5b3415d621de9b4" => :catalina
+    sha256 "f7f87ceead7bc0d6e0b8c4c2053a61206327c8167ae3fba2b8a2b4415aaa5062" => :x86_64_linux
   end
 
   def scripts
