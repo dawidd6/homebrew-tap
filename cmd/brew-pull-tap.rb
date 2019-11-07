@@ -26,9 +26,9 @@ module Homebrew
   print "==> Proceed?"
   STDIN.readline
 
-  exit(1) unless system("git", "checkout", "master")
+  safe_system("git", "checkout", "-q", "master")
 
   pr_numbers_and_titles.each do |pr_number, _|
-    exit(1) unless system("brew", "pull", "--bottle", "--bintray-org=#{user}", "--test-bot-user=#{user}", "#{url}/#{pr_number}")
+    safe_system("brew", "pull", "--bottle", "--bintray-org=#{user}", "--test-bot-user=#{user}", "#{url}/#{pr_number}")
   end
 end
