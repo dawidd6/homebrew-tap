@@ -20,6 +20,7 @@ class Deber < Formula
   end
 
   test do
-    system "#{bin}/#{name}", "--version"
+    v = shell_output "#{bin}/#{name} --version"
+    assert_match "deber version #{version}", v
   end
 end
