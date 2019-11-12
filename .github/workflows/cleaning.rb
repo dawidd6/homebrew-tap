@@ -36,9 +36,9 @@ json['commits'].each do |commit|
     branches.each do |branch|
       begin
         if client.delete_branch(repo, branch)
-          puts "  ==> Branch \"#{branch}\" deletion successful"
+          puts "Branch \"#{branch}\" deleted successfully"
         else
-          puts "  ==> Branch \"#{branch}\" deletion failure"
+          puts "Failed to delete \"#{branch}\" branch"
         end
       rescue StandardError => e
         puts "==> Error: #{e.message}"
