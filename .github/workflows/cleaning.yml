@@ -15,8 +15,8 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: 2.6.x
-      - name: Install octokit
-        run: gem install octokit
+      - name: Install gems
+        run: gem install octokit colorize
       - name: Clean branches
         run: ./.github/workflows/cleaning.rb
         env:
