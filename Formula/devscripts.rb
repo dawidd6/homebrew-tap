@@ -4,7 +4,7 @@ class Devscripts < Formula
   url "https://salsa.debian.org/debian/devscripts.git",
     :tag      => "v2.19.7",
     :revision => "6daac7f2c9eae3971deb93ebd3b66787a3bb6d19"
-  revision 1
+  revision 2
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
@@ -14,11 +14,12 @@ class Devscripts < Formula
   end
 
   def scripts
-    %w[
-      uscan
-      wnpp-check
-      rmadison
-    ]
+    {
+      "uscan"      => "",
+      "wnpp-check" => "",
+      "rmadison"   => "",
+      "debchange"  => "dch",
+    }
   end
 
   depends_on "bash-completion@2" => :build
@@ -228,8 +229,9 @@ class Devscripts < Formula
 
     cd "scripts" do
       system "make", "scripts"
-      scripts.each do |script|
+      scripts.each do |script, script_alias|
         bin.install script
+        bin.install_symlink bin/script => script_alias unless script_alias.empty?
       end
     end
 
@@ -239,15 +241,16 @@ class Devscripts < Formula
 
   def caveats; <<~EOS
     No docs are installed.
-    Currently only these scripts are installed: #{scripts.join(", ")}
+    Currently only these scripts are installed: #{scripts.keys.join(", ")}
   EOS
   end
 
   test do
     return if OS.mac?
 
-    scripts.each do |script|
+    scripts.each do |script, script_alias|
       system bin/script, "--help"
+      system bin/script_alias, "--help" unless script_alias.empty?
     end
   end
 end
