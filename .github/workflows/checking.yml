@@ -8,10 +8,12 @@ on:
 
 jobs:
   check:
-    runs-on: macos-latest
-    env:
-      HOMEBREW_NO_AUTO_UPDATE: 1
-      HOMEBREW_NO_CLEANUP: 1
+    runs-on: ubuntu-latest
+    container:
+      image: homebrew/brew
+      env:
+        HOMEBREW_NO_AUTO_UPDATE: 1
+        HOMEBREW_NO_CLEANUP: 1
     steps:
       - name: Tap
         run: |
