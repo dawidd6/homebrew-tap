@@ -1,7 +1,6 @@
 name: Check for updates
 
 on:
-  push:
   schedule:
     # At 06:00 on Sunday
     - cron: '0 6 * * 0'
