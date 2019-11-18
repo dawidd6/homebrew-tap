@@ -1,0 +1,32 @@
+name: Check for updates
+
+on:
+  schedule:
+    # At 06:00 on Sunday
+    - cron: '0 6 * * 0'
+
+jobs:
+  check:
+    runs-on: macos-latest
+    steps:
+      - name: Tap
+        run: |
+          brew tap homebrew/livecheck
+          brew tap ${{github.repository}}
+      - name: Check
+        id: check
+        run: |
+          check="$(brew livecheck -n -q --tap=${{github.repository}})"
+          echo "::set-output name=check::$check"
+      - name: Send
+        if: steps.check.outputs.check != ""
+        uses: dawidd6/action-send-mail@master
+        with:
+          server_address: ${{secrets.MAIL_SERVER}}
+          server_port: 465
+          username: ${{secrets.MAIL_USERNAME}}
+          password: ${{secrets.MAIL_PASSWORD}}
+          subject: Outdated formulae in ${{github.repository}}
+          body: ${{steps.check.outputs.check}}
+          to: ${{secrets.MAIL_TO}}
+          from: github-actions
