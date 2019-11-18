@@ -9,6 +9,9 @@ on:
 jobs:
   check:
     runs-on: macos-latest
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      HOMEBREW_NO_CLEANUP: 1
     steps:
       - name: Tap
         run: |
@@ -20,7 +23,7 @@ jobs:
           check="$(brew livecheck -n -q --tap=${{github.repository}})"
           echo "::set-output name=check::$check"
       - name: Send
-        if: steps.check.outputs.check != ""
+        if: steps.check.outputs.check != ''
         uses: dawidd6/action-send-mail@master
         with:
           server_address: ${{secrets.MAIL_SERVER}}
