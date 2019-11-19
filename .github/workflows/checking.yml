@@ -25,7 +25,7 @@ jobs:
           echo "::set-output name=check::$check"
       - name: Send
         if: steps.check.outputs.check != ''
-        uses: dawidd6/action-send-mail@master
+        uses: dawidd6/action-send-mail@v1.0.0
         with:
           server_address: ${{secrets.MAIL_SERVER}}
           server_port: 465
