@@ -2,8 +2,8 @@ name: Check for updates
 
 on:
   schedule:
-    # At 06:00 on Sunday
-    - cron: '0 6 * * 0'
+    # At 06:00 on Friday
+    - cron: '0 6 * * 5'
 
 jobs:
   check:
