@@ -6,7 +6,7 @@ class GitBuildpackage < Formula
   url "https://github.com/agx/git-buildpackage.git",
       :tag      => "debian/0.9.17",
       :revision => "d4ca59b3d9a2be8657b08b1073b44b68b2d55742"
-  revision 1
+  revision 2
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
@@ -16,6 +16,7 @@ class GitBuildpackage < Formula
   end
 
   depends_on "dpkg"
+  depends_on "rpm"
   depends_on "pristine-tar"
   depends_on "python"
 
@@ -34,7 +35,8 @@ class GitBuildpackage < Formula
   end
 
   test do
-    v = shell_output "#{bin}/gbp --version"
+    v = shell_output bin/"gbp --version"
     assert_match "gbp #{version}", v
+    system(bin/"gbp", "--list-cmds")
   end
 end
