@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Get numbers
         id: numbers
-        uses: dawidd6/action-closing-commit@v2.1.1
+        uses: dawidd6/action-closing-commit@v2.1.2
       - name: Delete head branches
         uses: dawidd6/action-delete-branch@v2.0.0
         with:
