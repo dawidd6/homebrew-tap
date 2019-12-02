@@ -1,4 +1,4 @@
-name: Build and upload bottles
+name: Bottling
 
 on:
   pull_request:
@@ -8,6 +8,7 @@ on:
 
 jobs:
   build-linux:
+    name: Build Linux bottle
     runs-on: ubuntu-latest
     container: homebrew/brew
     steps:
@@ -36,6 +37,7 @@ jobs:
           name: bottles-linux
           path: bottles
   build-macos:
+    name: Build macOS bottle
     runs-on: macos-latest
     steps:
       - name: Checkout tap
@@ -60,6 +62,7 @@ jobs:
           name: bottles-macos
           path: bottles
   upload:
+    name: Upload bottles
     runs-on: macos-latest
     needs:
       - build-linux

@@ -1,4 +1,4 @@
-name: Check for updates
+name: Checking
 
 on:
   schedule:

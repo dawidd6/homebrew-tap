@@ -1,4 +1,4 @@
-name: Clean branches
+name: Cleaning
 
 on:
   push:
