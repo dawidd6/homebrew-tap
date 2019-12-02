@@ -21,7 +21,7 @@ jobs:
           ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
       - name: Build bottles
         env:
-          HOMEBREW_BINTRAY_URL: https://dl.bintray.com/${{github.actor}}/bottles-tap
+          HOMEBREW_BINTRAY_URL: https://dl.bintray.com/${{github.event.repository.owner.login}}/bottles-tap
           # workaround for error: invalid cross-device link
           HOMEBREW_CACHE: /home/linuxbrew/.cache
           HOMEBREW_TEMP: /home/linuxbrew/.tmp
@@ -48,7 +48,7 @@ jobs:
           ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
       - name: Build bottles
         env:
-          HOMEBREW_BINTRAY_URL: https://dl.bintray.com/${{github.actor}}/bottles-tap
+          HOMEBREW_BINTRAY_URL: https://dl.bintray.com/${{github.event.repository.owner.login}}/bottles-tap
         run: |
           mkdir /tmp/bottles
           cd /tmp/bottles
@@ -78,7 +78,7 @@ jobs:
       - name: Create package
         env:
           HOMEBREW_BINTRAY_REPO: bottles-tap
-          HOMEBREW_BINTRAY_USER: ${{github.actor}}
+          HOMEBREW_BINTRAY_USER: ${{github.event.repository.owner.login}}
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
         run: |
           for package in $(ls -1 *.bottle.* | awk -F '--' '{print $1}' | uniq | tr '@' ':'); do
@@ -98,13 +98,13 @@ jobs:
         run: brew update-reset
       - name: Upload bottles
         env:
-          HOMEBREW_BOTTLE_DOMAIN: https://dl.bintray.com/${{github.actor}}
-          HOMEBREW_BINTRAY_USER: ${{github.actor}}
+          HOMEBREW_BOTTLE_DOMAIN: https://dl.bintray.com/${{github.event.repository.owner.login}}
+          HOMEBREW_BINTRAY_USER:  ${{github.event.repository.owner.login}}
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
         run: brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload
       - name: Push branch
         env:
-          GITHUB_USER: ${{github.actor}}
+          GITHUB_USER: ${{github.event.repository.owner.login}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           BRANCH: pr-${{github.event.pull_request.number}}
         run: git -C $(brew --repository $GITHUB_REPOSITORY) push -f https://$GITHUB_USER:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git HEAD:$BRANCH
