@@ -14,7 +14,7 @@ jobs:
       - name: Checkout tap
         uses: actions/checkout@v1
       - name: Update Homebrew
-        run: brew update-reset $(brew --repository)
+        run: brew update-reset
       - name: Setup tap
         run: |
           mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
@@ -41,7 +41,7 @@ jobs:
       - name: Checkout tap
         uses: actions/checkout@v1
       - name: Update Homebrew
-        run: brew update-reset $(brew --repository)
+        run: brew update-reset
       - name: Setup tap
         run: |
           mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
@@ -65,6 +65,14 @@ jobs:
       - build-linux
       - build-macos
     steps:
+      - name: Checkout tap
+        uses: actions/checkout@v1
+      - name: Update Homebrew
+        run: brew update-reset
+      - name: Setup tap
+        run: |
+          mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
+          ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
       - name: Get bottles-linux
         uses: actions/download-artifact@v1
         with:
@@ -94,8 +102,6 @@ jobs:
                 }" \
               https://api.bintray.com/packages/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO || true
           done
-      - name: Update Homebrew
-        run: brew update-reset
       - name: Upload bottles
         env:
           HOMEBREW_BOTTLE_DOMAIN: https://dl.bintray.com/${{github.event.repository.owner.login}}
