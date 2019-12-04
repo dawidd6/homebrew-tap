@@ -15,11 +15,13 @@ jobs:
         id: numbers
         uses: dawidd6/action-closing-commit@v2.1.2
       - name: Delete head branches
-        uses: dawidd6/action-delete-branch@v2.0.0
+        uses: dawidd6/action-delete-branch@v2.0.1
         with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
           numbers: ${{steps.numbers.outputs.numbers}}
       - name: Delete pr-* branches
-        uses: dawidd6/action-delete-branch@v2.0.0
+        uses: dawidd6/action-delete-branch@v2.0.1
         with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
           branches: ${{steps.numbers.outputs.numbers}}
           prefix: pr-
