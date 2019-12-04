@@ -21,3 +21,5 @@ brew install dawidd6/tap/PACKAGE
 ![Bintray](https://img.shields.io/bintray/v/dawidd6/bottles-tap/keybase-cli?label=keybase-cli)
 ![Bintray](https://img.shields.io/bintray/v/dawidd6/bottles-tap/neofetch?label=neofetch)
 ![Bintray](https://img.shields.io/bintray/v/dawidd6/bottles-tap/pristine-tar?label=pristine-tar)
+![Bintray](https://img.shields.io/bintray/v/dawidd6/bottles-tap/gothanks?label=gothanks)
+![Bintray](https://img.shields.io/bintray/v/dawidd6/bottles-tap/actions-updater?label=actions-updater)
