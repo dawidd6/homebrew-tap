@@ -68,14 +68,14 @@ jobs:
       - build-linux
       - build-macos
     steps:
-      - name: Checkout tap
-        uses: actions/checkout@v1
       - name: Update Homebrew
         run: brew update-reset
       - name: Setup tap
+        env:
+          PATCH_URL: ${{github.event.pull_request.patch_url}}
         run: |
-          mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
-          ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
+          brew tap --full $GITHUB_REPOSITORY
+          brew pull --clean $PATCH_URL
       - name: Get bottles-linux
         uses: actions/download-artifact@v1
         with:
