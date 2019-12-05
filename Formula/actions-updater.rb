@@ -1,8 +1,8 @@
 class ActionsUpdater < Formula
   desc "Updater of used Github Actions in workflow files"
   homepage "https://github.com/dawidd6/actions-updater"
-  url "https://github.com/dawidd6/actions-updater/archive/v0.1.4.tar.gz"
-  sha256 "33c21c15395ef33bc3f49badb9ad92d2bef912be00082c296b5092c507b7ad50"
+  url "https://github.com/dawidd6/actions-updater/archive/v0.1.5.tar.gz"
+  sha256 "8683ba95588e74adc08f37983059eb174076f51f29baada0f749d2de339abb0f"
   head "https://github.com/dawidd6/actions-updater.git"
 
   bottle do
@@ -15,7 +15,10 @@ class ActionsUpdater < Formula
   uses_from_macos "ruby"
 
   def install
-    system "make", "PREFIX=#{prefix}", "install"
+    ENV["GEM_HOME"] = libexec
+    system "rake", "install"
+    bin.install libexec/"bin/#{name}"
+    bin.env_script_all_files(libexec/"bin", :GEM_HOME => ENV["GEM_HOME"])
   end
 
   test do
