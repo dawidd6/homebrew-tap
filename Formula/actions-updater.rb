@@ -1,8 +1,8 @@
 class ActionsUpdater < Formula
   desc "Updater of used Github Actions in workflow files"
   homepage "https://github.com/dawidd6/actions-updater"
-  url "https://github.com/dawidd6/actions-updater/archive/v0.1.3.tar.gz"
-  sha256 "9bce43e99d947d7f27599b0fac0bf672a2ba39b34630e7447d0bd27053da37bd"
+  url "https://github.com/dawidd6/actions-updater/archive/v0.1.4.tar.gz"
+  sha256 "33c21c15395ef33bc3f49badb9ad92d2bef912be00082c296b5092c507b7ad50"
   head "https://github.com/dawidd6/actions-updater.git"
 
   bottle do
