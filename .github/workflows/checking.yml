@@ -24,7 +24,7 @@ jobs:
       - name: Check
         run: |
           brew livecheck -n -q --tap=${{github.repository}} > ${{env.FILENAME}}
-          wc -l ${{env.FILENAME}} | grep -vq '^0 ' && echo "::set-env name=FILENAME::"
+          wc -l ${{env.FILENAME}} | grep -q '^0 ' && echo "::set-env name=FILENAME::"
       - name: Send
         if: env.FILENAME != ''
         uses: dawidd6/action-send-mail@v1.1.0
