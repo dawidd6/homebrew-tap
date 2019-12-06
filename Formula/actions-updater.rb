@@ -8,8 +8,8 @@ class ActionsUpdater < Formula
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
     cellar :any_skip_relocation
-    sha256 "c86fd7a5116d6e11e4a25fca00c957ce95f9e2eb41686d492438a09c4c740fb6" => :catalina
-    sha256 "e3842266fd015b89f56bc04336164963dda2da1be7c28ea8d59e3313d6098f48" => :x86_64_linux
+    sha256 "495e6cdab79414b9974ad346de97510a6fe756d94f36d8b6e17cc20fab68f843" => :catalina
+    sha256 "665908d4de8cf8748185ae547bbdf9442af82fc4a3f15e8a81560f2f6c463de4" => :x86_64_linux
   end
 
   uses_from_macos "ruby"
