@@ -13,6 +13,7 @@ jobs:
       env:
         HOMEBREW_NO_AUTO_UPDATE: 1
         HOMEBREW_NO_CLEANUP: 1
+        FILENAME: livecheck.txt
     steps:
       - name: Tap
         run: |
@@ -21,17 +22,17 @@ jobs:
       - name: Check
         id: check
         run: |
-          check="$(brew livecheck -n -q --tap=${{github.repository}})"
-          echo "::set-output name=check::$check"
+          brew livecheck -n -q --tap=${{github.repository}} > ${{env.FILENAME}}
+          wc -l ${{env.FILENAME}} | grep -vq '^0 ' && echo "::set-output name=check::true"
       - name: Send
         if: steps.check.outputs.check != ''
-        uses: dawidd6/action-send-mail@v1.0.0
+        uses: dawidd6/action-send-mail@v1.1.0
         with:
           server_address: ${{secrets.MAIL_SERVER}}
           server_port: 465
           username: ${{secrets.MAIL_USERNAME}}
           password: ${{secrets.MAIL_PASSWORD}}
           subject: Outdated formulae in ${{github.repository}}
-          body: ${{steps.check.outputs.check}}
+          body: ${{env.FILENAME}}
           to: ${{secrets.MAIL_TO}}
           from: github-actions
