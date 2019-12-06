@@ -12,22 +12,21 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: homebrew/brew
-      env:
-        HOMEBREW_NO_AUTO_UPDATE: 1
-        HOMEBREW_NO_CLEANUP: 1
-        FILENAME: livecheck.txt
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      HOMEBREW_NO_CLEANUP: 1
+      FILENAME: livecheck.txt
     steps:
       - name: Tap
         run: |
           brew tap homebrew/livecheck
           brew tap ${{github.repository}}
       - name: Check
-        id: check
         run: |
           brew livecheck -n -q --tap=${{github.repository}} > ${{env.FILENAME}}
-          wc -l ${{env.FILENAME}} | grep -vq '^0 ' && echo "::set-output name=check::true"
+          wc -l ${{env.FILENAME}} | grep -vq '^0 ' && echo "::set-env name=FILENAME::"
       - name: Send
-        if: steps.check.outputs.check != ''
+        if: env.FILENAME != ''
         uses: dawidd6/action-send-mail@v1.1.0
         with:
           server_address: ${{secrets.MAIL_SERVER}}
