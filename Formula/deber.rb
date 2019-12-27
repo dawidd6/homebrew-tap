@@ -8,8 +8,8 @@ class Deber < Formula
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
     cellar :any_skip_relocation
-    sha256 "00725ee967473f897c926022892aba9f346f59116bf0a11345bec7022b56dbdb" => :catalina
-    sha256 "0b443f2b2c4c97eac81cb82de16ce5acc5075b5a1a5631288e8140dcfb196e51" => :x86_64_linux
+    sha256 "d16a2b33bfeefd414692f8d693b4acd0074466cc9102035c2f851106abe5704f" => :catalina
+    sha256 "223996b71bc38c3f59165938f8772af1bb0fa7fc464a272adf6c67e07ae11ce0" => :x86_64_linux
   end
 
   depends_on "go" => :build
