@@ -10,8 +10,8 @@ class DhMakeGolang < Formula
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
     cellar :any_skip_relocation
-    sha256 "1a0750ac9311134d9c8977ba120c581f6a0d4b144b667976812d9e2e5be25198" => :catalina
-    sha256 "ac5e7c96b2c8f2b9a865d6f8a4482514281ad81776feebdb6c0397e9087b5bed" => :x86_64_linux
+    sha256 "65e429705317e1829e7752118b141146b707a0683edf625ff5b14e43dc8e66bc" => :catalina
+    sha256 "b097570f503658e3a090fbb0fad4c5948928a766d2d4993c154f4ac04473e1cd" => :x86_64_linux
   end
 
   depends_on "go" => :build
