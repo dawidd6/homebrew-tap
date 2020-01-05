@@ -6,7 +6,7 @@ Binary bottles are currently available only for `x86_64_linux` and `catalina`.
 
 Everything in this repository is free to grab, no license.
 
-### Install
+### Usage
 
 Installing any package from this tap is easy, as it usually is:
 
