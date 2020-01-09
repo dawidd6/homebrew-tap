@@ -5,7 +5,7 @@ class DhMakeGolang < Formula
     :tag     => "v0.3.1",
     :revison => "88748fec2f55c9d34f3d2a6ea9225ce00769b586"
   version_scheme 1
-  url "https://github.com/Debian/dh-make-golang.git"
+  head "https://github.com/Debian/dh-make-golang.git"
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
