@@ -2,9 +2,8 @@ class PristineTar < Formula
   desc "Regenerate pristine tarballs"
   homepage "https://kitenet.net/~joey/code/pristine-tar"
   url "https://salsa.debian.org/debian/pristine-tar.git",
-      :tag      => "1.46",
-      :revision => "92bd92a9192a6739472e8ee67c293f910f4cd6d1"
-  revision 1
+      :tag      => "1.47",
+      :revision => "aa871f54785b6bc7d161bc369347259c04c73955"
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
