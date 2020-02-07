@@ -21,7 +21,7 @@ jobs:
           brew tap ${{github.repository}}
       - name: Check
         run: |
-          brew livecheck --newer-only --quieter --tap=${{github.repository}} > ${{env.FILENAME}}
+          brew livecheck --newer-only --quiet --tap=${{github.repository}} > ${{env.FILENAME}}
           if wc -l ${{env.FILENAME}} | grep -q '^0 '; then
             echo "::set-env name=FILENAME::"
           fi
