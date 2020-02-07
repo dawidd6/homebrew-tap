@@ -2,9 +2,8 @@ class Devscripts < Formula
   desc "Scripts to make the life of a Debian maintainer easier"
   homepage "https://salsa.debian.org/debian/devscripts"
   url "https://salsa.debian.org/debian/devscripts.git",
-    :tag      => "v2.19.7",
-    :revision => "6daac7f2c9eae3971deb93ebd3b66787a3bb6d19"
-  revision 2
+    :tag      => "v2.20.2",
+    :revision => "5f478aad4d41190c79b493e8ed5983cd1418152c"
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
