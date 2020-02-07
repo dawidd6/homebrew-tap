@@ -1,8 +1,8 @@
 class KeybaseCli < Formula
   desc "Command-line interface to Keybase.io"
   homepage "https://keybase.io"
-  url "https://github.com/keybase/client/archive/v5.1.1.tar.gz"
-  sha256 "72993e98534da64b1043c645741cd7f18f1453957a25d8b02481f8f8473f42f9"
+  url "https://github.com/keybase/client/archive/v5.2.0.tar.gz"
+  sha256 "fa3a9e64532122f587847a19082a291b5964a4ce75f4f18dc20f1eae6c147e8d"
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
