@@ -13,9 +13,7 @@ jobs:
     container: homebrew/brew
     steps:
       - name: Checkout tap
-        uses: actions/checkout@v1
-      - name: Update Homebrew
-        run: brew update-reset
+        uses: actions/checkout@v2
       - name: Setup tap
         run: |
           mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
@@ -23,27 +21,22 @@ jobs:
       - name: Build bottles
         env:
           HOMEBREW_BINTRAY_URL: https://dl.bintray.com/${{github.event.repository.owner.login}}/bottles-tap
-          # workaround for error: invalid cross-device link
-          HOMEBREW_CACHE: /home/linuxbrew/.cache
-          HOMEBREW_TEMP: /home/linuxbrew/.tmp
         run: |
-          mkdir /tmp/bottles
-          cd /tmp/bottles
+          mkdir ~/bottles
+          cd ~/bottles
           brew test-bot --root-url=$HOMEBREW_BINTRAY_URL
-          mv /tmp/bottles $GITHUB_WORKSPACE
+          mv ~/bottles $GITHUB_WORKSPACE
       - name: Cache bottles
         uses: actions/upload-artifact@v1
         with:
-          name: bottles-linux
+          name: bottles
           path: bottles
   build-macos:
     name: Build macOS bottle
     runs-on: macos-latest
     steps:
       - name: Checkout tap
-        uses: actions/checkout@v1
-      - name: Update Homebrew
-        run: brew update-reset
+        uses: actions/checkout@v2
       - name: Setup tap
         run: |
           mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
@@ -52,14 +45,14 @@ jobs:
         env:
           HOMEBREW_BINTRAY_URL: https://dl.bintray.com/${{github.event.repository.owner.login}}/bottles-tap
         run: |
-          mkdir /tmp/bottles
-          cd /tmp/bottles
+          mkdir ~/bottles
+          cd ~/bottles
           brew test-bot --root-url=$HOMEBREW_BINTRAY_URL
-          mv /tmp/bottles $GITHUB_WORKSPACE
+          mv ~/bottles $GITHUB_WORKSPACE
       - name: Cache bottles
         uses: actions/upload-artifact@v1
         with:
-          name: bottles-macos
+          name: bottles
           path: bottles
   upload:
     name: Upload bottles
@@ -68,23 +61,18 @@ jobs:
       - build-linux
       - build-macos
     steps:
-      - name: Update Homebrew
-        run: brew update-reset
+      - name: Checkout tap
+        uses: actions/checkout@v2
+        with:
+          ref: ${{github.event.pull_request.head.ref}}
       - name: Setup tap
-        env:
-          PATCH_URL: ${{github.event.pull_request.patch_url}}
         run: |
-          brew tap --full $GITHUB_REPOSITORY
-          brew pull --clean $PATCH_URL
-      - name: Get bottles-linux
+          mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
+          ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
+      - name: Get bottles
         uses: actions/download-artifact@v1
         with:
-          name: bottles-linux
-          path: ./
-      - name: Get bottles-macos
-        uses: actions/download-artifact@v1
-        with:
-          name: bottles-macos
+          name: bottles
           path: ./
       - name: Create package
         env:
@@ -110,10 +98,12 @@ jobs:
           HOMEBREW_BOTTLE_DOMAIN: https://dl.bintray.com/${{github.event.repository.owner.login}}
           HOMEBREW_BINTRAY_USER:  ${{github.event.repository.owner.login}}
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
-        run: brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload
+        run: |
+          brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
       - name: Push branch
         env:
-          GITHUB_USER: ${{github.event.repository.owner.login}}
+          GITHUB_USER: ${{github.event.pusher.name}}
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          BRANCH: pr-${{github.event.pull_request.number}}
-        run: git -C $(brew --repository $GITHUB_REPOSITORY) push -f https://$GITHUB_USER:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git HEAD:$BRANCH
+        run: |
+          cd $(brew --repository $GITHUB_REPOSITORY)
+          git push https://$GITHUB_USER:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git
