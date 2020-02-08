@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     container: homebrew/brew
     steps:
+      - name: Update Homebrew
+        run: |
+          brew update-reset
       - name: Checkout tap
         uses: actions/checkout@v2
       - name: Setup tap
@@ -35,6 +38,9 @@ jobs:
     name: Build macOS bottle
     runs-on: macos-latest
     steps:
+      - name: Update Homebrew
+        run: |
+          brew update-reset
       - name: Checkout tap
         uses: actions/checkout@v2
       - name: Setup tap
@@ -61,6 +67,9 @@ jobs:
       - build-linux
       - build-macos
     steps:
+      - name: Update Homebrew
+        run: |
+          brew update-reset
       - name: Checkout tap
         uses: actions/checkout@v2
         with:
