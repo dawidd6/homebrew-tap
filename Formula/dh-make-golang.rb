@@ -3,7 +3,7 @@ class DhMakeGolang < Formula
   homepage "https://github.com/Debian/dh-make-golang"
   url "https://github.com/Debian/dh-make-golang.git",
     :tag     => "v0.3.1",
-    :revison => "88748fec2f55c9d34f3d2a6ea9225ce00769b586"
+    :revision => "88748fec2f55c9d34f3d2a6ea9225ce00769b586"
   version_scheme 1
   head "https://github.com/Debian/dh-make-golang.git"
 
