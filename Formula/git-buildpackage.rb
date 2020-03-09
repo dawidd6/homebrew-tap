@@ -6,6 +6,7 @@ class GitBuildpackage < Formula
   url "https://github.com/agx/git-buildpackage.git",
       :tag      => "debian/0.9.19",
       :revision => "8f893f9993484c5bf553070a637227a08243e84e"
+  head "https://github.com/agx/git-buildpackage.git"
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
