@@ -115,4 +115,4 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
           cd $(brew --repository $GITHUB_REPOSITORY)
-          git push https://$GITHUB_USER:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git
+          git push https://$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git
