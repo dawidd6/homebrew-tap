@@ -13,23 +13,22 @@ jobs:
     container:
       image: homebrew/brew
     steps:
-      - name: Print event
-        run: cat $GITHUB_EVENT_PATH
       - name: Update Homebrew
         run: |
           brew update-reset
       - name: Checkout tap
         uses: actions/checkout@v2
-        with:
-          ref: pull/${{github.event.issue.number}}/head
       - name: Setup tap
         run: |
           mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
+      - name: Checkout PR
+        uses: dawidd6/action-checkout-pr@v1
+        with:
+          pr: ${{github.event.issue.number}}
       - name: Get bottles
         uses: dawidd6/action-download-artifact@v2
         with:
-          github_token: ${{secrets.GITHUB_TOKEN}}
           workflow: building.yml
           pr: ${{github.event.issue.number}}
           name: bottles
@@ -61,8 +60,5 @@ jobs:
         run: |
           brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
       - name: Push commit
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: |
-          cd $(brew --repository $GITHUB_REPOSITORY)
-          git push https://$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY
+          git push
