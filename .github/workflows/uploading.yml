@@ -13,6 +13,8 @@ jobs:
     container:
       image: homebrew/brew
     steps:
+      - name: Print event
+        run: cat $GITHUB_EVENT_PATH
       - name: Update Homebrew
         run: |
           brew update-reset
