@@ -61,3 +61,17 @@ jobs:
       - name: Push commit
         run: |
           git push
+      - name: Label failed
+        if: failure()
+        uses: dawidd6/action-add-remove-label@v1
+        with:
+          number: ${{github.event.issue.number}}
+          type: add
+          label: upload/failure
+      - name: Label success
+        if: success()
+        uses: dawidd6/action-add-remove-label@v1
+        with:
+          number: ${{github.event.issue.number}}
+          type: add
+          label: upload/success
