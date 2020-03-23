@@ -32,7 +32,6 @@ jobs:
           workflow: building.yml
           pr: ${{github.event.issue.number}}
           name: bottles
-          path: ./
       - name: Create package
         env:
           HOMEBREW_BINTRAY_REPO: bottles-tap
