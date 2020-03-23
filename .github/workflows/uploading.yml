@@ -39,7 +39,7 @@ jobs:
       - name: Create package
         env:
           HOMEBREW_BINTRAY_REPO: bottles-tap
-          HOMEBREW_BINTRAY_USER: ${{github.event.repository.owner.login}}
+          HOMEBREW_BINTRAY_USER: dawidd6
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
         run: |
           for package in $(ls -1 *.bottle.* | awk -F '--' '{print $1}' | uniq | tr '@' ':'); do
@@ -57,8 +57,8 @@ jobs:
           done
       - name: Upload bottles
         env:
-          HOMEBREW_BOTTLE_DOMAIN: https://dl.bintray.com/${{github.event.repository.owner.login}}
-          HOMEBREW_BINTRAY_USER:  ${{github.event.repository.owner.login}}
+          HOMEBREW_BOTTLE_DOMAIN: https://dl.bintray.com/dawidd6
+          HOMEBREW_BINTRAY_USER:  dawidd6
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
         run: |
           brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
