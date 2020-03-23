@@ -7,11 +7,7 @@ on:
 
 jobs:
   upload:
-    if: github.event.issue.pull_request && \
-        github.event.comment.body == '\upload' && \
-        (github.event.comment.author_association == 'OWNER' || \
-        github.event.comment.author_association == 'MEMBER' || \
-        github.event.comment.author_association == 'COLLABORATOR')
+    if: github.event.issue.pull_request && github.event.comment.body == '\upload' && (github.event.comment.author_association == 'OWNER' || github.event.comment.author_association == 'MEMBER' || github.event.comment.author_association == 'COLLABORATOR')
     name: Upload bottles
     runs-on: ubuntu-latest
     container:

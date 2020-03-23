@@ -12,8 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: homebrew/brew
-    env:
-      HOMEBREW_BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
     steps:
       - name: Update Homebrew
         run: |
@@ -25,6 +23,8 @@ jobs:
           mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
       - name: Build bottles
+        env:
+          HOMEBREW_BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
         run: |
           mkdir ~/bottles
           cd ~/bottles
@@ -49,6 +49,8 @@ jobs:
           mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
       - name: Build bottles
+        env:
+          HOMEBREW_BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
         run: |
           mkdir ~/bottles
           cd ~/bottles
