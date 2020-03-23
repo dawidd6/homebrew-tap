@@ -1,0 +1,63 @@
+name: Building
+
+on:
+  pull_request:
+    paths:
+      - 'Formula/*.rb'
+      - '!.github/workflows/*'
+
+jobs:
+  build-linux:
+    name: Build Linux bottle
+    runs-on: ubuntu-latest
+    container:
+      image: homebrew/brew
+    steps:
+      - name: Update Homebrew
+        run: |
+          brew update-reset
+      - name: Checkout tap
+        uses: actions/checkout@v2
+      - name: Setup tap
+        run: |
+          mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
+          ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
+      - name: Build bottles
+        env:
+          HOMEBREW_BINTRAY_URL: https://dl.bintray.com/${{github.event.repository.owner.login}}/bottles-tap
+        run: |
+          mkdir ~/bottles
+          cd ~/bottles
+          brew test-bot --root-url=$HOMEBREW_BINTRAY_URL
+          mv ~/bottles $GITHUB_WORKSPACE
+      - name: Cache bottles
+        uses: actions/upload-artifact@v1
+        with:
+          name: bottles
+          path: bottles
+  build-macos:
+    name: Build macOS bottle
+    runs-on: macos-latest
+    steps:
+      - name: Update Homebrew
+        run: |
+          brew update-reset
+      - name: Checkout tap
+        uses: actions/checkout@v2
+      - name: Setup tap
+        run: |
+          mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
+          ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
+      - name: Build bottles
+        env:
+          HOMEBREW_BINTRAY_URL: https://dl.bintray.com/${{github.event.repository.owner.login}}/bottles-tap
+        run: |
+          mkdir ~/bottles
+          cd ~/bottles
+          brew test-bot --root-url=$HOMEBREW_BINTRAY_URL
+          mv ~/bottles $GITHUB_WORKSPACE
+      - name: Cache bottles
+        uses: actions/upload-artifact@v1
+        with:
+          name: bottles
+          path: bottles

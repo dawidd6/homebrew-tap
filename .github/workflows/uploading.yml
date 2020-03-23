@@ -1,0 +1,69 @@
+name: Uploading
+
+on:
+  issue_comment:
+    - created
+
+jobs:
+  upload:
+    if: github.event.issue.pull_request && \
+        github.event.comment.body == '\upload' && \
+        (github.event.comment.author_association == 'OWNER' || \
+        github.event.comment.author_association == 'MEMBER' || \
+        github.event.comment.author_association == 'COLLABORATOR')
+    name: Upload bottles
+    runs-on: ubuntu-latest
+    container:
+      image: homebrew/brew
+    steps:
+      - name: Update Homebrew
+        run: |
+          brew update-reset
+      - name: Checkout tap
+        uses: actions/checkout@v2
+        with:
+          ref: pull/${{github.event.issue.number}}/head
+      - name: Setup tap
+        run: |
+          mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
+          ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
+      - name: Get bottles
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          workflow: building.yml
+          pr: ${{github.event.issue.number}}
+          name: bottles
+          path: ./
+      - name: Create package
+        env:
+          HOMEBREW_BINTRAY_REPO: bottles-tap
+          HOMEBREW_BINTRAY_USER: ${{github.event.repository.owner.login}}
+          HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
+        run: |
+          for package in $(ls -1 *.bottle.* | awk -F '--' '{print $1}' | uniq | tr '@' ':'); do
+            curl \
+              --user $HOMEBREW_BINTRAY_USER:$HOMEBREW_BINTRAY_KEY \
+              --header "Content-Type: application/json" \
+              --data " \
+                {\"name\": \"$package\", \
+                \"vcs_url\": \"$GITHUB_REPOSITORY\", \
+                \"licenses\": [\"MIT\"], \
+                \"public_download_numbers\": true, \
+                \"public_stats\": true \
+                }" \
+              https://api.bintray.com/packages/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO || true
+          done
+      - name: Upload bottles
+        env:
+          HOMEBREW_BOTTLE_DOMAIN: https://dl.bintray.com/${{github.event.repository.owner.login}}
+          HOMEBREW_BINTRAY_USER:  ${{github.event.repository.owner.login}}
+          HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
+        run: |
+          brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
+      - name: Push commit
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        run: |
+          cd $(brew --repository $GITHUB_REPOSITORY)
+          git push https://$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY
