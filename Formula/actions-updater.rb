@@ -1,3 +1,4 @@
+# TEST
 class ActionsUpdater < Formula
   desc "Updater of used Github Actions in workflow files"
   homepage "https://github.com/dawidd6/actions-updater"
