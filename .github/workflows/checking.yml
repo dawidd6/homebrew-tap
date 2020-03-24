@@ -27,7 +27,7 @@ jobs:
           fi
       - name: Send
         if: env.FILENAME != ''
-        uses: dawidd6/action-send-mail@v1.1.0
+        uses: dawidd6/action-send-mail@v2
         with:
           server_address: ${{secrets.MAIL_SERVER}}
           server_port: 465
