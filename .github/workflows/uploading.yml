@@ -60,3 +60,8 @@ jobs:
       - name: Push commits
         run: |
           git push
+      - name: Delete branch
+        uses: dawidd6/action-delete-branch@v2
+        with:
+          github_token: ${{secrets.GITHUB_TOKEN}}
+          numbers: ${{github.event.issue.number}}
