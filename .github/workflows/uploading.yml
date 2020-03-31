@@ -28,6 +28,10 @@ jobs:
         run: |
           mkdir -p $(dirname $(brew --repo $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repo $GITHUB_REPOSITORY)
+      - name: Setup git
+        run: |
+          git config --global user.name "${{github.actor}}"
+          git config --global user.email "${{github.actor}}@users.noreply.github.com"
       - name: Create package
         env:
           HOMEBREW_BINTRAY_USER: ${{secrets.HOMEBREW_BINTRAY_USER}}
