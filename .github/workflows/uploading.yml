@@ -15,7 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: homebrew/brew
-      volumes: /usr/bin/unzip:/usr/bin/unzip
+      volumes:
+        - /usr/bin/unzip:/usr/bin/unzip
     steps:
       - name: Update Homebrew
         run: |
