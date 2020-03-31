@@ -15,49 +15,43 @@ jobs:
     steps:
       - name: Update Homebrew
         run: |
-          brew update-reset
+          brew update-reset $(brew --repo)
       - name: Checkout tap
         uses: actions/checkout@v2
+        with:
+          ref: master
       - name: Setup tap
         run: |
-          mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
-          ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
-      - name: Checkout PR
-        uses: dawidd6/action-checkout-pr@v1
-        with:
-          pr: ${{github.event.issue.number}}
-      - name: Get bottles
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          workflow: building.yml
-          pr: ${{github.event.issue.number}}
-          name: bottles
+          mkdir -p $(dirname $(brew --repo ${{github.repository}}))
+          ln -s $PWD $(brew --repo ${{github.repository}})
       - name: Create package
+        run: |
+          package="$(echo ${{github.event.issue.title}} | cut -d':' -f1 | tr '@' ':')"
+          curl \
+            --user ${{secrets.HOMEBREW_BINTRAY_USER}}:${{secrets.HOMEBREW_BINTRAY_KEY}} \
+            --header "Content-Type: application/json" \
+            --data " \
+              {\"name\": \"$package\", \
+              \"vcs_url\": \"${{github.repository}}\", \
+              \"licenses\": [\"MIT\"], \
+              \"public_download_numbers\": true, \
+              \"public_stats\": true \
+              }" \
+            https://api.bintray.com/packages/${{secrets.HOMEBREW_BINTRAY_USER}}/bottles-tap || true
+      - name: Pull bottles
         env:
-          HOMEBREW_BINTRAY_REPO: bottles-tap
-          HOMEBREW_BINTRAY_USER: dawidd6
+          HOMEBREW_BINTRAY_USER:  ${{secrets.HOMEBREW_BINTRAY_USER}}
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
         run: |
-          for package in $(ls -1 *.bottle.* | awk -F '--' '{print $1}' | uniq | tr '@' ':'); do
-            curl \
-              --user $HOMEBREW_BINTRAY_USER:$HOMEBREW_BINTRAY_KEY \
-              --header "Content-Type: application/json" \
-              --data " \
-                {\"name\": \"$package\", \
-                \"vcs_url\": \"$GITHUB_REPOSITORY\", \
-                \"licenses\": [\"MIT\"], \
-                \"public_download_numbers\": true, \
-                \"public_stats\": true \
-                }" \
-              https://api.bintray.com/packages/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO || true
-          done
-      - name: Upload bottles
-        env:
-          HOMEBREW_BOTTLE_DOMAIN: https://dl.bintray.com/dawidd6
-          HOMEBREW_BINTRAY_USER:  dawidd6
-          HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
-        run: |
-          brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
-      - name: Push commit
+          # TODO
+          cd $(brew --repo)
+          git fetch https://github.com/dawidd6/brew pr-pull-tap:tap
+          git checkout tap
+          git show
+          brew pr-pull \
+            --bintray-org=${{secrets.HOMEBREW_BINTRAY_USER}} \
+            --workflow=building.yml \
+            --tap=${{github.repository}}
+      - name: Push commits
         run: |
           git push
