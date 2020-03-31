@@ -48,7 +48,7 @@ jobs:
       - name: Patch brew
         run: |
           cd $(brew --repo)
-          git fetch https://github.com/dawidd6/brew pr-pull-tap:tap
+          git fetch https://github.com/dawidd6/brew test:tap
           git checkout tap
       - name: Pull bottles
         env:
