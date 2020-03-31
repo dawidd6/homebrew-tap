@@ -5,6 +5,9 @@ on:
     types:
       - created
 
+env:
+  HOMEBREW_BINTRAY_REPO: bottles-tap
+
 jobs:
   upload:
     if: github.event.issue.pull_request && github.event.comment.body == '\upload' && (github.event.comment.author_association == 'OWNER' || github.event.comment.author_association == 'MEMBER' || github.event.comment.author_association == 'COLLABORATOR')
@@ -22,26 +25,31 @@ jobs:
           ref: master
       - name: Setup tap
         run: |
-          mkdir -p $(dirname $(brew --repo ${{github.repository}}))
-          ln -s $PWD $(brew --repo ${{github.repository}})
+          mkdir -p $(dirname $(brew --repo $GITHUB_REPOSITORY))
+          ln -s $PWD $(brew --repo $GITHUB_REPOSITORY)
       - name: Create package
+        env:
+          HOMEBREW_BINTRAY_USER: ${{secrets.HOMEBREW_BINTRAY_USER}}
+          HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
+          ISSUE_TITLE: ${{github.event.issue.title}}
         run: |
-          package="$(echo ${{github.event.issue.title}} | cut -d':' -f1 | tr '@' ':')"
+          package="$(echo $ISSUE_TITLE | cut -d':' -f1 | tr '@' ':')"
           curl \
-            --user ${{secrets.HOMEBREW_BINTRAY_USER}}:${{secrets.HOMEBREW_BINTRAY_KEY}} \
+            --user $HOMEBREW_BINTRAY_USER:$HOMEBREW_BINTRAY_KEY \
             --header "Content-Type: application/json" \
             --data " \
               {\"name\": \"$package\", \
-              \"vcs_url\": \"${{github.repository}}\", \
+              \"vcs_url\": \"$GITHUB_REPOSITORY\", \
               \"licenses\": [\"MIT\"], \
               \"public_download_numbers\": true, \
               \"public_stats\": true \
               }" \
-            https://api.bintray.com/packages/${{secrets.HOMEBREW_BINTRAY_USER}}/bottles-tap || true
+            https://api.bintray.com/packages/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO || true
       - name: Pull bottles
         env:
-          HOMEBREW_BINTRAY_USER:  ${{secrets.HOMEBREW_BINTRAY_USER}}
+          HOMEBREW_BINTRAY_USER: ${{secrets.HOMEBREW_BINTRAY_USER}}
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
+          ISSUE_NUMBER: ${{github.event.issue.number}}
         run: |
           # TODO
           cd $(brew --repo)
@@ -49,9 +57,10 @@ jobs:
           git checkout tap
           git show
           brew pr-pull \
-            --bintray-org=${{secrets.HOMEBREW_BINTRAY_USER}} \
+            --bintray-org=$HOMEBREW_BINTRAY_USER \
+            --tap=$GITHUB_REPOSITORY \
             --workflow=building.yml \
-            --tap=${{github.repository}}
+            $ISSUE_NUMBER
       - name: Push commits
         run: |
           git push
