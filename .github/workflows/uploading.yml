@@ -45,17 +45,17 @@ jobs:
               \"public_stats\": true \
               }" \
             https://api.bintray.com/packages/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO || true
+      - name: Patch brew
+        run: |
+          cd $(brew --repo)
+          git fetch https://github.com/dawidd6/brew pr-pull-tap:tap
+          git checkout tap
       - name: Pull bottles
         env:
           HOMEBREW_BINTRAY_USER: ${{secrets.HOMEBREW_BINTRAY_USER}}
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
           ISSUE_NUMBER: ${{github.event.issue.number}}
         run: |
-          # TODO
-          cd $(brew --repo)
-          git fetch https://github.com/dawidd6/brew pr-pull-tap:tap
-          git checkout tap
-          git show
           brew pr-pull \
             --bintray-org=$HOMEBREW_BINTRAY_USER \
             --tap=$GITHUB_REPOSITORY \
