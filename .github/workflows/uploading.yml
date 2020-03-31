@@ -17,6 +17,34 @@ jobs:
       image: homebrew/brew
       options: -v /usr/bin/unzip:/usr/bin/unzip
     steps:
+      - name: Get user
+        uses: actions/github-script@0.9.0
+        id: user
+        with:
+          script: |
+            const user = await github.users.getByUsername({
+              username: context.actor
+            })
+            const name = user.data.name || user.data.login
+            const email = user.data.email || `${user.data.id}+${user.data.login}@users.noreply.github.com`
+            core.info(`==> ${user} <${email}>`)
+            core.setOutput("name", name)
+            core.setOutput("email", email)
+            #- name: Determine package
+            #  uses: actions/github-script@0.9.0
+            #  id: user
+            #  with:
+            #    script: |
+            #      const files = await github.pulls.listFiles({
+            #        ...context.repo,
+            #        pull_number: context.payload.issue.number
+            #      })
+            #      const regex = /Formula\/(?<formula>.+)\.rb/
+            #      const formulae = files.data.filter(file => file.filename.match(regex))
+            #                                 .map(file => file.filename.match(regex).formula)
+            #      for(const formula of formulae) {
+            #        core.info(`==> ${formula}`)
+            #      }
       - name: Update Homebrew
         run: |
           brew update-reset $(brew --repo)
@@ -29,9 +57,12 @@ jobs:
           mkdir -p $(dirname $(brew --repo $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repo $GITHUB_REPOSITORY)
       - name: Setup git
+        env:
+          GIT_USER: ${{steps.user.outputs.name}}
+          GIT_EMAIL: ${{steps.user.outputs.email}}
         run: |
-          git config --global user.name "${{github.actor}}"
-          git config --global user.email "${{github.actor}}@users.noreply.github.com"
+          git config --global user.name "$GIT_USER"
+          git config --global user.email "$GIT_EMAIL"
       - name: Create package
         env:
           HOMEBREW_BINTRAY_USER: ${{secrets.HOMEBREW_BINTRAY_USER}}
