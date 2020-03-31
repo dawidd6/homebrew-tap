@@ -52,6 +52,7 @@ jobs:
           git checkout tap
       - name: Pull bottles
         env:
+          HOMEBREW_GITHUB_API_TOKEN: ${{secrets.GITHUB_TOKEN}}
           HOMEBREW_BINTRAY_USER: ${{secrets.HOMEBREW_BINTRAY_USER}}
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
           ISSUE_NUMBER: ${{github.event.issue.number}}
