@@ -43,8 +43,8 @@ jobs:
               pull_number: context.payload.issue.number
             })
             console.log(files)
-            const regex = /Formula\/(?<formula>.+)\.rb/
-            const formulae = files.data.filter(file => file.filename.match(regex).formula)
+            const regex = /Formula\/(.+)\.rb/
+            const formulae = files.data.map(f => f.filename.match(regex)[1]).filter(String)
             console.log(formulae)
             for(const formula of formulae) {
               core.info(`==> ${formula}`)
