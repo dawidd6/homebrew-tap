@@ -24,7 +24,7 @@ jobs:
             })
             const name = user.data.name || user.data.login
             const email = user.data.email || `${user.data.id}+${user.data.login}@users.noreply.github.com`
-            core.info(`==> ${user} <${email}>`)
+            core.info(`==> ${name} <${email}>`)
             core.setOutput("name", name)
             core.setOutput("email", email)
       - name: Create packages
@@ -33,7 +33,8 @@ jobs:
           script: |
             const https = require('https')
             const files = await github.pulls.listFiles({
-              ...context.repo,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               pull_number: context.payload.issue.number
             })
             const regex = /Formula\/(?<formula>.+)\.rb/
