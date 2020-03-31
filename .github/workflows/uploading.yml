@@ -78,6 +78,7 @@ jobs:
           ref: master
       - name: Setup tap
         run: |
+          git fetch --prune --unshallow
           mkdir -p $(dirname $(brew --repo $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repo $GITHUB_REPOSITORY)
       - name: Setup git
