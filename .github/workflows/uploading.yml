@@ -42,8 +42,10 @@ jobs:
               ...context.repo,
               pull_number: context.payload.issue.number
             })
+            console.log(files)
             const regex = /Formula\/(?<formula>.+)\.rb/
             const formulae = files.data.filter(file => file.filename.match(regex).formula)
+            console.log(formulae)
             for(const formula of formulae) {
               core.info(`==> ${formula}`)
               const data = JSON.stringify({
