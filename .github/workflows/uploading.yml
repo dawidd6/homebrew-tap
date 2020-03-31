@@ -106,11 +106,11 @@ jobs:
             --tap=$GITHUB_REPOSITORY \
             --workflow=building.yml \
             $ISSUE_NUMBER
-      - name: Push commits
-        run: |
-          git push
-      - name: Delete branch
-        uses: dawidd6/action-delete-branch@v2
-        with:
-          github_token: ${{github.token}}
-          numbers: ${{github.event.issue.number}}
+            #- name: Push commits
+            #  run: |
+            #    git push
+            #- name: Delete branch
+            #  uses: dawidd6/action-delete-branch@v2
+            #  with:
+            #    github_token: ${{github.token}}
+            #    numbers: ${{github.event.issue.number}}
