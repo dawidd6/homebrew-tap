@@ -59,6 +59,7 @@ jobs:
           ISSUE_NUMBER: ${{github.event.issue.number}}
         run: |
           brew pr-pull \
+            --verbose \
             --bintray-org=$HOMEBREW_BINTRAY_USER \
             --tap=$GITHUB_REPOSITORY \
             --workflow=building.yml \
