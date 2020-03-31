@@ -52,11 +52,12 @@ jobs:
           git checkout tap
       - name: Pull bottles
         env:
-          HOMEBREW_GITHUB_API_TOKEN: ${{secrets.GITHUB_TOKEN}}
           HOMEBREW_BINTRAY_USER: ${{secrets.HOMEBREW_BINTRAY_USER}}
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
+          HOMEBREW_GITHUB_API_TOKEN: ${{github.token}}
           ISSUE_NUMBER: ${{github.event.issue.number}}
         run: |
+          brew config
           brew pr-pull \
             --bintray-org=$HOMEBREW_BINTRAY_USER \
             --tap=$GITHUB_REPOSITORY \
