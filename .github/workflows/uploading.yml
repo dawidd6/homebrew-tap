@@ -28,9 +28,9 @@ jobs:
         run: |
           git fetch origin pull/${{github.event.client_payload.pr}}/head:pr
           git checkout pr
-          git rebase --apply master
+          git rebase master
           git checkout master
-          git merge --ff-only pr
+          git merge pr
       - name: Download bottles
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -66,6 +66,6 @@ jobs:
           brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
       - name: Push commits
         run: |
-          git rebase --force
+          git rebase --force origin/master
           git push
           # git push --delete origin $BRANCH
