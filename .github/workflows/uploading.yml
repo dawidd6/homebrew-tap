@@ -28,7 +28,7 @@ jobs:
         run: |
           git fetch origin pull/${{github.event.client_payload.pr}}/head:pr
           git checkout pr
-          git rebase --force master
+          git rebase --apply master
           git checkout master
           git merge --ff-only pr
       - name: Download bottles
@@ -66,5 +66,6 @@ jobs:
           brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
       - name: Push commits
         run: |
+          git rebase --force
           git push
           # git push --delete origin $BRANCH
