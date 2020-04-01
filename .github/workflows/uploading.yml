@@ -21,9 +21,12 @@ jobs:
           mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
       - name: Setup git
+        env:
+          GIT_NAME: ${{github.event.client_payload.name}}
+          GIT_EMAIL: ${{github.event.client_payload.email}}
         run: |
-          git config user.name "${{github.event.client_payload.name}}"
-          git config user.email "${{github.event.client_payload.email}}"
+          git config user.name "$GIT_NAME"
+          git config user.email "$GIT_EMAIL"
       - name: Pull PR
         env:
           PR: ${{github.event.client_payload.pr}}
@@ -63,6 +66,8 @@ jobs:
         run: |
           brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
       - name: Push commits
+        env:
+          BRANCH: "TODO"
         run: |
           git rebase --force origin/master
           git push
