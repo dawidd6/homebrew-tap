@@ -14,6 +14,8 @@ jobs:
           brew update-reset
       - name: Checkout tap
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Setup tap
         run: |
           mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
