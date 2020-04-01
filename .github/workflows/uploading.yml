@@ -10,15 +10,21 @@ jobs:
       image: homebrew/brew
     steps:
       - name: Update Homebrew
-        run: brew update-reset
+        run: |
+          brew update-reset
       - name: Checkout tap
         uses: actions/checkout@v2
       - name: Setup tap
         run: |
           mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
-      - name: Pull commit
-        run: git pull --rebase pull/${{github.event.client_payload.pr}}/head
+      - name: Pull PR
+        run: |
+          git fetch origin pull/${{github.event.client_payload.pr}}/head:pr
+          git checkout pr
+          git rebase master
+          git checkout master
+          git merge --ff-only pr
       - name: Download bottles
         uses: dawidd6/action-download-artifact@v2
         with:
@@ -50,7 +56,8 @@ jobs:
           HOMEBREW_BOTTLE_DOMAIN: https://dl.bintray.com/${{secrets.HOMEBREW_BINTRAY_USER}}
           HOMEBREW_BINTRAY_USER:  ${{secrets.HOMEBREW_BINTRAY_USER}}
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
-        run: brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
+        run: |
+          brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
       - name: Push commits
         run: |
           git push
