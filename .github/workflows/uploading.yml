@@ -25,12 +25,10 @@ jobs:
           git config user.name "${{github.event.client_payload.name}}"
           git config user.email "${{github.event.client_payload.email}}"
       - name: Pull PR
+        env:
+          PR: ${{github.event.client_payload.pr}}
         run: |
-          git fetch origin pull/${{github.event.client_payload.pr}}/head:pr
-          git checkout pr
-          git rebase master
-          git checkout master
-          git merge pr
+          brew pull https://github.com/$GITHUB_REPOSITORY/pull/$PR
       - name: Download bottles
         uses: dawidd6/action-download-artifact@v2
         with:
