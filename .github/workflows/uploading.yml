@@ -1,125 +1,57 @@
 name: Uploading
 
-on:
-  issue_comment:
-    types:
-      - created
+on: repository_dispatch
 
 jobs:
   upload:
-    if: github.event.issue.pull_request && github.event.comment.body == '\upload' && (github.event.comment.author_association == 'OWNER' || github.event.comment.author_association == 'MEMBER' || github.event.comment.author_association == 'COLLABORATOR')
     name: Upload bottles
     runs-on: ubuntu-latest
     container:
       image: homebrew/brew
-      options: -v /usr/bin/unzip:/usr/bin/unzip
-    env:
-      HOMEBREW_COLOR: 1
     steps:
-      - name: Get user
-        uses: actions/github-script@0.9.0
-        id: user
-        with:
-          script: |
-            const user = await github.users.getByUsername({
-              username: context.actor
-            })
-            const name = user.data.name || user.data.login
-            const email = user.data.email || `${user.data.id}+${user.data.login}@users.noreply.github.com`
-            core.info(`==> ${name} <${email}>`)
-            core.setOutput("name", name)
-            core.setOutput("email", email)
-      - name: Create packages
-        uses: actions/github-script@0.9.0
-        with:
-          script: |
-            const https = require('https')
-            const pull = await github.pulls.get({
-              ...context.repo,
-              pull_number: context.payload.issue.number
-            })
-            const files = await github.pulls.listFiles({
-              ...context.repo,
-              pull_number: context.payload.issue.number
-            })
-            console.log(files)
-            const regex = /Formula\/(.+)\.rb/
-            const formulae = files.data.map(f => f.filename.match(regex)[1]).filter(String)
-            console.log(formulae)
-            for(const formula of formulae) {
-              core.info(`==> ${formula}`)
-              const data = JSON.stringify({
-                name: formula.replace('@', ':'),
-                vcs_url: process.env.GITHUB_REPOSITORY,
-                licenses: ["MIT"],
-                public_download_numbers: true,
-                public_stats: true
-              })
-              const options = {
-                hostname: 'api.bintray.com',
-                port: 443,
-                path: '/packages/dawidd6/bottles-tap',
-                auth: `dawidd6:${{secrets.HOMEBREW_BINTRAY_KEY}}`,
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  'Content-Length': data.length
-                }
-              }
-              const req = https.request(options, (res) => {
-                if(res.statusCode == 201)
-                  console.log("created")
-                else if(res.statusCode == 409)
-                  console.log("already created")
-                else
-                  console.log(res.statusCode)
-              })
-              req.write(data)
-              req.end()
-            }
-            return {
-              branch: pull.data.head.ref
-            }
       - name: Update Homebrew
-        run: |
-          brew update-reset $(brew --repo)
+        run: brew update-reset
       - name: Checkout tap
         uses: actions/checkout@v2
-        with:
-          ref: master
-          fetch-depth: 0
       - name: Setup tap
         run: |
-          mkdir -p $(dirname $(brew --repo $GITHUB_REPOSITORY))
-          ln -s $PWD $(brew --repo $GITHUB_REPOSITORY)
-      - name: Setup git
-        run: |
-          git config --global user.name "${{steps.user.outputs.name}}"
-          git config --global user.email "${{steps.user.outputs.email}}"
-      - name: Patch brew
-        run: |
-          cd $(brew --repo)
-          git fetch https://github.com/dawidd6/brew pr-pull-commit-author:test
-          git checkout test
-      - name: Pull bottles
+          mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
+          ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
+      - name: Pull commit
+        run: git pull --rebase pull/${{github.event.client_payload.pr}}/head
+      - name: Download bottles
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          pr: ${{github.event.client_payload.pr}}
+          workflow: building.yml
+          name: bottles
+          path: ./
+      - name: Create packages
         env:
-          HOMEBREW_BINTRAY_USER: dawidd6
+          HOMEBREW_BINTRAY_REPO: bottles-tap
+          HOMEBREW_BINTRAY_USER: ${{secrets.HOMEBREW_BINTRAY_USER}}
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
-          HOMEBREW_GITHUB_API_TOKEN: ${{github.token}}
-          ISSUE_NUMBER: ${{github.event.issue.number}}
         run: |
-          brew pr-pull \
-            --verbose \
-            --bintray-org=$HOMEBREW_BINTRAY_USER \
-            --tap=$GITHUB_REPOSITORY \
-            --workflow=building.yml \
-            $ISSUE_NUMBER
-            #- name: Push commits
-            #  run: |
-            #    git push
-            #    git push --delete origin ${{steps.pull.outputs.branch}}
-            #- name: Delete branch
-            #  uses: dawidd6/action-delete-branch@v2
-            #  with:
-            #    github_token: ${{github.token}}
-            #    numbers: ${{github.event.issue.number}}
+          for package in $(ls -1 *.bottle.* | awk -F '--' '{print $1}' | uniq | tr '@' ':'); do
+            curl \
+              --user $HOMEBREW_BINTRAY_USER:$HOMEBREW_BINTRAY_KEY \
+              --header "Content-Type: application/json" \
+              --data " \
+                {\"name\": \"$package\", \
+                \"vcs_url\": \"$GITHUB_REPOSITORY\", \
+                \"licenses\": [\"MIT\"], \
+                \"public_download_numbers\": true, \
+                \"public_stats\": true \
+                }" \
+              https://api.bintray.com/packages/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO || true
+          done
+      - name: Upload bottles
+        env:
+          HOMEBREW_BOTTLE_DOMAIN: https://dl.bintray.com/${{secrets.HOMEBREW_BINTRAY_USER}}
+          HOMEBREW_BINTRAY_USER:  ${{secrets.HOMEBREW_BINTRAY_USER}}
+          HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
+        run: brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
+      - name: Push commits
+        run: |
+          git push
+          # git push --delete origin $BRANCH
