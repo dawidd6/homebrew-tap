@@ -18,6 +18,10 @@ jobs:
         run: |
           mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
+      - name: Setup git
+        run: |
+          git config user.name "${{github.event.client_payload.name}}"
+          git config user.email "${{github.event.client_payload.email}}"
       - name: Pull PR
         run: |
           git fetch origin pull/${{github.event.client_payload.pr}}/head:pr
