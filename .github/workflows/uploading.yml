@@ -1,9 +1,13 @@
 name: Uploading
 
-on: repository_dispatch
+on:
+  issue_comment:
+    types:
+      - created
 
 jobs:
   upload:
+    if: github.event.pull_request && github.event.comment.body == '\upload' && github.event.comment.author_association == 'OWNER'
     name: Upload bottles
     runs-on: ubuntu-latest
     container:
@@ -14,28 +18,18 @@ jobs:
           brew update-reset
       - name: Checkout tap
         uses: actions/checkout@v2
+      - name: Checkout PR
+        uses: dawidd6/action-checkout-pr@v1
         with:
-          fetch-depth: 0
+          pr: ${{github.event.issue.number}}
       - name: Setup tap
         run: |
           mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
-      - name: Setup git
-        env:
-          GIT_NAME: ${{github.event.client_payload.name}}
-          GIT_EMAIL: ${{github.event.client_payload.email}}
-        run: |
-          git config user.name "$GIT_NAME"
-          git config user.email "$GIT_EMAIL"
-      - name: Pull PR
-        env:
-          PR: ${{github.event.client_payload.pr}}
-        run: |
-          brew pull https://github.com/$GITHUB_REPOSITORY/pull/$PR
       - name: Download bottles
         uses: dawidd6/action-download-artifact@v2
         with:
-          pr: ${{github.event.client_payload.pr}}
+          pr: ${{github.event.issue.number}}
           workflow: building.yml
           name: bottles
           path: ./
@@ -66,9 +60,5 @@ jobs:
         run: |
           brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
       - name: Push commits
-        env:
-          BRANCH: "TODO"
         run: |
-          git rebase --force origin/master
           git push
-          # git push --delete origin $BRANCH
