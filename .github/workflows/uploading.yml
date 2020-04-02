@@ -54,7 +54,6 @@ jobs:
           done
       - name: Upload bottles
         env:
-          HOMEBREW_BOTTLE_DOMAIN: https://dl.bintray.com/${{secrets.HOMEBREW_BINTRAY_USER}}
           HOMEBREW_BINTRAY_USER:  ${{secrets.HOMEBREW_BINTRAY_USER}}
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
         run: |
