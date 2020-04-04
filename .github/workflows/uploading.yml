@@ -18,6 +18,8 @@ jobs:
           brew update-reset
       - name: Checkout tap
         uses: actions/checkout@v2
+        with:
+          token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
       - name: Checkout PR
         uses: dawidd6/action-checkout-pr@v1
         with:
