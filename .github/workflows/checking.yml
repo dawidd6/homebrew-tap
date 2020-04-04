@@ -8,32 +8,8 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
-    container:
-      image: homebrew/brew
-    env:
-      HOMEBREW_NO_AUTO_UPDATE: 1
-      HOMEBREW_NO_CLEANUP: 1
-      FILENAME: livecheck.txt
     steps:
-      - name: Tap
-        run: |
-          brew tap homebrew/livecheck
-          brew tap ${{github.repository}}
       - name: Check
-        run: |
-          brew livecheck --newer-only --quiet --tap=${{github.repository}} > ${{env.FILENAME}}
-          if wc -l ${{env.FILENAME}} | grep -q '^0 '; then
-            echo "::set-env name=FILENAME::"
-          fi
-      - name: Send
-        if: env.FILENAME != ''
-        uses: dawidd6/action-send-mail@v2
+        uses: dawidd6/action-homebrew-bump-formula@livecheck
         with:
-          server_address: ${{secrets.MAIL_SERVER}}
-          server_port: 465
-          username: ${{secrets.MAIL_USERNAME}}
-          password: ${{secrets.MAIL_PASSWORD}}
-          subject: Outdated formulae in ${{github.repository}}
-          body: ${{env.FILENAME}}
-          to: ${{secrets.MAIL_TO}}
-          from: github-actions
+          token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
