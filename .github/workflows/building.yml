@@ -11,6 +11,7 @@ env:
 
 jobs:
   build-linux:
+    if: contains(github.event.pull_request.labels.*.name, 'uploaded') == false
     name: Build Linux bottle
     runs-on: ubuntu-latest
     container:
@@ -37,6 +38,7 @@ jobs:
           name: bottles
           path: bottles
   build-macos:
+    if: contains(github.event.pull_request.labels.*.name, 'uploaded') == false
     name: Build macOS bottle
     runs-on: macos-latest
     steps:
