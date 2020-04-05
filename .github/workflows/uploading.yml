@@ -41,7 +41,7 @@ jobs:
           HOMEBREW_BINTRAY_USER: ${{secrets.HOMEBREW_BINTRAY_USER}}
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
         run: |
-          for package in $(ls -1 *.bottle.* | awk -F '--' '{print $1}' | uniq | tr '@' ':'); do
+          for package in $(ls -1 *.bottle.* | awk -F '--' '{print $1}' | uniq | tr '@' ':' | tr '+' 'x'); do
             curl \
               --user $HOMEBREW_BINTRAY_USER:$HOMEBREW_BINTRAY_KEY \
               --header "Content-Type: application/json" \
