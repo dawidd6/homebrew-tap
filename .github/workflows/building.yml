@@ -26,6 +26,11 @@ jobs:
         run: |
           mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
+      - name: Patch brew
+        run: |
+          cd $(brew --repo)
+          git fetch https://github.com/dawidd6/brew remove-lock-file:patch
+          git checkout patch
       - name: Build bottles
         run: |
           mkdir ~/bottles
