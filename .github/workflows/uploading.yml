@@ -60,6 +60,16 @@ jobs:
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
         run: |
           brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
+      - name: Label PR
+        uses: actions/github-script@0.9.0
+        with:
+          github-token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
+          script: |
+            await github.issues.addLabels({
+              ...context.repo,
+              issue_number: context.payload.issue.number,
+              labels: ["uploaded"]
+            })
       - name: Push commits
         run: |
           git push
