@@ -29,7 +29,7 @@ jobs:
       - name: Patch brew
         run: |
           cd $(brew --repo)
-          git fetch https://github.com/dawidd6/brew remove-lock-file:patch
+          git fetch https://github.com/homebrew/brew remove-lock-file:patch
           git checkout patch
       - name: Build bottles
         run: |
