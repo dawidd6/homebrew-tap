@@ -3,6 +3,7 @@ class Ameba < Formula
   homepage "https://crystal-ameba.github.io"
   url "https://github.com/crystal-ameba/ameba/archive/v0.12.0.tar.gz"
   sha256 "1709db9de850430b38b38998fa38bf70c237925c6072bf78dfa51ad66cabdb57"
+  revision 1
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
