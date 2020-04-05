@@ -3,8 +3,7 @@ name: Building
 on:
   pull_request:
     paths:
-      - 'Formula/*.rb'
-      - '!.github/workflows/*'
+      - 'Formula/*'
 
 env:
   HOMEBREW_BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
@@ -26,18 +25,20 @@ jobs:
         run: |
           mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
-      - name: Patch brew
-        run: |
-          cd $(brew --repo)
-          git fetch https://github.com/homebrew/brew remove-lock-file:patch
-          git checkout patch
       - name: Build bottles
+        continue-on-error: true
         run: |
           mkdir ~/bottles
           cd ~/bottles
           brew test-bot --root-url=$HOMEBREW_BINTRAY_URL
+      - name: Move bottles
+        run: |
           mv ~/bottles $GITHUB_WORKSPACE
-      - name: Cache bottles
+      - name: List bottles
+        run: |
+          ls *.bottle.*
+      - name: Upload bottles
+        if: success()
         uses: actions/upload-artifact@v1
         with:
           name: bottles
@@ -57,12 +58,19 @@ jobs:
           mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
       - name: Build bottles
+        continue-on-error: true
         run: |
           mkdir ~/bottles
           cd ~/bottles
           brew test-bot --root-url=$HOMEBREW_BINTRAY_URL
+      - name: Move bottles
+        run: |
           mv ~/bottles $GITHUB_WORKSPACE
-      - name: Cache bottles
+      - name: List bottles
+        run: |
+          ls *.bottle.*
+      - name: Upload bottles
+        if: success()
         uses: actions/upload-artifact@v1
         with:
           name: bottles
