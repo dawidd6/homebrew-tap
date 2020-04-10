@@ -8,6 +8,7 @@ on:
 jobs:
   upload:
     if: >
+      contains(github.event.issue.labels.*.name, 'uploaded') == false &&
       github.event.issue.pull_request &&
       github.event.comment.body == '\upload' && (
         github.event.comment.author_association == 'COLLABORATOR' ||
