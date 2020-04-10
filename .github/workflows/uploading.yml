@@ -5,6 +5,11 @@ on:
     types:
       - created
 
+env:
+  HOMEBREW_BINTRAY_REPO: bottles-tap
+  HOMEBREW_BINTRAY_USER: dawidd6
+  HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
+
 jobs:
   upload:
     if: >
@@ -43,10 +48,6 @@ jobs:
           name: bottles
           path: ./
       - name: Create packages
-        env:
-          HOMEBREW_BINTRAY_REPO: bottles-tap
-          HOMEBREW_BINTRAY_USER: ${{secrets.HOMEBREW_BINTRAY_USER}}
-          HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
         run: |
           for package in $(ls -1 *.bottle.* | awk -F '--' '{print $1}' | uniq | tr '@' ':' | tr '+' 'x'); do
             curl \
@@ -62,9 +63,6 @@ jobs:
               https://api.bintray.com/packages/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO || true
           done
       - name: Upload bottles
-        env:
-          HOMEBREW_BINTRAY_USER:  ${{secrets.HOMEBREW_BINTRAY_USER}}
-          HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
         run: |
           brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
       - name: Label PR
