@@ -34,12 +34,8 @@ jobs:
         if: always()
         run: |
           mv ~/bottles $GITHUB_WORKSPACE
-      - name: List bottles
-        if: always()
-        run: |
-          ls bottles/*.bottle.*
       - name: Upload bottles
-        if: success()
+        if: always()
         uses: actions/upload-artifact@v1
         with:
           name: bottles
@@ -67,12 +63,8 @@ jobs:
         if: always()
         run: |
           mv ~/bottles $GITHUB_WORKSPACE
-      - name: List bottles
-        if: always()
-        run: |
-          ls bottles/*.bottle.*
       - name: Upload bottles
-        if: success()
+        if: always()
         uses: actions/upload-artifact@v1
         with:
           name: bottles
