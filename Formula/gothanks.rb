@@ -1,9 +1,8 @@
 class Gothanks < Formula
   desc "Automatically star your go.mod Github dependencies"
   homepage "https://github.com/psampaz/gothanks"
-  url "https://github.com/psampaz/gothanks/archive/v0.2.0.tar.gz"
-  sha256 "5ebb888cdf4b73139fb7cd27787a95e9e31cd15a2e8f51992be8a1bff6c0fcda"
-  revision 1
+  url "https://github.com/psampaz/gothanks/archive/v0.3.0.tar.gz"
+  sha256 "ce5440334b3eac2e058724faa4c6e4478ca1d81ea087e55ccca33f1996752aad"
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
