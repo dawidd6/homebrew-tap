@@ -8,9 +8,8 @@ class PristineTar < Formula
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
-    cellar "/home/linuxbrew/.linuxbrew/Cellar"
-    sha256 "5834dc8ab843589e388e5ae2d4ebb83884d85af4a5ffe7b6bfcaab5191f385f9" => :catalina
-    sha256 "94288f478b47c1763fb88d6d9c14d8ec611a7e1f774c0159bfd9b2557b328f7f" => :x86_64_linux
+    sha256 "3005fb3ca7ff4f09b4236588d6c5a772d58a28ba07f652eb3e69da115e1e4c6f" => :catalina
+    sha256 "3c32a38bbf88ee7725fb86604884258183eac7397fb01fadf5f68887b3c0de1e" => :x86_64_linux
   end
 
   depends_on "perl" => :build
