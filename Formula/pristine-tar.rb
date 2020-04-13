@@ -4,6 +4,7 @@ class PristineTar < Formula
   url "https://salsa.debian.org/debian/pristine-tar.git",
       :tag      => "1.47",
       :revision => "aa871f54785b6bc7d161bc369347259c04c73955"
+  revision 1
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
