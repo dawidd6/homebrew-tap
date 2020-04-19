@@ -238,10 +238,11 @@ class Devscripts < Formula
     bin.env_script_all_files(libexec/"bin", :PERL5LIB => ENV["PERL5LIB"])
   end
 
-  def caveats; <<~EOS
-    No docs are installed.
-    Currently only these scripts are installed: #{scripts.keys.join(", ")}
-  EOS
+  def caveats
+    <<~EOS
+      No docs are installed.
+      Currently only these scripts are installed: #{scripts.keys.join(", ")}
+    EOS
   end
 
   test do

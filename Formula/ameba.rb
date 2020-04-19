@@ -1,5 +1,5 @@
 class Ameba < Formula
-  desc "A static code analysis tool for Crystal"
+  desc "Static code analysis tool for Crystal"
   homepage "https://crystal-ameba.github.io"
   url "https://github.com/crystal-ameba/ameba/archive/v0.12.0.tar.gz"
   sha256 "1709db9de850430b38b38998fa38bf70c237925c6072bf78dfa51ad66cabdb57"

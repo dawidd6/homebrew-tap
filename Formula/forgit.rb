@@ -1,5 +1,5 @@
 class Forgit < Formula
-  desc "A utility tool powered by fzf for using git interactively"
+  desc "Utility tool powered by fzf for using git interactively"
   homepage "https://github.com/wfxr/forgit.git"
   head "https://github.com/wfxr/forgit.git"
 

@@ -1,7 +1,7 @@
 require "language/node"
 
 class Apidoc < Formula
-  desc "RESTful web API Documentation Generator."
+  desc "RESTful web API Documentation Generator"
   homepage "https://apidocjs.com"
   url "https://github.com/apidoc/apidoc/archive/0.20.1.tar.gz"
   sha256 "078e352cd4a62f64fc6ca5985f7ca2a74100a9f604fc50e1586de0076b7962d3"
