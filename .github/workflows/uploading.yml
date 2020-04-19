@@ -8,10 +8,9 @@ on:
 env:
   HOMEBREW_GIT_NAME: BrewTestBot
   HOMEBREW_GIT_EMAIL: homebrew-test-bot@lists.sfconservancy.org
+  HOMEBREW_BINTRAY_REPO: bottles-tap
   HOMEBREW_BINTRAY_USER: dawidd6
   HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
-  HOMEBREW_GITHUB_API_TOKEN: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
-  NUMBER: ${{github.event.issue.number}}
 
 jobs:
   upload:
@@ -23,7 +22,6 @@ jobs:
         github.event.comment.author_association == 'MEMBER' ||
         github.event.comment.author_association == 'OWNER'
       )
-    name: Upload bottles
     runs-on: ubuntu-latest
     steps:
       - name: Update Homebrew
@@ -33,20 +31,50 @@ jobs:
         uses: actions/checkout@v2
         with:
           token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
-          fetch-depth: 0
+      - name: Checkout PR
+        uses: dawidd6/action-checkout-pr@v1
+        with:
+          pr: ${{github.event.issue.number}}
       - name: Setup tap
         run: |
           mkdir -p $(dirname $(brew --repo $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repo $GITHUB_REPOSITORY)
+      - name: Download bottles
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          pr: ${{github.event.issue.number}}
+          workflow: building.yml
+          name: bottles
+          path: ./
+      - name: Create packages
+        run: |
+          for package in $(ls -1 *.bottle.* | awk -F '--' '{print $1}' | uniq | tr '@' ':' | tr '+' 'x'); do
+            curl \
+              --user $HOMEBREW_BINTRAY_USER:$HOMEBREW_BINTRAY_KEY \
+              --header "Content-Type: application/json" \
+              --data " \
+                {\"name\": \"$package\", \
+                \"vcs_url\": \"$GITHUB_REPOSITORY\", \
+                \"licenses\": [\"MIT\"], \
+                \"public_download_numbers\": true, \
+                \"public_stats\": true \
+                }" \
+              https://api.bintray.com/packages/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO || true
+          done
       - name: Upload bottles
         run: |
-          brew pr-pull \
-            --tap=$GITHUB_REPOSITORY \
-            --bintray-org=$HOMEBREW_BINTRAY_USER \
-            --workflow=building.yml \
-            --artifact=bottles \
-            --verbose \
-            $NUMBER
+          brew bottle --merge --write *.json
+          brew ruby -e "Bintray.new(user: $HOMEBREW_BINTRAY_USER, key: $HOMEBREW_BINTRAY_KEY, org: $HOMEBREW_BINTRAY_USER).upload_bottle_json(Dir['*.json'])"
+      - name: Label PR
+        uses: actions/github-script@0.9.0
+        with:
+          github-token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
+          script: |
+            await github.issues.addLabels({
+              ...context.repo,
+              issue_number: context.payload.issue.number,
+              labels: ["uploaded"]
+            })
       - name: Push commits
         run: |
           git push
