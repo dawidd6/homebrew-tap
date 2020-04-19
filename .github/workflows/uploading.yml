@@ -42,6 +42,7 @@ jobs:
             --bintray-org=$HOMEBREW_BINTRAY_USER \
             --workflow=building.yml \
             --artifact=bottles \
+            --verbose \
             $NUMBER
       - name: Push commits
         run: |
