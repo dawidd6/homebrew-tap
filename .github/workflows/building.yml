@@ -29,7 +29,7 @@ jobs:
           ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
       - name: Remove headers
         run: |
-          rm -rf /usr/local/include
+          sudo rm -rf /usr/local/include
       - name: Build bottles
         run: |
           mkdir ~/bottles
