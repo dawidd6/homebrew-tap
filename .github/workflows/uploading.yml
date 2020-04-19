@@ -6,9 +6,9 @@ on:
       - created
 
 env:
-  HOMEBREW_BINTRAY_REPO: bottles-tap
   HOMEBREW_BINTRAY_USER: dawidd6
   HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
+  NUMBER: ${{github.event.issue.number}}
 
 jobs:
   upload:
@@ -40,41 +40,14 @@ jobs:
         run: |
           mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
-      - name: Download bottles
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          pr: ${{github.event.issue.number}}
-          workflow: building.yml
-          name: bottles
-          path: ./
-      - name: Create packages
-        run: |
-          for package in $(ls -1 *.bottle.* | awk -F '--' '{print $1}' | uniq | tr '@' ':' | tr '+' 'x'); do
-            curl \
-              --user $HOMEBREW_BINTRAY_USER:$HOMEBREW_BINTRAY_KEY \
-              --header "Content-Type: application/json" \
-              --data " \
-                {\"name\": \"$package\", \
-                \"vcs_url\": \"$GITHUB_REPOSITORY\", \
-                \"licenses\": [\"MIT\"], \
-                \"public_download_numbers\": true, \
-                \"public_stats\": true \
-                }" \
-              https://api.bintray.com/packages/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO || true
-          done
       - name: Upload bottles
         run: |
-          brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
-      - name: Label PR
-        uses: actions/github-script@0.9.0
-        with:
-          github-token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
-          script: |
-            await github.issues.addLabels({
-              ...context.repo,
-              issue_number: context.payload.issue.number,
-              labels: ["uploaded"]
-            })
+          brew pr-pull \
+            --tap=$GITHUB_REPOSITORY \
+            --bintray-org=$HOMEBREW_BINTRAY_USER \
+            --workflow=building.yml \
+            --artifact=bottles \
+            $NUMBER
       - name: Push commits
         run: |
           git push
