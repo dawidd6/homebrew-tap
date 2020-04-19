@@ -64,7 +64,11 @@ jobs:
       - name: Upload bottles
         run: |
           brew bottle --merge --write *.json
-          brew ruby -e "require 'bintray'; Bintray.new(user: '$HOMEBREW_BINTRAY_USER', key: '$HOMEBREW_BINTRAY_KEY', org: '$HOMEBREW_BINTRAY_USER').upload_bottle_json(Dir['*.json'])"
+          brew ruby -e "
+            require 'bintray'
+            bintray = Bintray.new(user: '$HOMEBREW_BINTRAY_USER', key: '$HOMEBREW_BINTRAY_KEY', org: '$HOMEBREW_BINTRAY_USER')
+            bintray.upload_bottle_json(Dir['*.json'], publish_package: true)
+          "
       - name: Label PR
         uses: actions/github-script@0.9.0
         with:
