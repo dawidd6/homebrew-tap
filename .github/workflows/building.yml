@@ -32,13 +32,9 @@ jobs:
           sudo rm -rf /usr/local/include/*
       - name: Build bottles
         run: |
-          mkdir ~/bottles
-          cd ~/bottles
+          mkdir bottles
+          cd bottles
           brew test-bot --root-url=$HOMEBREW_BINTRAY_URL
-      - name: Move bottles
-        if: always()
-        run: |
-          mv ~/bottles $GITHUB_WORKSPACE
       - name: Upload bottles
         if: always()
         uses: actions/upload-artifact@v1
