@@ -6,8 +6,6 @@ on:
       - created
 
 env:
-  HOMEBREW_GIT_NAME: BrewTestBot
-  HOMEBREW_GIT_EMAIL: homebrew-test-bot@lists.sfconservancy.org
   HOMEBREW_BINTRAY_REPO: bottles-tap
   HOMEBREW_BINTRAY_USER: dawidd6
   HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
