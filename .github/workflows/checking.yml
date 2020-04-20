@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check
-        uses: dawidd6/action-homebrew-bump-formula@livecheck
+        uses: dawidd6/action-homebrew-bump-formula@v3
         with:
           token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
+          tap: ${{github.repository}}
+          livecheck: true
