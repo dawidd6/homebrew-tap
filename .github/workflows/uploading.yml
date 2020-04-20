@@ -66,7 +66,7 @@ jobs:
           brew bottle --merge --write *.json
           brew ruby -e "
             require 'bintray'
-            bintray = Bintray.new(user: '$HOMEBREW_BINTRAY_USER', key: '$HOMEBREW_BINTRAY_KEY', org: '$HOMEBREW_BINTRAY_USER')
+            bintray = Bintray.new(org: '$HOMEBREW_BINTRAY_USER')
             bintray.upload_bottle_json(Dir['*.json'], publish_package: true)
           "
       - name: Label PR
