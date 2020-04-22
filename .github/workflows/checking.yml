@@ -2,8 +2,8 @@ name: Checking
 
 on:
   schedule:
-    # At 07:00 every day
-    - cron: '0 7 * * *'
+    # At 08:00 UTC every day
+    - cron: '0 8 * * *'
 
 jobs:
   check:
