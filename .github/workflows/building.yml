@@ -9,19 +9,11 @@ env:
   HOMEBREW_BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
 
 jobs:
-  build:
+  build-linux:
     if: contains(github.event.pull_request.labels.*.name, 'uploaded') == false
-    strategy:
-      matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
-        include:
-        - os: ubuntu-latest
-          container: homebrew/brew
+    runs-on: ubuntu-latest
     container:
-      image: ${{matrix.container}}
-    runs-on: ${{matrix.os}}
+      image: homebrew/brew
     steps:
       - name: Update Homebrew
         run: |
@@ -32,9 +24,30 @@ jobs:
         run: |
           mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
-      - name: Remove headers
+      - name: Build bottles
         run: |
-          sudo rm -rf /usr/local/include/*
+          mkdir bottles
+          cd bottles
+          brew test-bot --root-url=$HOMEBREW_BINTRAY_URL
+      - name: Upload bottles
+        if: always()
+        uses: actions/upload-artifact@v1
+        with:
+          name: bottles
+          path: bottles
+  build-macos:
+    if: contains(github.event.pull_request.labels.*.name, 'uploaded') == false
+    runs-on: macos-latest
+    steps:
+      - name: Update Homebrew
+        run: |
+          brew update-reset
+      - name: Checkout tap
+        uses: actions/checkout@v2
+      - name: Setup tap
+        run: |
+          mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
+          ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
       - name: Build bottles
         run: |
           mkdir bottles
