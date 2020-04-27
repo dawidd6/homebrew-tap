@@ -26,9 +26,13 @@ jobs:
           ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
       - name: Build bottles
         run: |
-          mkdir bottles
-          cd bottles
+          mkdir ~/bottles
+          cd ~/bottles
           brew test-bot --root-url=$HOMEBREW_BINTRAY_URL
+      - name: Move bottles
+        if: always()
+        run: |
+          mv ~/bottles .
       - name: Upload bottles
         if: always()
         uses: actions/upload-artifact@v1
@@ -50,9 +54,13 @@ jobs:
           ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
       - name: Build bottles
         run: |
-          mkdir bottles
-          cd bottles
+          mkdir ~/bottles
+          cd ~/bottles
           brew test-bot --root-url=$HOMEBREW_BINTRAY_URL
+      - name: Move bottles
+        if: always()
+        run: |
+          mv ~/bottles .
       - name: Upload bottles
         if: always()
         uses: actions/upload-artifact@v1
