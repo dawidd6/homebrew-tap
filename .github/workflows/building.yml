@@ -16,6 +16,11 @@ jobs:
         os:
           - ubuntu-latest
           - macos-latest
+        include:
+        - os: ubuntu-latest
+          container: homebrew/brew
+    container:
+      image: ${{matrix.container}}
     runs-on: ${{matrix.os}}
     steps:
       - name: Update Homebrew
