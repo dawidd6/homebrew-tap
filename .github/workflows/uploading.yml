@@ -1,9 +1,11 @@
 name: Uploading
 
 on:
-  issue_comment:
-    types:
-      - created
+  push:
+    branches:
+      - master
+    paths:
+      - 'Formula/*'
 
 env:
   HOMEBREW_BINTRAY_REPO: bottles-tap
@@ -12,35 +14,28 @@ env:
 
 jobs:
   upload:
-    if: >
-      contains(github.event.issue.labels.*.name, 'uploaded') == false &&
-      github.event.issue.pull_request &&
-      github.event.comment.body == '\upload' && (
-        github.event.comment.author_association == 'COLLABORATOR' ||
-        github.event.comment.author_association == 'MEMBER' ||
-        github.event.comment.author_association == 'OWNER'
-      )
     runs-on: ubuntu-latest
+    container:
+      image: homebrew/brew
     steps:
       - name: Update Homebrew
         run: |
           brew update-reset
       - name: Checkout tap
         uses: actions/checkout@v2
-        with:
-          token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
-      - name: Checkout PR
-        uses: dawidd6/action-checkout-pr@v1
-        with:
-          pr: ${{github.event.issue.number}}
       - name: Setup tap
         run: |
           mkdir -p $(dirname $(brew --repo $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repo $GITHUB_REPOSITORY)
+      - name: Find PR
+        uses: jwalton/gh-find-current-pr@v1
+        id: pr
+        with:
+          github-token: ${{github.token}}
       - name: Download bottles
         uses: dawidd6/action-download-artifact@v2
         with:
-          pr: ${{github.event.issue.number}}
+          pr: ${{steps.pr.outputs.number}}
           workflow: building.yml
           name: bottles
           path: ./
@@ -62,16 +57,6 @@ jobs:
       - name: Upload bottles
         run: |
           brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
-      - name: Label PR
-        uses: actions/github-script@0.9.0
-        with:
-          github-token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
-          script: |
-            await github.issues.addLabels({
-              ...context.repo,
-              issue_number: context.payload.issue.number,
-              labels: ["uploaded"]
-            })
       - name: Push commits
         run: |
           git push
