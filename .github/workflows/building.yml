@@ -10,7 +10,6 @@ env:
 
 jobs:
   build-linux:
-    if: contains(github.event.pull_request.labels.*.name, 'uploaded') == false
     runs-on: ubuntu-latest
     container:
       image: homebrew/brew
@@ -40,7 +39,6 @@ jobs:
           name: bottles
           path: bottles
   build-macos:
-    if: contains(github.event.pull_request.labels.*.name, 'uploaded') == false
     runs-on: macos-latest
     steps:
       - name: Update Homebrew
