@@ -13,7 +13,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Check
-        uses: dawidd6/action-homebrew-bump-formula@rescue
+        uses: dawidd6/action-homebrew-bump-formula@v3
         with:
           token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
           tap: ${{github.repository}}
