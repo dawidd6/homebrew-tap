@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Update Homebrew
         run: |
-          brew update-reset
+          brew update-reset $(brew --repo)
       - name: Checkout tap
         uses: actions/checkout@v2
       - name: Setup tap
@@ -39,6 +39,10 @@ jobs:
           workflow: building.yml
           name: bottles
           path: ./
+      - name: Setup git
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
       - name: Create packages
         run: |
           for package in $(ls -1 *.bottle.* | awk -F '--' '{print $1}' | uniq | tr '@' ':' | tr '+' 'x'); do
@@ -56,7 +60,11 @@ jobs:
           done
       - name: Upload bottles
         run: |
-          brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
+          brew pr-upload --bintray-org=$HOMEBREW_BINTRAY_USER
       - name: Push commits
         run: |
-          git push
+          for try in $(seq 5); do
+            git pull --rebase
+            git push && exit 0 || sleep $(shuf -i 3-10 -n 1)
+          done
+          exit 1
