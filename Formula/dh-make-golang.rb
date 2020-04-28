@@ -22,6 +22,6 @@ class DhMakeGolang < Formula
   end
 
   test do
-    system bin/"dh-make-golang", "-type", "program", "github.com/isacikgoz/gitbatch"
+    system bin/"dh-make-golang", "estimate", "github.com/go-test/deep"
   end
 end
