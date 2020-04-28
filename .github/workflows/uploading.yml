@@ -68,3 +68,17 @@ jobs:
             git push && exit 0 || sleep $(shuf -i 3-10 -n 1)
           done
           exit 1
+      - name: Comment success
+        if: success()
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{steps.pr.outputs.number}}
+          body: Upload success.
+          reaction: '+1'
+      - name: Comment failure
+        if: failure()
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{steps.pr.outputs.number}}
+          body: Upload failure.
+          reaction: '-1'
