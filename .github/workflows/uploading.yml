@@ -1,9 +1,11 @@
 name: Uploading
 
 on:
-  issue_comment:
-    types:
-      - created
+  push:
+    branches:
+      - master
+    paths:
+      - 'Formula/*'
 
 env:
   HOMEBREW_BINTRAY_REPO: bottles-tap
@@ -12,13 +14,6 @@ env:
 
 jobs:
   upload:
-    if: >
-      github.event.issue.pull_request &&
-      github.event.comment.body == '\upload' && (
-        github.event.comment.author_association == 'COLLABORATOR' ||
-        github.event.comment.author_association == 'MEMBER' ||
-        github.event.comment.author_association == 'OWNER'
-      )
     runs-on: ubuntu-latest
     container:
       image: homebrew/brew
@@ -32,24 +27,25 @@ jobs:
         run: |
           mkdir -p $(dirname $(brew --repo $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repo $GITHUB_REPOSITORY)
-      - name: Checkout PR
-        uses: dawidd6/action-checkout-pr@v1
-        with:
-          pr: ${{github.event.issue.number}}
-      - name: Download bottles
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          pr: ${{github.event.issue.number}}
-          workflow: building.yml
-          name: bottles
-          path: ./
       - name: Setup git
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
+          git config --global user.name "${{github.event.pusher.name}}"
+          git config --global user.email "${{github.event.pusher.email}}"
+      - name: Find PR
+        uses: jwalton/gh-find-current-pr@v1
+        id: pr
+          github-token: ${{github.token}}
+      - name: Changed files
+        id: files
+        uses: jitterbit/get-changed-files@v1
       - name: Create packages
+        env:
+          FILES: ${{steps.files.outputs.added}}
         run: |
-          for package in $(ls -1 *.bottle.* | awk -F '--' '{print $1}' | uniq | tr '@' ':' | tr '+' 'x'); do
+          for file in $FILES; do
+            formula=$(echo $file | sed 's@^Formula/@@' | sed 's@\.rb$@@')
+            package=$(echo $formula | tr '@' ':' | tr '+' 'x')
+            brew info $GITHUB_REPOSITORY/$formula || continue
             curl \
               --user $HOMEBREW_BINTRAY_USER:$HOMEBREW_BINTRAY_KEY \
               --header "Content-Type: application/json" \
@@ -62,15 +58,18 @@ jobs:
                 }" \
               https://api.bintray.com/packages/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO || true
           done
-      - name: Upload bottles
+      - name: Pull bottles
+        env:
+          PR: ${{steps.pr.outputs.number}}
         run: |
-          brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
+          brew pr-pull \
+            --bintray-org=$HOMEBREW_BINTRAY_USER \
+            --tap=$GITHUB_REPOSITORY \
+            --artifact=bottles \
+            --workflow=building.yml \
+            $PR
       - name: Push commits
         run: |
-          git checkout -b pr
-          git rebase master
-          git checkout master
-          git merge --ff-only pr
           for try in $(seq 5); do
             git pull --rebase
             git push && exit 0 || sleep $(shuf -i 3-10 -n 1)
