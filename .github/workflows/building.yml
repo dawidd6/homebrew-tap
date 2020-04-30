@@ -27,7 +27,7 @@ jobs:
         run: |
           mkdir ~/bottles
           cd ~/bottles
-          brew test-bot --root-url=$HOMEBREW_BINTRAY_URL
+          brew test-bot --root-url=$HOMEBREW_BINTRAY_URL --only-formulae
       - name: Move bottles
         if: always()
         run: |
@@ -54,7 +54,7 @@ jobs:
         run: |
           mkdir ~/bottles
           cd ~/bottles
-          brew test-bot --root-url=$HOMEBREW_BINTRAY_URL
+          brew test-bot --root-url=$HOMEBREW_BINTRAY_URL --only-formulae
       - name: Move bottles
         if: always()
         run: |
