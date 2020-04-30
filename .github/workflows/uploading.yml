@@ -16,6 +16,11 @@ jobs:
       - name: Update Homebrew
         run: |
           brew update-reset $(brew --repo)
+      - name: Hack brew
+        run: |
+          cd $(brew --repo)
+          git fetch https://github.com/dawidd6/brew bintray-data:bintray-data
+          git checkout bintray-data
       - name: Checkout tap
         uses: actions/checkout@v2
       - name: Setup tap
@@ -36,14 +41,18 @@ jobs:
           HOMEBREW_BINTRAY_REPO: bottles-tap
           HOMEBREW_BINTRAY_USER: dawidd6
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
-          PR: ${{steps.pr.outputs.number}}
+          NUMBER: ${{steps.pr.outputs.number}}
+          DATA: '{"licenses":["MIT"],"vcs_url":"${{github.repository}}"}'
+          ARTIFACT: bottles
+          WORKFLOW: building.yml
         run: |
           brew pr-pull \
+            --bintray-extra-data-args=$DATA
             --bintray-org=$HOMEBREW_BINTRAY_USER \
             --tap=$GITHUB_REPOSITORY \
-            --artifact=bottles \
-            --workflow=building.yml \
-            $PR
+            --artifact=$ARTIFACT \
+            --workflow=$WORKFLOW \
+            $NUMBER
       - name: Push commits
         run: |
           for try in $(seq 10); do
