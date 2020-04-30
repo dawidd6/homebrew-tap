@@ -7,11 +7,6 @@ on:
     paths:
       - 'Formula/*'
 
-env:
-  HOMEBREW_BINTRAY_REPO: bottles-tap
-  HOMEBREW_BINTRAY_USER: dawidd6
-  HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
-
 jobs:
   upload:
     runs-on: ubuntu-latest
@@ -36,31 +31,11 @@ jobs:
         id: pr
         with:
           github-token: ${{github.token}}
-      - name: Changed files
-        id: files
-        uses: jitterbit/get-changed-files@v1
-      - name: Create packages
-        env:
-          FILES: ${{steps.files.outputs.added}}
-        run: |
-          for file in $FILES; do
-            formula=$(echo $file | sed 's@^Formula/@@' | sed 's@\.rb$@@')
-            package=$(echo $formula | tr '@' ':' | tr '+' 'x')
-            brew info $GITHUB_REPOSITORY/$formula || continue
-            curl \
-              --user $HOMEBREW_BINTRAY_USER:$HOMEBREW_BINTRAY_KEY \
-              --header "Content-Type: application/json" \
-              --data " \
-                {\"name\": \"$package\", \
-                \"vcs_url\": \"$GITHUB_REPOSITORY\", \
-                \"licenses\": [\"MIT\"], \
-                \"public_download_numbers\": true, \
-                \"public_stats\": true \
-                }" \
-              https://api.bintray.com/packages/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO || true
-          done
       - name: Pull bottles
         env:
+          HOMEBREW_BINTRAY_REPO: bottles-tap
+          HOMEBREW_BINTRAY_USER: dawidd6
+          HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
           PR: ${{steps.pr.outputs.number}}
         run: |
           brew pr-pull \
@@ -71,8 +46,11 @@ jobs:
             $PR
       - name: Push commits
         run: |
-          for try in $(seq 5); do
+          for try in $(seq 10); do
             git pull --rebase
-            git push && exit 0 || sleep $(shuf -i 3-10 -n 1)
+            if git push; then
+              exit 0
+            fi
+            sleep $(shuf -i 3-10 -n 1)
           done
           exit 1
