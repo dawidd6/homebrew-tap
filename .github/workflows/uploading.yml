@@ -1,11 +1,9 @@
 name: Uploading
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'Formula/*'
+  issue_comment:
+    types:
+      - created
 
 env:
   HOMEBREW_BINTRAY_REPO: bottles-tap
@@ -14,6 +12,13 @@ env:
 
 jobs:
   upload:
+    if: >
+      github.event.issue.pull_request &&
+      github.event.comment.body == '\upload' && (
+        github.event.comment.author_association == 'COLLABORATOR' ||
+        github.event.comment.author_association == 'MEMBER' ||
+        github.event.comment.author_association == 'OWNER'
+      )
     runs-on: macos-latest
     steps:
       - name: Update Homebrew
@@ -25,15 +30,14 @@ jobs:
         run: |
           mkdir -p $(dirname $(brew --repo $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repo $GITHUB_REPOSITORY)
-      - name: Find PR
-        uses: jwalton/gh-find-current-pr@v1
-        id: pr
+      - name: Checkout PR
+        uses: dawidd6/action-checkout-pr@v1
         with:
-          github-token: ${{github.token}}
+          pr: ${{github.event.issue.number}}
       - name: Download bottles
         uses: dawidd6/action-download-artifact@v2
         with:
-          pr: ${{steps.pr.outputs.number}}
+          pr: ${{github.event.issue.number}}
           workflow: building.yml
           name: bottles
           path: ./
@@ -58,25 +62,15 @@ jobs:
           done
       - name: Upload bottles
         run: |
-          brew pr-upload --bintray-org=$HOMEBREW_BINTRAY_USER
+          brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
       - name: Push commits
         run: |
+          git checkout -b pr
+          git rebase master
+          git checkout master
+          git merge --ff-only pr
           for try in $(seq 5); do
             git pull --rebase
             git push && exit 0 || sleep $(shuf -i 3-10 -n 1)
           done
           exit 1
-      - name: Comment success
-        if: success()
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          issue-number: ${{steps.pr.outputs.number}}
-          body: Upload success.
-          reaction: '+1'
-      - name: Comment failure
-        if: failure()
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          issue-number: ${{steps.pr.outputs.number}}
-          body: Upload failure.
-          reaction: '-1'
