@@ -34,6 +34,7 @@ jobs:
       - name: Find PR
         uses: jwalton/gh-find-current-pr@v1
         id: pr
+        with:
           github-token: ${{github.token}}
       - name: Changed files
         id: files
