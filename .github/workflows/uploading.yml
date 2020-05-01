@@ -7,6 +7,11 @@ on:
     paths:
       - 'Formula/*'
 
+env:
+  HOMEBREW_BINTRAY_REPO: bottles-tap
+  HOMEBREW_BINTRAY_USER: dawidd6
+  HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
+
 jobs:
   upload:
     runs-on: ubuntu-latest
@@ -16,11 +21,6 @@ jobs:
       - name: Update Homebrew
         run: |
           brew update-reset $(brew --repo)
-      - name: Hack brew
-        run: |
-          cd $(brew --repo)
-          git fetch https://github.com/dawidd6/brew bintray-data:bintray-data
-          git checkout bintray-data
       - name: Checkout tap
         uses: actions/checkout@v2
       - name: Setup tap
@@ -36,23 +36,31 @@ jobs:
         id: pr
         with:
           github-token: ${{github.token}}
-      - name: Pull bottles
-        env:
-          HOMEBREW_BINTRAY_REPO: bottles-tap
-          HOMEBREW_BINTRAY_USER: dawidd6
-          HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
-          NUMBER: ${{steps.pr.outputs.number}}
-          DATA: '{"licenses":["MIT"],"vcs_url":"${{github.repository}}"}'
-          ARTIFACT: bottles
-          WORKFLOW: building.yml
+      - name: Download bottles
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          pr: ${{steps.pr.outputs.number}}
+          workflow: building.yml
+          name: bottles
+          path: ./
+      - name: Create packages
         run: |
-          brew pr-pull \
-            --bintray-extra-data-args=$DATA
-            --bintray-org=$HOMEBREW_BINTRAY_USER \
-            --tap=$GITHUB_REPOSITORY \
-            --artifact=$ARTIFACT \
-            --workflow=$WORKFLOW \
-            $NUMBER
+          for package in $(ls -1 *.bottle.json | awk -F '--' '{print $1}' | uniq | tr '@' ':' | tr '+' 'x'); do
+            curl \
+              --user $HOMEBREW_BINTRAY_USER:$HOMEBREW_BINTRAY_KEY \
+              --header "Content-Type: application/json" \
+              --data " \
+                {\"name\": \"$package\", \
+                \"vcs_url\": \"$GITHUB_REPOSITORY\", \
+                \"licenses\": [\"MIT\"], \
+                \"public_download_numbers\": true, \
+                \"public_stats\": true \
+                }" \
+              https://api.bintray.com/packages/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO || true
+          done
+      - name: Upload bottles
+        run: |
+          brew test-bot --bintray-org=$HOMEBREW_BINTRAY_USER --ci-upload --publish
       - name: Push commits
         run: |
           for try in $(seq 10); do
