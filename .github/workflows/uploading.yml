@@ -29,8 +29,8 @@ jobs:
           ln -s $PWD $(brew --repo $GITHUB_REPOSITORY)
       - name: Setup git
         run: |
-          git config --global user.name "${{github.event.pusher.name}}"
-          git config --global user.email "${{github.event.pusher.email}}"
+          git config --global user.name "github-actions"
+          git config --global user.email "41898282+github-actions@users.noreply.github.com>"
       - name: Find PR
         uses: jwalton/gh-find-current-pr@v1
         id: pr
