@@ -1,0 +1,25 @@
+name: Bumping
+
+on:
+  schedule:
+    # At 07:00 UTC every day
+    - cron: '0 7 * * *'
+  repository_dispatch:
+    types:
+      - bump
+
+jobs:
+  bump:
+    runs-on: macos-latest
+    steps:
+      - name: Setup git
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "41898282+github-actions@users.noreply.github.com>"
+      - name: Bump formulae
+        uses: dawidd6/action-homebrew-bump-formula@v3
+        continue-on-error: true
+        with:
+          token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
+          tap: ${{github.repository}}
+          livecheck: true
