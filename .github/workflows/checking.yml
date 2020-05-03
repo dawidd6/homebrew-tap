@@ -29,6 +29,11 @@ jobs:
         continue-on-error: true
         run: |
           brew style --fix $GITHUB_REPOSITORY
+      - name: Add commits
+        continue-on-error: true
+        run: |
+          git add Formula
+          git commit -m "fix style"
       - name: Push commits
         run: |
           for try in $(seq 10); do
