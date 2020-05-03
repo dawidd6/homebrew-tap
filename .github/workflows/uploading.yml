@@ -37,6 +37,7 @@ jobs:
         with:
           github-token: ${{github.token}}
       - name: Download bottles
+        if: steps.pr.outputs.number != ''
         uses: dawidd6/action-download-artifact@v2
         with:
           pr: ${{steps.pr.outputs.number}}
@@ -44,6 +45,7 @@ jobs:
           name: bottles
           path: ./
       - name: Create packages
+        if: steps.pr.outputs.number != ''
         run: |
           for package in $(ls -1 *.bottle.json | awk -F '--' '{print $1}' | uniq | tr '@' ':' | tr '+' 'x'); do
             curl \
@@ -59,9 +61,11 @@ jobs:
               https://api.bintray.com/packages/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO || true
           done
       - name: Upload bottles
+        if: steps.pr.outputs.number != ''
         run: |
           brew pr-upload --bintray-org=$HOMEBREW_BINTRAY_USER
       - name: Push commits
+        if: steps.pr.outputs.number != ''
         run: |
           for try in $(seq 10); do
             git pull --rebase
