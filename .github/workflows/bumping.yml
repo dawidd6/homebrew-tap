@@ -10,7 +10,9 @@ on:
 
 jobs:
   bump:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
+    container:
+      image: homebrew/brew
     steps:
       - name: Bump formulae
         uses: dawidd6/action-homebrew-bump-formula@v3

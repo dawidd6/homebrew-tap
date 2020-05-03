@@ -10,7 +10,9 @@ on:
 
 jobs:
   check:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
+    container:
+      image: homebrew/brew
     steps:
       - name: Update Homebrew
         run: |
