@@ -60,7 +60,7 @@ jobs:
           done
       - name: Upload bottles
         run: |
-          brew pr-upload --bintray-org=$HOMEBREW_BINTRAY_USER --debug
+          brew pr-upload --bintray-org=$HOMEBREW_BINTRAY_USER
       - name: Push commits
         run: |
           for try in $(seq 10); do
