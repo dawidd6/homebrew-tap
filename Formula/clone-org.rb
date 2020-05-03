@@ -3,6 +3,7 @@ class CloneOrg < Formula
   homepage "https://github.com/caarlos0/clone-org"
   url "https://github.com/caarlos0/clone-org/archive/v1.1.1.tar.gz"
   sha256 "f925d286e154566a29e8b12580a2dbb127de205d03f1f8980524f21da2fcffc9"
+  revision 1
   head "https://github.com/caarlos0/clone-org.git"
 
   bottle do
