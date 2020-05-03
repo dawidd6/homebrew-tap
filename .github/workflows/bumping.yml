@@ -12,10 +12,6 @@ jobs:
   bump:
     runs-on: macos-latest
     steps:
-      - name: Setup git
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "41898282+github-actions@users.noreply.github.com>"
       - name: Bump formulae
         uses: dawidd6/action-homebrew-bump-formula@v3
         continue-on-error: true
