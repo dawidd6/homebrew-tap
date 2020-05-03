@@ -3,8 +3,8 @@ require "language/node"
 class Apidoc < Formula
   desc "RESTful web API Documentation Generator"
   homepage "https://apidocjs.com"
-  url "https://github.com/apidoc/apidoc/archive/0.22.0.tar.gz"
-  sha256 "17f78a5acd4978f31efa8bea274d15b0b991883b838bf8e772c2083ca51d3537"
+  url "https://github.com/apidoc/apidoc/archive/0.22.1.tar.gz"
+  sha256 "51933011af0811f57ed221c96a75a229dbd0f5cfabf6800f2339f50d970919b1"
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
