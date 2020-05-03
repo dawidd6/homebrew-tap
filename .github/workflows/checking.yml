@@ -2,8 +2,8 @@ name: Checking
 
 on:
   schedule:
-    # At 07:00 UTC every day
-    - cron: '0 7 * * *'
+    # At 05:00 UTC every day
+    - cron: '0 5 * * *'
   repository_dispatch:
     types:
       - check
@@ -12,10 +12,30 @@ jobs:
   check:
     runs-on: macos-latest
     steps:
-      - name: Check
-        uses: dawidd6/action-homebrew-bump-formula@v3
+      - name: Update Homebrew
+        run: |
+          brew update-reset $(brew --repo)
+      - name: Checkout tap
+        uses: actions/checkout@v2
+      - name: Setup tap
+        run: |
+          mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
+          ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
+      - name: Setup git
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "41898282+github-actions@users.noreply.github.com>"
+      - name: Check style
         continue-on-error: true
-        with:
-          token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
-          tap: ${{github.repository}}
-          livecheck: true
+        run: |
+          brew style --fix $GITHUB_REPOSITORY
+      - name: Push commits
+        run: |
+          for try in $(seq 10); do
+            git pull --rebase
+            if git push; then
+              exit 0
+            fi
+            sleep $(shuf -i 3-10 -n 1)
+          done
+          exit 1
