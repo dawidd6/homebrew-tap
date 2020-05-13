@@ -11,8 +11,6 @@ on:
 jobs:
   bump:
     runs-on: ubuntu-latest
-    container:
-      image: homebrew/brew
     steps:
       - name: Bump formulae
         uses: dawidd6/action-homebrew-bump-formula@v3
