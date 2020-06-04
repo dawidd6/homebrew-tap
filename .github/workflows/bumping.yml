@@ -10,11 +10,11 @@ on:
 
 jobs:
   bump:
+    continue-on-error: true
     runs-on: ubuntu-latest
     steps:
       - name: Bump formulae
         uses: dawidd6/action-homebrew-bump-formula@v3
-        continue-on-error: true
         with:
           token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
           tap: ${{github.repository}}
