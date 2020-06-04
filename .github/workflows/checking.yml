@@ -21,26 +21,6 @@ jobs:
         run: |
           mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
-      - name: Setup git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com>"
       - name: Check style
-        continue-on-error: true
         run: |
-          brew style --fix $GITHUB_REPOSITORY
-      - name: Add commits
-        continue-on-error: true
-        run: |
-          git add Formula
-          git commit -m "fix style"
-      - name: Push commits
-        run: |
-          for try in $(seq 10); do
-            git pull --rebase
-            if git push; then
-              exit 0
-            fi
-            sleep $(shuf -i 3-10 -n 1)
-          done
-          exit 1
+          brew style $GITHUB_REPOSITORY
