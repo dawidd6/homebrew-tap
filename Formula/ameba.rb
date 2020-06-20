@@ -1,8 +1,8 @@
 class Ameba < Formula
   desc "Static code analysis tool for Crystal"
   homepage "https://crystal-ameba.github.io"
-  url "https://github.com/crystal-ameba/ameba/archive/v0.12.1.tar.gz"
-  sha256 "23ae1671cde9d32ebaeffe677ef5392c2e4c82c9cc5467b8954796898f8fd88d"
+  url "https://github.com/crystal-ameba/ameba/archive/v0.13.0.tar.gz"
+  sha256 "33826262a9e48f1ede313644802ba24780009e8ea471e1e45b99e03016fef82e"
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
