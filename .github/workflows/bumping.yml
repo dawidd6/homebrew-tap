@@ -2,8 +2,8 @@ name: Bumping
 
 on:
   schedule:
-    # At 07:00 UTC every day
-    - cron: '0 7 * * *'
+    # Every 8 hours
+    - cron: '* */8 * * *'
   repository_dispatch:
     types:
       - bump
