@@ -2,8 +2,8 @@ name: Checking
 
 on:
   schedule:
-    # At 05:00 UTC every day
-    - cron: '0 5 * * *'
+    # Every 8 hours
+    - cron: '* */8 * * *'
   repository_dispatch:
     types:
       - check
