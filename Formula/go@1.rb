@@ -4,6 +4,12 @@ class GoAT1 < Formula
   url "https://dl.google.com/go/go1.15beta1.src.tar.gz"
   sha256 "78cda84d4217ae0fdb8f87848474be28644bdc1aa16579055f852999a4793ac0"
 
+  bottle do
+    root_url "https://dl.bintray.com/dawidd6/bottles-tap"
+    sha256 "5f0a96320287a3500048a558df4d530ec44295833512b4e55b871c92a7bb26cf" => :catalina
+    sha256 "744656b819e24f7a7f4f68e8f37d94c979782cc5e5cda7e2554bb6356a29d984" => :x86_64_linux
+  end
+
   keg_only :versioned_formula
 
   resource "gotools" do
