@@ -26,9 +26,9 @@ jobs:
           mkdir -p $(dirname $(brew --repo $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repo $GITHUB_REPOSITORY)
       - name: Setup git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com>"
+        uses: Homebrew/actions/git-user-config@master
+        with:
+          username: github-actions[bot]
       - name: Find PR
         uses: jwalton/gh-find-current-pr@v1
         id: pr
@@ -36,12 +36,11 @@ jobs:
           github-token: ${{github.token}}
       - name: Download bottles
         if: steps.pr.outputs.number != ''
-        uses: dawidd6/action-download-artifact@v2
+        uses: Homebrew/actions/download-artifact@master
         with:
           pr: ${{steps.pr.outputs.number}}
           workflow: building.yml
           name: bottles
-          path: ./
       - name: Create packages
         if: steps.pr.outputs.number != ''
         run: |
@@ -63,13 +62,4 @@ jobs:
         run: |
           brew pr-upload --bintray-org=$HOMEBREW_BINTRAY_USER
       - name: Push commits
-        if: steps.pr.outputs.number != ''
-        run: |
-          for try in $(seq 10); do
-            git pull --rebase
-            if git push; then
-              exit 0
-            fi
-            sleep $(shuf -i 3-10 -n 1)
-          done
-          exit 1
+        uses: Homebrew/actions/git-try-push@master
