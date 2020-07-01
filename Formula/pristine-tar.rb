@@ -7,8 +7,9 @@ class PristineTar < Formula
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
-    sha256 "3005fb3ca7ff4f09b4236588d6c5a772d58a28ba07f652eb3e69da115e1e4c6f" => :catalina
-    sha256 "3c32a38bbf88ee7725fb86604884258183eac7397fb01fadf5f68887b3c0de1e" => :x86_64_linux
+    rebuild 1
+    sha256 "336eccc1a4199061fb32b173b88c09f3f98403106ed63c375ea7a58308a49467" => :catalina
+    sha256 "4ba0ea1b8929d06aa56be0fcc1c311604008614900c76e492d9e1df04b92c0b5" => :x86_64_linux
   end
 
   depends_on "perl" => :build
