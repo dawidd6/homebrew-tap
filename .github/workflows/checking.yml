@@ -3,7 +3,7 @@ name: Checking
 on:
   schedule:
     # Every 8 hours
-    - cron: '* */8 * * *'
+    - cron: '0 */8 * * *'
   repository_dispatch:
     types:
       - check
