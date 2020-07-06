@@ -7,6 +7,13 @@ class Horcrux < Formula
   license "MIT"
   head "https://github.com/jesseduffield/horcrux.git"
 
+  bottle do
+    root_url "https://dl.bintray.com/dawidd6/bottles-tap"
+    cellar :any_skip_relocation
+    sha256 "be3d3cb6b41763091ec13264d38bb6d4778ab3e54c227a8cb334115d8356f8f8" => :catalina
+    sha256 "8febc8451c9a171c0296111d2f9fb59d2db2ee04a9266bf179ee890ca6903a75" => :x86_64_linux
+  end
+
   depends_on "go" => :build
 
   patch do
