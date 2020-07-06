@@ -17,8 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Update Homebrew
-        run: |
-          brew update-reset $(brew --repo)
+        run: brew update-reset
       - name: Checkout tap
         uses: actions/checkout@v2
       - name: Setup tap
@@ -59,7 +58,6 @@ jobs:
           done
       - name: Upload bottles
         if: steps.pr.outputs.number != ''
-        run: |
-          brew pr-upload --bintray-org=$HOMEBREW_BINTRAY_USER
+        run: brew pr-upload --bintray-org=$HOMEBREW_BINTRAY_USER
       - name: Push commits
         uses: Homebrew/actions/git-try-push@master
