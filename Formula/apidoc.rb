@@ -9,8 +9,8 @@ class Apidoc < Formula
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
     cellar :any_skip_relocation
-    sha256 "32003f83fdf89bfc1e067e4d5e8632d28d5c416e8e1f68dcab8845c483896ace" => :catalina
-    sha256 "609f7d5e4fc5b0852cccc3acc6b74b27917b1a391ebed9851c14ffc99523c484" => :x86_64_linux
+    sha256 "c9e85c1b56b723deb287182d7ef5c2367d0398415d560184cddf2bcddca66bda" => :catalina
+    sha256 "4346ccb8d415b1fbfb3cd42fe9d41a7716866f82c1c20e30213037597ffb72e1" => :x86_64_linux
   end
 
   depends_on "node"
