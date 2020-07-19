@@ -20,23 +20,17 @@ jobs:
     steps:
       - name: Update Homebrew
         run: brew update-reset
-      - name: Remove formulae
-        if: matrix.os == 'macos-latest'
-        run: brew rm $(brew ls)
-      - name: Remove headers
-        if: matrix.os == 'ubuntu-latest'
-        run: sudo rm -rf /usr/include/*
       - name: Checkout tap
         uses: actions/checkout@v2
       - name: Setup tap
         run: |
-          mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
-          ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
+          mkdir -p $(dirname $(brew --repo $GITHUB_REPOSITORY))
+          ln -s $PWD $(brew --repo $GITHUB_REPOSITORY)
       - name: Build bottles
         run: |
           mkdir ~/bottles
           cd ~/bottles
-          brew test-bot --root-url=$HOMEBREW_BINTRAY_URL
+          brew test-bot --root-url=$HOMEBREW_BINTRAY_URL --only-formulae
       - name: Move bottles
         if: always()
         run: mv ~/bottles $PWD
