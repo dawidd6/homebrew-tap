@@ -21,7 +21,11 @@ jobs:
       - name: Update Homebrew
         run: brew update-reset
       - name: Remove formulae
+        if: matrix.os == 'macos-latest'
         run: brew rm $(brew ls)
+      - name: Remove headers
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo rm -rf /usr/include/*
       - name: Checkout tap
         uses: actions/checkout@v2
       - name: Setup tap
@@ -32,7 +36,7 @@ jobs:
         run: |
           mkdir ~/bottles
           cd ~/bottles
-          brew test-bot --root-url=$HOMEBREW_BINTRAY_URL --only-formulae
+          brew test-bot --root-url=$HOMEBREW_BINTRAY_URL
       - name: Move bottles
         if: always()
         run: mv ~/bottles $PWD
