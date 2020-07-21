@@ -1,11 +1,11 @@
 name: Uploading
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'Formula/*'
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: Pull request number
+        required: true
 
 env:
   HOMEBREW_BINTRAY_REPO: dawidd6/bottles-tap
@@ -28,21 +28,10 @@ jobs:
         uses: Homebrew/actions/git-user-config@master
         with:
           username: github-actions[bot]
-      - name: Find PR
-        uses: jwalton/gh-find-current-pr@v1
-        id: pr
-        with:
-          github-token: ${{github.token}}
-      - name: Download bottles
-        if: steps.pr.outputs.number != ''
-        uses: Homebrew/actions/download-artifact@master
-        with:
-          pr: ${{steps.pr.outputs.number}}
-          workflow: building.yml
-          name: bottles
       - name: Create packages
-        if: steps.pr.outputs.number != ''
         run: |
+          # Skip for now
+          exit
           for package in $(ls -1 *.bottle.json | awk -F '--' '{print $1}' | uniq | tr '@' ':' | tr '+' 'x'); do
             curl \
               --user $HOMEBREW_BINTRAY_USER:$HOMEBREW_BINTRAY_KEY \
@@ -56,8 +45,15 @@ jobs:
                 }" \
               https://api.bintray.com/packages/$HOMEBREW_BINTRAY_REPO || true
           done
-      - name: Upload bottles
-        if: steps.pr.outputs.number != ''
-        run: brew pr-upload --bintray-org=$HOMEBREW_BINTRAY_USER
+      - name: Pull bottles
+        env:
+          PR: ${{github.event.inputs.pr}}
+        run: |
+          brew pr-pull \
+            --bintray-org=$HOMEBREW_BINTRAY_USER \
+            --tap=$GITHUB_REPOSITORY \
+            --workflow=building.yml \
+            --artifact=bottles \
+            $PR
       - name: Push commits
         uses: Homebrew/actions/git-try-push@master
