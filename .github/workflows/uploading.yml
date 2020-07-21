@@ -8,8 +8,8 @@ on:
       - 'Formula/*'
 
 env:
-  HOMEBREW_BINTRAY_REPO: bottles-tap
-  HOMEBREW_BINTRAY_USER: dawidd6
+  HOMEBREW_BINTRAY_REPO: dawidd6/bottles-tap
+  HOMEBREW_BINTRAY_USER: ${{secrets.HOMEBREW_BINTRAY_USER}}
   HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
 
 jobs:
@@ -54,7 +54,7 @@ jobs:
                 \"public_download_numbers\": true, \
                 \"public_stats\": true \
                 }" \
-              https://api.bintray.com/packages/$HOMEBREW_BINTRAY_USER/$HOMEBREW_BINTRAY_REPO || true
+              https://api.bintray.com/packages/$HOMEBREW_BINTRAY_REPO || true
           done
       - name: Upload bottles
         if: steps.pr.outputs.number != ''
