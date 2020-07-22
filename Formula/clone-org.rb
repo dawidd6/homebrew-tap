@@ -9,8 +9,9 @@ class CloneOrg < Formula
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
     cellar :any_skip_relocation
-    sha256 "63e9e3e81267ac3563265793682774e3572ce0900d84bce26a77eb1fdff16f69" => :catalina
-    sha256 "0f84dedf7bd35ca66117b131dd3618f4314c3a496f6da7ea7cc08379c806b908" => :x86_64_linux
+    rebuild 1
+    sha256 "39c4ea812cea64052f55da3fcfca8ae54dfb1ef82cddf6d43c13632e3e6848ef" => :catalina
+    sha256 "8bc27eee9bb7b2f610bb3e64f58fe941f1235f37b5943a5b6479747b041b0886" => :x86_64_linux
   end
 
   depends_on "go" => :build
