@@ -5,9 +5,6 @@ on:
     paths:
       - 'Formula/*'
 
-env:
-  HOMEBREW_BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
-
 jobs:
   build:
     strategy:
@@ -27,6 +24,8 @@ jobs:
           mkdir -p $(dirname $(brew --repo $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repo $GITHUB_REPOSITORY)
       - name: Build bottles
+        env:
+          HOMEBREW_BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
         run: |
           mkdir ~/bottles
           cd ~/bottles
