@@ -7,11 +7,6 @@ on:
         description: Pull request number
         required: true
 
-env:
-  HOMEBREW_BINTRAY_REPO: dawidd6/bottles-tap
-  HOMEBREW_BINTRAY_USER: ${{secrets.HOMEBREW_BINTRAY_USER}}
-  HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
-
 jobs:
   upload:
     runs-on: ubuntu-latest
@@ -28,25 +23,11 @@ jobs:
         uses: Homebrew/actions/git-user-config@master
         with:
           username: github-actions[bot]
-      - name: Create packages
-        run: |
-          # Skip for now
-          exit
-          for package in $(ls -1 *.bottle.json | awk -F '--' '{print $1}' | uniq | tr '@' ':' | tr '+' 'x'); do
-            curl \
-              --user $HOMEBREW_BINTRAY_USER:$HOMEBREW_BINTRAY_KEY \
-              --header "Content-Type: application/json" \
-              --data " \
-                {\"name\": \"$package\", \
-                \"vcs_url\": \"$GITHUB_REPOSITORY\", \
-                \"licenses\": [\"MIT\"], \
-                \"public_download_numbers\": true, \
-                \"public_stats\": true \
-                }" \
-              https://api.bintray.com/packages/$HOMEBREW_BINTRAY_REPO || true
-          done
       - name: Pull bottles
         env:
+          HOMEBREW_BINTRAY_USER: ${{secrets.HOMEBREW_BINTRAY_USER}}
+          HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
+          HOMEBREW_GITHUB_API_TOKEN: ${{secrets.GITHUB_TOKEN}}
           PR: ${{github.event.inputs.pr}}
         run: |
           brew pr-pull \
