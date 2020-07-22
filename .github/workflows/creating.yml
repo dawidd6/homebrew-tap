@@ -7,17 +7,15 @@ on:
         description: Formula name
         required: true
 
-env:
-  HOMEBREW_BINTRAY_REPO: dawidd6/bottles-tap
-  HOMEBREW_BINTRAY_USER: ${{secrets.HOMEBREW_BINTRAY_USER}}
-  HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
-
 jobs:
   create:
     runs-on: ubuntu-latest
     steps:
       - name: Create package
         env:
+          HOMEBREW_BINTRAY_REPO: dawidd6/bottles-tap
+          HOMEBREW_BINTRAY_USER: ${{secrets.HOMEBREW_BINTRAY_USER}}
+          HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
           FORMULA: ${{github.event.inputs.formula}}
         run: |
           curl \
