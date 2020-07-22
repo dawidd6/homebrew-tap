@@ -19,6 +19,7 @@ jobs:
           FORMULA: ${{github.event.inputs.formula}}
         run: |
           curl \
+            --fail \
             --user $HOMEBREW_BINTRAY_USER:$HOMEBREW_BINTRAY_KEY \
             --header "Content-Type: application/json" \
             --data " \
