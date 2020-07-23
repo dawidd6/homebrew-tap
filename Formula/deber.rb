@@ -3,6 +3,7 @@ class Deber < Formula
   homepage "https://github.com/dawidd6/deber"
   url "https://github.com/dawidd6/deber/archive/v1.0.0.tar.gz"
   sha256 "924d8dd9c12514c6c27f75f2ed64b222d3db84383de240c3eaefb22f9ca7e779"
+  license "MIT"
   head "#{homepage}.git"
 
   bottle do
