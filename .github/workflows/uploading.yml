@@ -38,3 +38,8 @@ jobs:
             $PR
       - name: Push commits
         uses: Homebrew/actions/git-try-push@master
+      - name: Delete branch
+        uses: peter-evans/close-pull@v1
+        with:
+          pull-request-number: ${{github.event.inputs.pr}}
+          delete-branch: true
