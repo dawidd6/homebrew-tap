@@ -4,6 +4,7 @@ class Devscripts < Formula
   url "https://salsa.debian.org/debian/devscripts.git",
     :tag      => "v2.20.4",
     :revision => "c06307c0b109d05784a6b5990bb08286f00af9c7"
+  license "GPL-2.0-only"
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
