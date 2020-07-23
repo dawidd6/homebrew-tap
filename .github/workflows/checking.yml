@@ -21,4 +21,4 @@ jobs:
           mkdir -p $(dirname $(brew --repository $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repository $GITHUB_REPOSITORY)
       - name: Check style
-        run: brew style $GITHUB_REPOSITORY
+        run: brew test-bot --only-tap-syntax
