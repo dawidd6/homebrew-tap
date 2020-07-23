@@ -246,12 +246,9 @@ class Devscripts < Formula
   end
 
   test do
-    return if OS.mac?
-
     scripts.each do |script, script_alias|
       system bin/script, "--help"
       system bin/script_alias, "--help" unless script_alias.empty?
     end
   end
 end
-# Build bottle
