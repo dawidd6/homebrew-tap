@@ -27,15 +27,12 @@ jobs:
         env:
           HOMEBREW_BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
         run: |
-          mkdir ~/bottles
-          cd ~/bottles
-          brew test-bot --root-url=$HOMEBREW_BINTRAY_URL --only-formulae
-      - name: Move bottles
-        if: always()
-        run: mv ~/bottles $PWD
+          brew test-bot \
+            --root-url=$HOMEBREW_BINTRAY_URL \
+            --only-formulae
       - name: Upload bottles
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: bottles
-          path: bottles
+          path: *.bottle.*
