@@ -5,6 +5,7 @@ class Apidoc < Formula
   homepage "https://apidocjs.com"
   url "https://github.com/apidoc/apidoc/archive/0.24.0.tar.gz"
   sha256 "b63797091e9ccd0cc2d65129bb38e54957131067e37029ae137d73eb2e3520d6"
+  license "MIT"
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
