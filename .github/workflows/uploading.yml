@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Update Homebrew
-        run: brew update-reset
+        run: brew update-reset $(brew --repo)
       - name: Checkout tap
         uses: actions/checkout@v2
         with:
