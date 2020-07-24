@@ -23,6 +23,9 @@ jobs:
         run: |
           mkdir -p $(dirname $(brew --repo $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repo $GITHUB_REPOSITORY)
+      - name: Unlink node
+        if: startsWith(matrix.os, 'mac')
+        run: brew unlink node@12
       - name: Build bottles
         env:
           HOMEBREW_BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
