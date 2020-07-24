@@ -16,6 +16,7 @@ jobs:
       - name: Checkout tap
         uses: actions/checkout@v2
         with:
+          token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
           fetch-depth: 0
       - name: Setup tap
         run: |
@@ -23,13 +24,11 @@ jobs:
           ln -s $PWD $(brew --repo $GITHUB_REPOSITORY)
       - name: Setup git
         uses: Homebrew/actions/git-user-config@master
-        with:
-          username: github-actions[bot]
       - name: Pull bottles
         env:
           HOMEBREW_BINTRAY_USER: ${{secrets.HOMEBREW_BINTRAY_USER}}
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
-          HOMEBREW_GITHUB_API_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          HOMEBREW_GITHUB_API_TOKEN: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
           PR: ${{github.event.inputs.pr}}
         run: |
           brew pr-pull \
@@ -37,12 +36,12 @@ jobs:
             --tap=$GITHUB_REPOSITORY \
             --workflow=building.yml \
             --artifact=bottles \
-            --verbose \
             $PR
       - name: Push commits
         uses: Homebrew/actions/git-try-push@master
       - name: Delete branch
         uses: peter-evans/close-pull@v1
         with:
+          token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
           pull-request-number: ${{github.event.inputs.pr}}
           delete-branch: true
