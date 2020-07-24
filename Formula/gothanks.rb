@@ -9,8 +9,9 @@ class Gothanks < Formula
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
     cellar :any_skip_relocation
-    sha256 "4adcdfd920e8e1b1d8f9e1a181727057c28683e4d911ed67ccf06ca92a5332ac" => :catalina
-    sha256 "84cba9de32450023580dbec963654ec6259871465eeeed14dbd43766993d226c" => :x86_64_linux
+    rebuild 1
+    sha256 "3589042cef9024fc99687c820964fca8d3746e018473bb1fd39303b4714f19bf" => :catalina
+    sha256 "d9accd3e0fbb4af2b654b057f906894d1dbe1dc08b992add3d1d7e23d445fc77" => :x86_64_linux
   end
 
   depends_on "go" => :build
