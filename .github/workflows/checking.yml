@@ -1,12 +1,9 @@
 name: Checking
 
 on:
-  schedule:
-    # Every 24 hours
-    - cron: '0 */24 * * *'
-  repository_dispatch:
-    types:
-      - check
+  push:
+    branches:
+      - master
 
 jobs:
   check:
