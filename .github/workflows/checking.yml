@@ -8,6 +8,8 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
+    container:
+      image: homebrew/brew
     steps:
       - name: Update Homebrew
         run: brew update-reset
