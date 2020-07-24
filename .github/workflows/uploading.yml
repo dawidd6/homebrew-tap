@@ -35,6 +35,7 @@ jobs:
             --tap=$GITHUB_REPOSITORY \
             --workflow=building.yml \
             --artifact=bottles \
+            --verbose \
             $PR
       - name: Push commits
         uses: Homebrew/actions/git-try-push@master
