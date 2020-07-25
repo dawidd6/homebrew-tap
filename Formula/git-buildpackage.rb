@@ -6,6 +6,7 @@ class GitBuildpackage < Formula
   url "https://github.com/agx/git-buildpackage.git",
       tag:      "debian/0.9.20",
       revision: "719254dcf01a475d5fd2d4d0e91b5726323bb93f"
+  license "GPL-2.0"
   head "https://github.com/agx/git-buildpackage.git"
 
   bottle do
@@ -15,7 +16,7 @@ class GitBuildpackage < Formula
     sha256 "f4eda8f7a8041a55666bf6bf41b82e874aacd354c7042564dcde08258ded5fdf" => :x86_64_linux
   end
 
-  depends_on "dpkg" => [:build, :test]
+  depends_on "dpkg"
   depends_on "pristine-tar"
   depends_on "python"
 
