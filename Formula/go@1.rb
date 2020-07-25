@@ -1,8 +1,8 @@
 class GoAT1 < Formula
   desc "Go compiler 1.x (includes beta, alpha and rc releases)"
   homepage "https://golang.org"
-  url "https://dl.google.com/go/go1.15beta1.src.tar.gz"
-  sha256 "78cda84d4217ae0fdb8f87848474be28644bdc1aa16579055f852999a4793ac0"
+  url "https://dl.google.com/go/go1.15rc1.src.tar.gz"
+  sha256 "a19c4d5053a01c1b71827ab6d86f43f2a5266309aa622e04446756304f179c1a"
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
