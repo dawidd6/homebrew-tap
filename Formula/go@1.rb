@@ -7,8 +7,9 @@ class GoAT1 < Formula
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
-    sha256 "50f3f05a17aab772e34c37046723e89c5b6213f2267fc0286f9fef153827e595" => :catalina
-    sha256 "e389e580ecb4def569086b3cbf6d989e5f086f1077b679aa2bfe55c590c7669d" => :x86_64_linux
+    rebuild 1
+    sha256 "9b18c15ad45a8e803bda87c51f4a06509fcd4766613cdfb3c227e6044f64b2ce" => :catalina
+    sha256 "98d896a4b86d9f4801add9862772cfa45ebebfc78ea20ddc1e3de751af546606" => :x86_64_linux
   end
 
   keg_only :versioned_formula
