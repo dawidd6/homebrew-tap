@@ -14,4 +14,9 @@ jobs:
       - name: Auto publish
         env:
           HOMEBREW_GITHUB_API_TOKEN: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
-        run: brew pr-automerge --tap=$GITHUB_REPOSITORY --publish 
+        run: |
+          brew pr-automerge \
+            --tap=$GITHUB_REPOSITORY \
+            --with-label=ok \
+            --without-approval \
+            --publish
