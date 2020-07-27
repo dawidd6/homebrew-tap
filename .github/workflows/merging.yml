@@ -1,0 +1,17 @@
+name: Merging
+
+on:
+  schedule:
+    # Once every 3 hours
+    - cron: '0 */3 * * *'
+
+jobs:
+  merging:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update Homebrew
+        run: brew update-reset $(brew --repo)
+      - name: Auto publish
+        env:
+          HOMEBREW_GITHUB_API_TOKEN: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
+        run: brew pr-automerge --tap=$GITHUB_REPOSITORY --publish 
