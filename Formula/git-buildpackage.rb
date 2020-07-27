@@ -12,8 +12,9 @@ class GitBuildpackage < Formula
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
     cellar :any_skip_relocation
-    sha256 "9aa50721f49fa63c315b399202ca9211c24d49d23ffd5e8605dc64650c6c36d9" => :catalina
-    sha256 "f4eda8f7a8041a55666bf6bf41b82e874aacd354c7042564dcde08258ded5fdf" => :x86_64_linux
+    rebuild 1
+    sha256 "ab9bd91f752d6ac89d9e12b73606add72811b027b6969893b250a01799c31019" => :catalina
+    sha256 "29928cf9bf409afe67bb5054169941226e4eda8c86382bcaa577c3599f92216a" => :x86_64_linux
   end
 
   depends_on "dpkg"
