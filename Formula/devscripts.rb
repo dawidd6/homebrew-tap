@@ -2,8 +2,8 @@ class Devscripts < Formula
   desc "Scripts to make the life of a Debian maintainer easier"
   homepage "https://salsa.debian.org/debian/devscripts"
   url "https://salsa.debian.org/debian/devscripts.git",
-    :tag      => "v2.20.4",
-    :revision => "c06307c0b109d05784a6b5990bb08286f00af9c7"
+    tag:      "v2.20.4",
+    revision: "c06307c0b109d05784a6b5990bb08286f00af9c7"
   license "GPL-2.0-only"
 
   bottle do
@@ -237,7 +237,7 @@ class Devscripts < Formula
     end
 
     (libexec/"lib/perl5").install "lib/Devscripts"
-    bin.env_script_all_files(libexec/"bin", :PERL5LIB => ENV["PERL5LIB"])
+    bin.env_script_all_files(libexec/"bin", PERL5LIB: ENV["PERL5LIB"])
   end
 
   def caveats

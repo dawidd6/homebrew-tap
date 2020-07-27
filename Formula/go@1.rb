@@ -14,7 +14,7 @@ class GoAT1 < Formula
 
   resource "gotools" do
     url "https://go.googlesource.com/tools.git",
-        :branch => "master"
+        branch: "master"
   end
 
   # Don't update this unless this version cannot bootstrap the new version.

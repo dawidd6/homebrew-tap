@@ -2,8 +2,8 @@ class Horcrux < Formula
   desc "Split your file into encrypted fragments"
   homepage "https://github.com/jesseduffield/horcrux"
   url "https://github.com/jesseduffield/horcrux.git",
-    :tag      => "v0.3",
-    :revision => "17a9719f3b589f0cb4350a87ffa75ccdad974ab2"
+    tag:      "v0.3",
+    revision: "17a9719f3b589f0cb4350a87ffa75ccdad974ab2"
   license "MIT"
   head "https://github.com/jesseduffield/horcrux.git"
 
