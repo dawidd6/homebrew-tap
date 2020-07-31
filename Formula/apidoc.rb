@@ -26,6 +26,7 @@ class Apidoc < Formula
     (testpath/"api.go").write <<~EOS
       /**
        * @api {get} /user/:id Request User information
+       * @apiVersion #{version}
        * @apiName GetUser
        * @apiGroup User
        *
@@ -35,6 +36,16 @@ class Apidoc < Formula
        * @apiSuccess {String} lastname  Lastname of the User.
        */
     EOS
+    (testpath/"apidoc.json").write <<~EOS
+      {
+        "name": "example",
+        "version": "#{version}",
+        "description": "A basic apiDoc example"
+      }
+    EOS
     system bin/"apidoc", "-o", "out"
+    api_data_json = (testpath/"out/api_data.json").read
+    api_data = JSON.parse api_data_json
+    assert_equal api_data.first["version"], version
   end
 end
