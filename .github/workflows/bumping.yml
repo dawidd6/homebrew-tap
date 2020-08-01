@@ -4,9 +4,7 @@ on:
   schedule:
     # Every 12 hours
     - cron: '0 */12 * * *'
-  repository_dispatch:
-    types:
-      - bump
+  workflow_dispatch:
 
 jobs:
   bump:
