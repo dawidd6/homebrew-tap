@@ -10,6 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: homebrew/brew
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: 1
+      HOMEBREW_NO_ANALYTICS: 1
+      HOMEBREW_COLOR: 1
     steps:
       - name: Update Homebrew
         run: brew update-reset $(brew --repo)
@@ -20,4 +24,4 @@ jobs:
           mkdir -p $(dirname $(brew --repo $GITHUB_REPOSITORY))
           ln -s $PWD $(brew --repo $GITHUB_REPOSITORY)
       - name: Check style
-        run: brew test-bot --only-tap-syntax
+        run: brew style $GITHUB_REPOSITORY
