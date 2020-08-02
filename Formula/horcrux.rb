@@ -17,7 +17,7 @@ class Horcrux < Formula
   depends_on "go" => :build
 
   patch do
-    url "https://github.com/jesseduffield/horcrux/pull/9.patch?full_index=1"
+    url "https://github.com/jesseduffield/horcrux/commit/e3d73706ce7967490cdf0da60a0a423544fe4e54.patch?full_index=1"
     sha256 "4d5b38176e666b9ebfacbed5fa56321252236bd8c82f0fd4823bca8af0a26569"
   end
 
