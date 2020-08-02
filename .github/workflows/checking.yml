@@ -8,8 +8,6 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
-    container:
-      image: homebrew/brew
     env:
       HOMEBREW_NO_AUTO_UPDATE: 1
       HOMEBREW_NO_ANALYTICS: 1
@@ -18,6 +16,13 @@ jobs:
       - name: Checkout tap
         uses: actions/checkout@v2
       - name: Setup Homebrew
+        id: setup
         uses: Homebrew/actions/setup-homebrew@master
+      - name: Cache gems
+        uses: actions/cache@v2
+        with:
+          path: ${{steps.setup.outputs.gems-path}}
+          key: ${{runner.os}}-rubygems-${{steps.setup.outputs.gems-hash}}
+          restore-keys: ${{runner.os}}-rubygems-
       - name: Check style
         run: brew style $GITHUB_REPOSITORY
