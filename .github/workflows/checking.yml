@@ -15,13 +15,9 @@ jobs:
       HOMEBREW_NO_ANALYTICS: 1
       HOMEBREW_COLOR: 1
     steps:
-      - name: Update Homebrew
-        run: brew update-reset $(brew --repo)
       - name: Checkout tap
         uses: actions/checkout@v2
-      - name: Setup tap
-        run: |
-          mkdir -p $(dirname $(brew --repo $GITHUB_REPOSITORY))
-          ln -s $PWD $(brew --repo $GITHUB_REPOSITORY)
+      - name: Setup Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
       - name: Check style
         run: brew style $GITHUB_REPOSITORY
