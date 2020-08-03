@@ -2,8 +2,8 @@ class PristineTar < Formula
   desc "Regenerate pristine tarballs"
   homepage "https://kitenet.net/~joey/code/pristine-tar"
   url "https://salsa.debian.org/debian/pristine-tar.git",
-      tag:      "1.48",
-      revision: "b654853935048d2f729c414749520098995ca61c"
+      tag:      "1.49",
+      revision: "9401d7c09f575173d84727cae58674dbcc20106e"
   license "GPL-2.0"
 
   bottle do
