@@ -39,9 +39,3 @@ jobs:
             $PR
       - name: Push commits
         uses: Homebrew/actions/git-try-push@master
-      - name: Delete branch
-        uses: peter-evans/close-pull@v1
-        with:
-          token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
-          pull-request-number: ${{github.event.inputs.pull_request}}
-          delete-branch: true
