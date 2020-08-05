@@ -23,9 +23,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Setup Homebrew
         uses: Homebrew/actions/setup-homebrew@master
-      - name: Unlink node
-        if: startsWith(matrix.os, 'mac')
-        run: brew unlink node@12
+      - name: Cleanup before
+        run: brew test-bot --only-cleanup-before
       - name: Build bottles
         env:
           BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
