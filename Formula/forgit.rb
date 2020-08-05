@@ -1,6 +1,6 @@
 class Forgit < Formula
   desc "Utility tool powered by fzf for using git interactively"
-  homepage "https://github.com/wfxr/forgit.git"
+  homepage "https://github.com/wfxr/forgit"
   head "https://github.com/wfxr/forgit.git"
 
   bottle :unneeded
