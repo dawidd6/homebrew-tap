@@ -13,8 +13,6 @@ jobs:
       HOMEBREW_NO_ANALYTICS: 1
       HOMEBREW_COLOR: 1
     steps:
-      - name: Checkout tap
-        uses: actions/checkout@v2
       - name: Setup Homebrew
         id: setup
         uses: Homebrew/actions/setup-homebrew@master
