@@ -18,5 +18,5 @@ jobs:
           path: ${{steps.setup.outputs.gems-path}}
           key: ${{runner.os}}-rubygems-${{steps.setup.outputs.gems-hash}}
           restore-keys: ${{runner.os}}-rubygems-
-      - name: Check style
-        run: brew style $GITHUB_REPOSITORY
+      - name: Check formulae
+        run: brew test-bot --only-tap-syntax
