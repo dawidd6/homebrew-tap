@@ -13,7 +13,7 @@ jobs:
         id: setup
         uses: Homebrew/actions/setup-homebrew@master
       - name: Cache gems
-        uses: actions/cache@v2
+        uses: actions/cache@v1
         with:
           path: ${{steps.setup.outputs.gems-path}}
           key: ${{runner.os}}-rubygems-${{steps.setup.outputs.gems-hash}}
