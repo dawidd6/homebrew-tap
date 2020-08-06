@@ -1,4 +1,4 @@
-# homebrew-tap
+# Homebrew tap
 
 This is a [Homebrew](https://brew.sh) tap for software that I wrote and not.
 
