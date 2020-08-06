@@ -14,21 +14,13 @@ jobs:
           - ubuntu-latest
           - macos-latest
     runs-on: ${{matrix.os}}
-    env:
-      HOMEBREW_NO_AUTO_UPDATE: 1
-      HOMEBREW_NO_ANALYTICS: 1
-      HOMEBREW_COLOR: 1
     steps:
-      - name: Checkout tap
-        uses: actions/checkout@v2
       - name: Setup Homebrew
         uses: Homebrew/actions/setup-homebrew@master
-      - name: Cleanup before
-        run: brew test-bot --only-cleanup-before
       - name: Build bottles
         env:
           BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
-        run: brew test-bot --root-url=$BINTRAY_URL --only-formulae
+        run: brew test-bot --root-url=$BINTRAY_URL
       - name: Upload bottles
         if: always()
         uses: actions/upload-artifact@v2
