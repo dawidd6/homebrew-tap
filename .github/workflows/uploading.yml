@@ -21,13 +21,7 @@ jobs:
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
           HOMEBREW_GITHUB_API_TOKEN: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
           PR: ${{github.event.inputs.pull_request}}
-        run: >
-          brew pr-pull
-            --bintray-org=$HOMEBREW_BINTRAY_USER
-            --tap=$GITHUB_REPOSITORY
-            --workflow=building.yml
-            --artifact=bottles
-            $PR
+        run: brew pr-pull --bintray-org=$HOMEBREW_BINTRAY_USER --tap=$GITHUB_REPOSITORY --workflow=building.yml $PR
       - name: Push commits
         uses: Homebrew/actions/git-try-push@master
         with:
