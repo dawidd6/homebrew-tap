@@ -16,7 +16,14 @@ jobs:
     runs-on: ${{matrix.os}}
     steps:
       - name: Setup Homebrew
+        id: setup
         uses: Homebrew/actions/setup-homebrew@master
+      - name: Cache gems
+        uses: actions/cache@v1
+        with:
+          path: ${{steps.setup.outputs.gems-path}}
+          key: ${{runner.os}}-rubygems-${{steps.setup.outputs.gems-hash}}
+          restore-keys: ${{runner.os}}-rubygems-
       - name: Build bottles
         env:
           BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
