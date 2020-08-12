@@ -15,7 +15,7 @@ jobs:
           - macos-latest
     runs-on: ${{matrix.os}}
     steps:
-      - name: Setup Homebrew
+      - name: Set up Homebrew
         id: setup
         uses: Homebrew/actions/setup-homebrew@master
       - name: Cache gems
