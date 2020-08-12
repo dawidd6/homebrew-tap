@@ -11,9 +11,9 @@ jobs:
   upload:
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Homebrew
+      - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
-      - name: Setup git
+      - name: Set up git
         uses: Homebrew/actions/git-user-config@master
       - name: Pull bottles
         env:
