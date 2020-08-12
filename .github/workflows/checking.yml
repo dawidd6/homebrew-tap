@@ -19,4 +19,4 @@ jobs:
           key: ${{runner.os}}-rubygems-${{steps.setup.outputs.gems-hash}}
           restore-keys: ${{runner.os}}-rubygems-
       - name: Check formulae
-        run: brew test-bot --only-tap-syntax
+        run: brew test-bot --only-tap-syntax --verbose
