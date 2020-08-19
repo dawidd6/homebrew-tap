@@ -20,8 +20,15 @@ jobs:
           HOMEBREW_BINTRAY_USER: ${{secrets.HOMEBREW_BINTRAY_USER}}
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
           HOMEBREW_GITHUB_API_TOKEN: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
+          HOMEBREW_BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
           PR: ${{github.event.inputs.pull_request}}
-        run: brew pr-pull --bintray-org=$HOMEBREW_BINTRAY_USER --tap=$GITHUB_REPOSITORY --workflow=building.yml $PR
+        run: |
+          brew pr-pull \
+            --bintray-org=$HOMEBREW_BINTRAY_USER \
+            --root-url=$HOMEBREW_BINTRAY_URL \
+            --tap=$GITHUB_REPOSITORY \
+            --workflow=building.yml \
+            $PR
       - name: Push commits
         uses: Homebrew/actions/git-try-push@master
         with:
