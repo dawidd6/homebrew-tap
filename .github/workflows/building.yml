@@ -25,7 +25,9 @@ jobs:
           key: ${{runner.os}}-rubygems-${{steps.setup.outputs.gems-hash}}
           restore-keys: ${{runner.os}}-rubygems-
       - name: Build bottles
-        run: brew test-bot
+        env:
+          HOMEBREW_BINTRAY_URL: https://dl.bintray.com/dawidd6/bottles-tap
+        run: brew test-bot --root-url=$HOMEBREW_BINTRAY_URL
       - name: Upload bottles
         if: always()
         uses: actions/upload-artifact@v2
