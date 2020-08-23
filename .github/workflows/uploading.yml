@@ -15,13 +15,18 @@ jobs:
         uses: Homebrew/actions/setup-homebrew@master
       - name: Set up git
         uses: Homebrew/actions/git-user-config@master
+      - name: Hack brew
+        run: |
+          cd $(brew --repo)
+          git fetch https://github.com/dawidd6/brew bintray-no-raw-json
+          git checkout --force FETCH_HEAD
       - name: Pull bottles
         env:
           HOMEBREW_BINTRAY_USER: ${{secrets.HOMEBREW_BINTRAY_USER}}
           HOMEBREW_BINTRAY_KEY: ${{secrets.HOMEBREW_BINTRAY_KEY}}
           HOMEBREW_GITHUB_API_TOKEN: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
           PR: ${{github.event.inputs.pull_request}}
-        run: brew pr-pull --bintray-org=$HOMEBREW_BINTRAY_USER --tap=$GITHUB_REPOSITORY --workflow=building.yml $PR
+        run: brew pr-pull --debug --bintray-org=$HOMEBREW_BINTRAY_USER --tap=$GITHUB_REPOSITORY --workflow=building.yml $PR
       - name: Push commits
         uses: Homebrew/actions/git-try-push@master
         with:
