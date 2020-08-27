@@ -8,9 +8,8 @@ class Ameba < Formula
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
     cellar :any
-    rebuild 1
-    sha256 "08065a11acb3f0427e7d44b04438b3a937d2fccc043ae16a02b4f0cd2a2745e9" => :catalina
-    sha256 "f83b27e0f627fef551a21b0c1e8391a284eeff5285d980c234259e60ac51e6c9" => :x86_64_linux
+    sha256 "5d031f6a2d003a80601e19ca1043f201c6f15cf8e69852f7b9c5ca6fa2506466" => :catalina
+    sha256 "20475f9f33aefc2074d40234c45fc1d6e3014a7db545739d7a5e6c69095a8018" => :x86_64_linux
   end
 
   depends_on "crystal" => :build
