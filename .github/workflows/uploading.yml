@@ -18,7 +18,7 @@ jobs:
       - name: Hack brew
         run: |
           cd $(brew --repo)
-          git fetch https://github.com/dawidd6/brew bintray-no-raw-json
+          git fetch https://github.com/dawidd6/brew github-releases
           git checkout --force FETCH_HEAD
       - name: Pull bottles
         env:
