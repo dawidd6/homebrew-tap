@@ -5,6 +5,11 @@ class GoAT1 < Formula
   sha256 "69438f7ed4f532154ffaf878f3dfd83747e7a00b70b3556eddabf7aaee28ac3a"
   license "BSD-3-Clause"
 
+  livecheck do
+    url "https://golang.org/dl"
+    regex(/go(([0-9.]+)((beta|rc|alpha)[1-9])?)\.src/)
+  end
+
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
     sha256 "fa3c471206b65620d8acafd13180ae026a4437d3cb07e36c3520f44f8a3106e1" => :catalina
