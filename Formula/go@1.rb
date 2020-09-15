@@ -4,6 +4,7 @@ class GoAT1 < Formula
   url "https://dl.google.com/go/go1.15.2.src.tar.gz"
   sha256 "28bf9d0bcde251011caae230a4a05d917b172ea203f2a62f2c2f9533589d4b4d"
   license "BSD-3-Clause"
+  revision 1
 
   livecheck do
     url "https://golang.org/dl"
