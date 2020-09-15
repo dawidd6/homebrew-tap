@@ -7,11 +7,10 @@ class Gothanks < Formula
   revision 2
 
   bottle do
-    root_url "https://dl.bintray.com/dawidd6/bottles-tap"
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/gothanks-0.3.0_2"
     cellar :any_skip_relocation
-    rebuild 1
-    sha256 "3589042cef9024fc99687c820964fca8d3746e018473bb1fd39303b4714f19bf" => :catalina
-    sha256 "d9accd3e0fbb4af2b654b057f906894d1dbe1dc08b992add3d1d7e23d445fc77" => :x86_64_linux
+    sha256 "f522dcd7f3070a9da1b3964514ec65b229a018ea9b9951db03b1fc4006d4d262" => :catalina
+    sha256 "9cf5e2af852548730a0dad89732ac5640120ca1c759dbc2c2c26dd2bf7c5ada9" => :x86_64_linux
   end
 
   depends_on "go" => :build
