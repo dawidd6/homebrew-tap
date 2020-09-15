@@ -8,11 +8,10 @@ class Deber < Formula
   head "#{homepage}.git"
 
   bottle do
-    root_url "https://dl.bintray.com/dawidd6/bottles-tap"
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/deber-1.0.0_1"
     cellar :any_skip_relocation
-    rebuild 1
-    sha256 "97ab88ffeca00691b3cc0847155907fc6e372c2d22f254866b9060ff5eceda02" => :catalina
-    sha256 "591a86d23ab3ca3b20843e62ea36832b19b4e489c72542b4815dbb32b9fd0355" => :x86_64_linux
+    sha256 "58861b90fe2d8e84547c5bd415ab6f4b3721553f639bc96ccda13c716c70a9be" => :catalina
+    sha256 "54adecadd523a0cd2dbafb0c2fb3a6b902c574a14f2ec845b62655cfa118927e" => :x86_64_linux
   end
 
   depends_on "go" => :build
