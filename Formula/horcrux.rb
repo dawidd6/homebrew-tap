@@ -30,8 +30,8 @@ class Horcrux < Formula
       example
     EOS
     system bin/"horcrux", "-t", "3", "-n", "5", "split", "diary.txt"
-    mv "diary.txt", "diary.txt.orig"
+    mv "diary.txt", "diary.txt.o"
     system bin/"horcrux", "bind"
-    assert_equal File.read("diary.txt"), File.read("diary.txt.orig")
+    assert_equal (testpath/"diary.txt").read, (testpath/"diary.txt.o").read
   end
 end
