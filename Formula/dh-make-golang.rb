@@ -5,7 +5,7 @@ class DhMakeGolang < Formula
     tag:      "v0.3.3",
     revision: "c43abd765cf51c06bbcaa5479dc49aab1396989f"
   license "BSD-3-Clause"
-  revision 1
+  revision 2
   version_scheme 1
   head "https://github.com/Debian/dh-make-golang.git"
 
