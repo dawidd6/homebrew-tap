@@ -10,8 +10,9 @@ class ActionsUpdater < Formula
   bottle do
     root_url "https://github.com/dawidd6/homebrew-tap/releases/download/actions-updater-0.1.15_2"
     cellar :any_skip_relocation
-    sha256 "6be7e3d1b7127500e2f4a5ebceed4c6b3228b740819a6ce4698519cac34a76fb" => :catalina
-    sha256 "10fcb0061da5abb59fb06100331fbc80e3940a9c096fe464d48501bdc1bae9b0" => :x86_64_linux
+    rebuild 1
+    sha256 "8733c684af6c6bb099c7c71c3fd2d9878212476d94e77fa840e8b5d1e2737ccb" => :catalina
+    sha256 "ffcad3e22b69dfa60653b6cfb01ec66c5f753d3324d1053b4a13e0bb06febb9b" => :x86_64_linux
   end
 
   uses_from_macos "ruby"
