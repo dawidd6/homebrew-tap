@@ -8,10 +8,10 @@ class CloneOrg < Formula
   head "https://github.com/caarlos0/clone-org.git"
 
   bottle do
-    root_url "https://dl.bintray.com/dawidd6/bottles-tap"
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/clone-org-1.2.0_1"
     cellar :any_skip_relocation
-    sha256 "732b783f6e47fc26dfc2d06b2a394c5a0f49055160b4e519e67029b430c31886" => :catalina
-    sha256 "62c02fe12ed14c4802b4c47763317a448fbb23db63e21bcfbbd9ad38f6a556ea" => :x86_64_linux
+    sha256 "d524cbb1b09eccf3a6fa927389a851a82c961b90185a7daebf7c693c8192747d" => :catalina
+    sha256 "58c92a0c39ef217a20db43df0c263b522250d08b18023ceb536d0b10737b96a4" => :x86_64_linux
   end
 
   depends_on "go" => :build
