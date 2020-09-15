@@ -4,7 +4,7 @@ class Gothanks < Formula
   url "https://github.com/psampaz/gothanks/archive/v0.3.0.tar.gz"
   sha256 "ce5440334b3eac2e058724faa4c6e4478ca1d81ea087e55ccca33f1996752aad"
   license "MIT"
-  revision 1
+  revision 2
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
