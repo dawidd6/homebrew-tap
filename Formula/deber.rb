@@ -4,6 +4,7 @@ class Deber < Formula
   url "https://github.com/dawidd6/deber/archive/v1.0.0.tar.gz"
   sha256 "924d8dd9c12514c6c27f75f2ed64b222d3db84383de240c3eaefb22f9ca7e779"
   license "MIT"
+  revision 1
   head "#{homepage}.git"
 
   bottle do
@@ -17,7 +18,7 @@ class Deber < Formula
   depends_on "go" => :build
 
   def install
-    system "go", "build", "-mod=vendor", "-o", "#{bin}/#{name}"
+    system "go", "build", *std_go_args
   end
 
   test do
