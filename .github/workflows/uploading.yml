@@ -20,7 +20,7 @@ jobs:
           HOMEBREW_GITHUB_API_TOKEN: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
           PULL_REQUEST: ${{github.event.inputs.pull_request}}
           WORKFLOW: building.yml
-        run: brew pr-pull --tap=$GITHUB_REPOSITORY --workflow=$WORKFLOW $PULL_REQUEST
+        run: brew pr-pull --debug --tap=$GITHUB_REPOSITORY --workflow=$WORKFLOW $PULL_REQUEST
       - name: Push commits
         uses: Homebrew/actions/git-try-push@master
         with:
