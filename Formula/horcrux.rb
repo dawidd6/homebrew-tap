@@ -5,6 +5,7 @@ class Horcrux < Formula
     tag:      "v0.3",
     revision: "17a9719f3b589f0cb4350a87ffa75ccdad974ab2"
   license "MIT"
+  revision 1
   head "https://github.com/jesseduffield/horcrux.git"
 
   bottle do
