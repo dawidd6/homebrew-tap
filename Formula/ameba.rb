@@ -4,6 +4,7 @@ class Ameba < Formula
   url "https://github.com/crystal-ameba/ameba/archive/v0.13.2.tar.gz"
   sha256 "7ae91a3e1b32cfed595db090ddea065dd177fb3591de9730606f9f32d340c180"
   license "MIT"
+  revision 1
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
