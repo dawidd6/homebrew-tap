@@ -8,11 +8,10 @@ class ActionsUpdater < Formula
   head "https://github.com/dawidd6/actions-updater.git"
 
   bottle do
-    root_url "https://dl.bintray.com/dawidd6/bottles-tap"
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/actions-updater-0.1.15_2"
     cellar :any_skip_relocation
-    rebuild 1
-    sha256 "5ccd96529468aee3cabed84ae16f3fafcbf7565f4c191f7b9819c14865ff4709" => :catalina
-    sha256 "4531f78e29331d0d66d0edc25cc1e03402fffaa70a199271badc7a3df1ad81ab" => :x86_64_linux
+    sha256 "6be7e3d1b7127500e2f4a5ebceed4c6b3228b740819a6ce4698519cac34a76fb" => :catalina
+    sha256 "10fcb0061da5abb59fb06100331fbc80e3940a9c096fe464d48501bdc1bae9b0" => :x86_64_linux
   end
 
   uses_from_macos "ruby"
