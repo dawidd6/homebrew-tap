@@ -5,6 +5,7 @@ class PristineTar < Formula
       tag:      "1.49",
       revision: "9401d7c09f575173d84727cae58674dbcc20106e"
   license "GPL-2.0"
+  revision 1
 
   bottle do
     root_url "https://dl.bintray.com/dawidd6/bottles-tap"
