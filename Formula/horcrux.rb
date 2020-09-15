@@ -8,10 +8,11 @@ class Horcrux < Formula
   head "https://github.com/jesseduffield/horcrux.git"
 
   bottle do
-    root_url "https://dl.bintray.com/dawidd6/bottles-tap"
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/horcrux-0.3"
     cellar :any_skip_relocation
-    sha256 "be3d3cb6b41763091ec13264d38bb6d4778ab3e54c227a8cb334115d8356f8f8" => :catalina
-    sha256 "8febc8451c9a171c0296111d2f9fb59d2db2ee04a9266bf179ee890ca6903a75" => :x86_64_linux
+    rebuild 1
+    sha256 "ee44e058f80e1053a35a705b5fab341935ade74cafc118f18ba79c60bf193126" => :catalina
+    sha256 "7c075c631e438f3b866efaba3b3580da0b5fcfa8931b39d3e0720d0e1fd1a937" => :x86_64_linux
   end
 
   depends_on "go" => :build
