@@ -7,6 +7,7 @@ class GitBuildpackage < Formula
       tag:      "debian/0.9.20",
       revision: "719254dcf01a475d5fd2d4d0e91b5726323bb93f"
   license "GPL-2.0"
+  revision 1
   head "https://github.com/agx/git-buildpackage.git"
 
   bottle do
