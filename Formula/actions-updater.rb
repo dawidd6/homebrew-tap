@@ -25,6 +25,6 @@ class ActionsUpdater < Formula
   end
 
   test do
-    system bin/name
+    system bin/"actions-updater"
   end
 end
