@@ -8,9 +8,9 @@ class PristineTar < Formula
   revision 1
 
   bottle do
-    root_url "https://dl.bintray.com/dawidd6/bottles-tap"
-    sha256 "303377c991a1e0da17d83eff12ad669b2db3344f55978fc8d93f6adf146b73c3" => :catalina
-    sha256 "4d66667c2776e575570eb70f50de67d7cd898068edf0ceedadb75675f0f9afd1" => :x86_64_linux
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/pristine-tar-1.49_1"
+    sha256 "069c067410be7a3363620de8adc7126ad5585d05ec87bb39ef4b40e5c798b31e" => :catalina
+    sha256 "1316c42d0fee5e9bcd477c9c186cabdde1f22b44b1d2e9e2da6a81cb686ce01c" => :x86_64_linux
   end
 
   depends_on "perl" => :build
