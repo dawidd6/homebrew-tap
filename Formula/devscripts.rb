@@ -25,8 +25,7 @@ class Devscripts < Formula
   depends_on "bash-completion@2" => :build
   depends_on "pkg-config" => :build
   depends_on "dpkg"
-
-  uses_from_macos "perl"
+  depends_on "perl"
 
   resource "inc-latest" do
     url "https://cpan.metacpan.org/authors/id/D/DA/DAGOLDEN/inc-latest-0.500.tar.gz"
