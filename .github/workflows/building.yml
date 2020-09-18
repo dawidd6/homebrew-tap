@@ -19,7 +19,9 @@ jobs:
         id: setup
         uses: Homebrew/actions/setup-homebrew@master
       - name: Build bottles
-        run: brew test-bot
+        run: |
+          brew test-bot --only-cleanup-before
+          brew test-bot --only-formulae
       - name: Upload bottles
         if: always()
         uses: actions/upload-artifact@v2
