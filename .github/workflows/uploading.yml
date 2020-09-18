@@ -1,14 +1,13 @@
 name: Uploading
 
 on:
-  workflow_dispatch:
-    inputs:
-      pull_request:
-        description: Pull request number
-        required: true
+  pull_request_target:
+    types:
+      - labeled
 
 jobs:
   upload:
+    if: contains(github.event.pull_request.labels.*.name, 'ok')
     runs-on: ubuntu-latest
     steps:
       - name: Set up Homebrew
@@ -18,7 +17,7 @@ jobs:
       - name: Pull bottles
         env:
           HOMEBREW_GITHUB_API_TOKEN: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
-          PULL_REQUEST: ${{github.event.inputs.pull_request}}
+          PULL_REQUEST: ${{github.event.pull_request.number}}
           WORKFLOW: building.yml
         run: brew pr-pull --debug --tap=$GITHUB_REPOSITORY --workflow=$WORKFLOW $PULL_REQUEST
       - name: Push commits
@@ -26,8 +25,7 @@ jobs:
         with:
           token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
       - name: Delete branch
-        uses: peter-evans/close-pull@v1
-        with:
-          token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
-          pull-request-number: ${{github.event.inputs.pull_request}}
-          delete-branch: true
+        if: github.event.pull_request.head.repo.fork == false
+        env:
+          BRANCH: ${{github.event.pull_request.head.ref}}
+        run: git push --delete origin $BRANCH
