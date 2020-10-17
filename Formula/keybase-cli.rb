@@ -1,10 +1,9 @@
 class KeybaseCli < Formula
   desc "Command-line interface to Keybase.io"
   homepage "https://keybase.io"
-  url "https://github.com/keybase/client/archive/v5.5.1.tar.gz"
-  sha256 "a65dc4b62fc1299dd17da52ddd2484fa1dc1e7d2a4776c3a6e112ee020980b12"
+  url "https://github.com/keybase/client/archive/v5.5.2.tar.gz"
+  sha256 "2610dbc44d84b93822f9e4ec510aac473116c953f1073a45aef983898a2289fd"
   license "BSD-3-Clause"
-  revision 1
 
   bottle do
     root_url "https://github.com/dawidd6/homebrew-tap/releases/download/keybase-cli-5.5.1_1"
