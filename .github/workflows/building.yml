@@ -16,12 +16,11 @@ jobs:
     runs-on: ${{matrix.os}}
     steps:
       - name: Set up Homebrew
-        id: setup
         uses: Homebrew/actions/setup-homebrew@master
       - name: Build bottles
         run: |
           brew test-bot --only-cleanup-before
-          brew test-bot --only-formulae
+          brew test-bot --only-formulae --skip-recursive-dependents
       - name: Upload bottles
         if: always()
         uses: actions/upload-artifact@v2
