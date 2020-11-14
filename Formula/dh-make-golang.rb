@@ -9,10 +9,10 @@ class DhMakeGolang < Formula
   head "https://github.com/Debian/dh-make-golang.git"
 
   bottle do
-    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/dh-make-golang-0.3.3_2"
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/dh-make-golang-0.4.0"
     cellar :any_skip_relocation
-    sha256 "06e5bb6ddfcefd4ac983afd15912d4d7ef69fd64d8ca6f3c844562391126b7be" => :catalina
-    sha256 "d37d7011cec634167eff8ba7265f6c7dbe2962a6a48c75568214b52468a46d32" => :x86_64_linux
+    sha256 "5198eb6526ae0b81d3bd62bc3e482b20f7db66b6fd559a8d2bc01aaf948d0ead" => :catalina
+    sha256 "7d15fbffa0241b110ef9923d3f23db75b2f369d620a6da69b581d302484a9fbe" => :x86_64_linux
   end
 
   depends_on "go" => :build
