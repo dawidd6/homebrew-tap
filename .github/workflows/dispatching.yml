@@ -1,4 +1,4 @@
-name: Bottling
+name: Dispatch
 
 on:
   workflow_dispatch:
