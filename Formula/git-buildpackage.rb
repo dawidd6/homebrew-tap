@@ -7,7 +7,7 @@ class GitBuildpackage < Formula
       tag:      "debian/0.9.20",
       revision: "719254dcf01a475d5fd2d4d0e91b5726323bb93f"
   license "GPL-2.0"
-  revision 1
+  revision 2
   head "https://github.com/agx/git-buildpackage.git"
 
   bottle do
@@ -17,9 +17,8 @@ class GitBuildpackage < Formula
     sha256 "4619d5249fdebf7eecf0c9cd970aba419b5026f670c728e7b660af73d5f3af8d" => :x86_64_linux
   end
 
-  depends_on "dpkg"
   depends_on "pristine-tar"
-  depends_on "python@3.8"
+  depends_on "python@3.9"
 
   resource "dateutil" do
     url "https://files.pythonhosted.org/packages/be/ed/5bbc91f03fa4c839c4c7360375da77f9659af5f7086b7a7bdda65771c8e0/python-dateutil-2.8.1.tar.gz"
