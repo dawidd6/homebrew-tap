@@ -20,6 +20,10 @@ class GitBuildpackage < Formula
   depends_on "pristine-tar"
   depends_on "python@3.9"
 
+  on_macos do
+    depends_on "dpkg"
+  end
+
   resource "dateutil" do
     url "https://files.pythonhosted.org/packages/be/ed/5bbc91f03fa4c839c4c7360375da77f9659af5f7086b7a7bdda65771c8e0/python-dateutil-2.8.1.tar.gz"
     sha256 "73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c"
