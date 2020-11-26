@@ -11,10 +11,10 @@ class GitBuildpackage < Formula
   head "https://github.com/agx/git-buildpackage.git"
 
   bottle do
-    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/git-buildpackage-0.9.20_1"
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/git-buildpackage-0.9.20_2"
     cellar :any_skip_relocation
-    sha256 "80a718c095b2d633e9e4d3d0d9c1561dd6677392152a86b7795b44185f23e15c" => :catalina
-    sha256 "4619d5249fdebf7eecf0c9cd970aba419b5026f670c728e7b660af73d5f3af8d" => :x86_64_linux
+    sha256 "cc13f83b186c230051573dd5fa07a4b0125417a14d9b6e2ba102d2ae18363eea" => :catalina
+    sha256 "5dd9e548c09fc35f3960da00160de3a948196bf4e8cce51736dacfdcfa0daba6" => :x86_64_linux
   end
 
   depends_on "pristine-tar"
