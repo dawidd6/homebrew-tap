@@ -2,15 +2,14 @@ class Devscripts < Formula
   desc "Scripts to make the life of a Debian maintainer easier"
   homepage "https://salsa.debian.org/debian/devscripts"
   url "https://salsa.debian.org/debian/devscripts.git",
-    tag:      "v2.20.4",
-    revision: "c06307c0b109d05784a6b5990bb08286f00af9c7"
+    tag:      "v2.20.5",
+    revision: "5b91463abe13499c4acc6459a3a8c1d8c60d8a70"
   license "GPL-2.0-only"
 
   bottle do
     root_url "https://github.com/dawidd6/homebrew-tap/releases/download/devscripts-2.20.4"
     cellar :any_skip_relocation
     rebuild 1
-    sha256 "457790e0975316ec38d05f8cedf78a98e044b7643e61ef73a7d599d768db2b7b" => :x86_64_linux
   end
 
   def scripts
@@ -156,6 +155,16 @@ class Devscripts < Formula
   resource "File-Which" do
     url "https://cpan.metacpan.org/authors/id/P/PL/PLICEASE/File-Which-1.23.tar.gz"
     sha256 "b79dc2244b2d97b6f27167fc3b7799ef61a179040f3abd76ce1e0a3b0bc4e078"
+  end
+
+  resource "File-DirList" do
+    url "https://cpan.metacpan.org/authors/id/T/TP/TPABA/File-DirList/File-DirList-0.05.tar.gz"
+    sha256 "993b7d7662e55798448a1edaccb9abd281d2bd23be7eab99f569b8e2962d3bc3"
+  end
+
+  resource "File-Touch" do
+    url "https://cpan.metacpan.org/authors/id/N/NE/NEILB/File-Touch-0.11.tar.gz"
+    sha256 "e379a5ff89420cf39906e5ceff309b8ce958f99f9c3e57ad52b5002a3982d93c"
   end
 
   resource "libwww-perl" do
