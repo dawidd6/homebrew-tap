@@ -1,4 +1,4 @@
-name: Dispatching
+name: Requesting
 
 on:
   workflow_dispatch:
@@ -11,7 +11,7 @@ on:
         required: true
 
 jobs:
-  dispatch:
+  request:
     runs-on: ${{github.event.inputs.os}}
     steps:
       - name: Set up Homebrew
