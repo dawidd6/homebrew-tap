@@ -7,10 +7,10 @@ class Vermin < Formula
   head "https://github.com/mhewedy/vermin.git"
 
   bottle do
-    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/vermin-0.113.0"
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/vermin-0.117.0"
     cellar :any_skip_relocation
-    sha256 "fd2613116fe65ac54cdde028989e272d9252f3dc006a2cae9ecad83603d4651b" => :catalina
-    sha256 "16a2ebe440f125413ea11d72400bbc12d7b96a99de48de7c2fa311b494f78887" => :x86_64_linux
+    sha256 "f3758a8fa3726b8fed0006972da48175ece4f45e8338e9d0adb0d130312fade9" => :catalina
+    sha256 "530bc3272d4d206ae2be17ddb3e6ed5f692c0b5c11f7b78d681c894d5c56e578" => :x86_64_linux
   end
 
   depends_on "go" => :build
