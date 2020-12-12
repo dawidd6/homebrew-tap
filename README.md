@@ -2,7 +2,7 @@
 
 This is a [Homebrew](https://brew.sh) tap for software that I wrote and not.
 
-Binary bottles are currently available only for `x86_64_linux` and `catalina`.
+Binary bottles are currently available only for `x86_64_linux` and `catalina` and `big_sur`.
 
 Everything in this repository is free to grab, no license.
 
