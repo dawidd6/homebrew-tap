@@ -9,6 +9,7 @@ class Vermin < Formula
   bottle do
     root_url "https://github.com/dawidd6/homebrew-tap/releases/download/vermin-0.122.0"
     cellar :any_skip_relocation
+    sha256 "f2653c29e27c9bba28344db60170892b33611ad866bedddfd967e4eeaeb31a90" => :big_sur
     sha256 "769ca821e6bdf11376216dcee37d8ba07b753f7f3b24fff3277efb55dffb8e65" => :catalina
     sha256 "afb44cd12f1acb7b4efac033dd3c45f3d6a3ac6cde61b2e0b35dd1a68637c492" => :x86_64_linux
   end
