@@ -11,6 +11,7 @@ class DhMakeGolang < Formula
   bottle do
     root_url "https://github.com/dawidd6/homebrew-tap/releases/download/dh-make-golang-0.4.0"
     cellar :any_skip_relocation
+    sha256 "d0134dd842ae3addc2a23cd6eb4907033e63e03ccdf2b87d08d8cc56642c4c25" => :big_sur
     sha256 "5198eb6526ae0b81d3bd62bc3e482b20f7db66b6fd559a8d2bc01aaf948d0ead" => :catalina
     sha256 "7d15fbffa0241b110ef9923d3f23db75b2f369d620a6da69b581d302484a9fbe" => :x86_64_linux
   end
