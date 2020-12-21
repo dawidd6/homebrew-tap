@@ -1,10 +1,9 @@
 class Deber < Formula
   desc "Debian packaging with Docker"
   homepage "https://github.com/dawidd6/deber"
-  url "https://github.com/dawidd6/deber/archive/v1.0.0.tar.gz"
-  sha256 "924d8dd9c12514c6c27f75f2ed64b222d3db84383de240c3eaefb22f9ca7e779"
+  url "https://github.com/dawidd6/deber/archive/v1.1.0.tar.gz"
+  sha256 "b62e76e53773b5f978f00a157ed87fda2e4179e33461c7cc4082d7d7a51e9c7f"
   license "MIT"
-  revision 1
   head "#{homepage}.git"
 
   bottle do
