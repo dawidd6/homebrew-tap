@@ -1,8 +1,8 @@
 class Vermin < Formula
   desc "Smart virtual machines manager supporting Vagrant boxes"
   homepage "https://mhewedy.github.io/vermin"
-  url "https://github.com/mhewedy/vermin/archive/v0.122.0.tar.gz"
-  sha256 "7cd48eb1c1127f3bac295ace92db2f9b84455ad5a13a26d7ccd87e8826cb97d6"
+  url "https://github.com/mhewedy/vermin/archive/v0.125.0.tar.gz"
+  sha256 "cf6d9c1513ee9f1426b702a1f5aff3d3076c919ab227a2dc0664a96fb74b9033"
   license "Apache-2.0"
   head "https://github.com/mhewedy/vermin.git"
 
