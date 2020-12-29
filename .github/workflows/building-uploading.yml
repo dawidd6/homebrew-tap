@@ -42,9 +42,9 @@ jobs:
           name: bottles
       - name: Publish bottles
         env:
-          HOMEBREW_GITHUB_API_TOKEN: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
+          HOMEBREW_GITHUB_API_TOKEN: ${{secrets.GITHUB_TOKEN}}
         run: brew pr-upload --debug --keep-old
       - name: Push commits
         uses: Homebrew/actions/git-try-push@master
         with:
-          token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
+          token: ${{secrets.GITHUB_TOKEN}}
