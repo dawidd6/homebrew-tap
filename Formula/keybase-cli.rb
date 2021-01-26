@@ -6,11 +6,11 @@ class KeybaseCli < Formula
   license "BSD-3-Clause"
 
   bottle do
-    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/keybase-cli-5.5.2"
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/keybase-cli-5.6.1"
     cellar :any_skip_relocation
-    sha256 "15258bb10e019649142ac2a01c4784542ae1dcf5ed2d7e5288d8fdf362276988" => :big_sur
-    sha256 "aabcdba144a062657e9ad9c03286544f3e2b729a8c30287f59dfdd715250eb66" => :catalina
-    sha256 "a110652139bdc99e3b5440da3fa89a43d0d23074a32007a11fa3715b70088624" => :x86_64_linux
+    sha256 "942a204545c2aaa7ee0468be8b2786418548780c1226b954b16af0432c269575" => :big_sur
+    sha256 "fb4aa7278a21df6ad29e3de9635fc6c3e7773d521e79cf523af8c97e39a35b4e" => :catalina
+    sha256 "0760b14765153192e629343b9a8dbd00ba9646962006c5912c52c8bb91e8a8ed" => :x86_64_linux
   end
 
   depends_on "go" => :build
