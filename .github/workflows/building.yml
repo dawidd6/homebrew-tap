@@ -19,6 +19,8 @@ jobs:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
       - name: Build bottles
+        env:
+          HOMEBREW_PATCHELF_RB: 1
         run: |
           brew test-bot --only-cleanup-before
           brew test-bot --only-formulae --skip-recursive-dependents
