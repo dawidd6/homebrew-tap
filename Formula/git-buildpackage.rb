@@ -4,8 +4,8 @@ class GitBuildpackage < Formula
   desc "Suite to help with Debian (and RPM) packages in Git repos"
   homepage "https://honk.sigxcpu.org/piki/projects/git-buildpackage/"
   url "https://github.com/agx/git-buildpackage.git",
-      tag:      "debian/0.9.21",
-      revision: "30bcbe28112180c4c11265597ec357095f7ba99d"
+      tag:      "debian/0.9.22",
+      revision: "89e83bb633e58493638c27f49f22e8ec7c395556"
   license "GPL-2.0"
   head "https://github.com/agx/git-buildpackage.git"
 
