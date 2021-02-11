@@ -5,7 +5,7 @@ class PristineTar < Formula
       tag:      "1.49",
       revision: "9401d7c09f575173d84727cae58674dbcc20106e"
   license "GPL-2.0"
-  revision 2
+  revision 3
 
   bottle do
     root_url "https://github.com/dawidd6/homebrew-tap/releases/download/pristine-tar-1.49_2"
