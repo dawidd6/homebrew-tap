@@ -17,7 +17,6 @@ class PristineTar < Formula
   depends_on "perl" => :build
   depends_on "shunit2" => :build
   depends_on "bzip2"
-  depends_on "gnu-tar"
   depends_on "gzip"
   depends_on "pbzip2"
   depends_on "pixz"
