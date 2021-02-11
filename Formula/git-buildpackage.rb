@@ -11,10 +11,9 @@ class GitBuildpackage < Formula
 
   bottle do
     root_url "https://github.com/dawidd6/homebrew-tap/releases/download/git-buildpackage-0.9.21"
-    cellar :any_skip_relocation
-    sha256 "585a9d79db56917f5a98b608c8bf3eb228ae1c0b9f281add9a53a9c61f969b1d" => :big_sur
-    sha256 "365b67fe4e104e39e3e7fe23138e762f0ff1914f8700d7e64de22e84e0eceb59" => :catalina
-    sha256 "5075abecf382ec90ef757bf64901681e2bc578fe517ff8ad504fb68cfd88e056" => :x86_64_linux
+    sha256 cellar: :any_skip_relocation, big_sur:      "585a9d79db56917f5a98b608c8bf3eb228ae1c0b9f281add9a53a9c61f969b1d"
+    sha256 cellar: :any_skip_relocation, catalina:     "365b67fe4e104e39e3e7fe23138e762f0ff1914f8700d7e64de22e84e0eceb59"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "5075abecf382ec90ef757bf64901681e2bc578fe517ff8ad504fb68cfd88e056"
   end
 
   depends_on "pristine-tar"

@@ -9,11 +9,10 @@ class Horcrux < Formula
 
   bottle do
     root_url "https://github.com/dawidd6/homebrew-tap/releases/download/horcrux-0.3"
-    cellar :any_skip_relocation
     rebuild 1
-    sha256 "7eb30a2f566e3116a381762deb15a456eed1f90562a2d55ca1b8d2923d447ece" => :big_sur
-    sha256 "ee44e058f80e1053a35a705b5fab341935ade74cafc118f18ba79c60bf193126" => :catalina
-    sha256 "7c075c631e438f3b866efaba3b3580da0b5fcfa8931b39d3e0720d0e1fd1a937" => :x86_64_linux
+    sha256 cellar: :any_skip_relocation, big_sur:      "7eb30a2f566e3116a381762deb15a456eed1f90562a2d55ca1b8d2923d447ece"
+    sha256 cellar: :any_skip_relocation, catalina:     "ee44e058f80e1053a35a705b5fab341935ade74cafc118f18ba79c60bf193126"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "7c075c631e438f3b866efaba3b3580da0b5fcfa8931b39d3e0720d0e1fd1a937"
   end
 
   depends_on "go" => :build

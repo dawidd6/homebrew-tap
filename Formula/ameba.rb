@@ -7,10 +7,9 @@ class Ameba < Formula
 
   bottle do
     root_url "https://github.com/dawidd6/homebrew-tap/releases/download/ameba-0.13.4"
-    cellar :any
-    sha256 "bd7c00559c8691f2d33c706e79eef48b2dd52cf617754b3d07c8abbe83794a3e" => :big_sur
-    sha256 "16bbf4710c2dd0e48e44ef1d9bde99fd57eb243ded796035af9a202c170c8d16" => :catalina
-    sha256 "00fe7c95b9550b7b24afe910155fd4b0a580293bb86d27212affacadc5c954f2" => :x86_64_linux
+    sha256 cellar: :any, big_sur:      "bd7c00559c8691f2d33c706e79eef48b2dd52cf617754b3d07c8abbe83794a3e"
+    sha256 cellar: :any, catalina:     "16bbf4710c2dd0e48e44ef1d9bde99fd57eb243ded796035af9a202c170c8d16"
+    sha256 cellar: :any, x86_64_linux: "00fe7c95b9550b7b24afe910155fd4b0a580293bb86d27212affacadc5c954f2"
   end
 
   depends_on "crystal" => :build

@@ -8,8 +8,7 @@ class Devscripts < Formula
 
   bottle do
     root_url "https://github.com/dawidd6/homebrew-tap/releases/download/devscripts-2.20.5"
-    cellar :any_skip_relocation
-    sha256 "86d2018904efd920d61b538eb78f317c6268138e0fa234ea9b2e1d6b390a39a1" => :x86_64_linux
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "86d2018904efd920d61b538eb78f317c6268138e0fa234ea9b2e1d6b390a39a1"
   end
 
   def scripts

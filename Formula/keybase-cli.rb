@@ -7,10 +7,9 @@ class KeybaseCli < Formula
 
   bottle do
     root_url "https://github.com/dawidd6/homebrew-tap/releases/download/keybase-cli-5.6.1"
-    cellar :any_skip_relocation
-    sha256 "942a204545c2aaa7ee0468be8b2786418548780c1226b954b16af0432c269575" => :big_sur
-    sha256 "fb4aa7278a21df6ad29e3de9635fc6c3e7773d521e79cf523af8c97e39a35b4e" => :catalina
-    sha256 "0760b14765153192e629343b9a8dbd00ba9646962006c5912c52c8bb91e8a8ed" => :x86_64_linux
+    sha256 cellar: :any_skip_relocation, big_sur:      "942a204545c2aaa7ee0468be8b2786418548780c1226b954b16af0432c269575"
+    sha256 cellar: :any_skip_relocation, catalina:     "fb4aa7278a21df6ad29e3de9635fc6c3e7773d521e79cf523af8c97e39a35b4e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "0760b14765153192e629343b9a8dbd00ba9646962006c5912c52c8bb91e8a8ed"
   end
 
   depends_on "go" => :build
