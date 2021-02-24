@@ -13,6 +13,7 @@ class Ameba < Formula
   end
 
   depends_on "crystal" => :build
+  depends_on "bdw-gc"
   depends_on "libevent"
   depends_on "libyaml"
   depends_on "pcre"
