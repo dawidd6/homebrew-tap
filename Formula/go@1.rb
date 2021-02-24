@@ -58,7 +58,7 @@ class GoAT1 < Formula
     # Remove useless files.
     # Breaks patchelf because it contains weird debug/test files
     on_linux do
-      rm_rf Dir[libexec/"src/debug"]
+      rm_rf Dir[libexec/"src/debug/elf/testdata"]
     end
   end
 
