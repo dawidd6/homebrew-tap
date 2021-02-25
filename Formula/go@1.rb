@@ -11,9 +11,9 @@ class GoAT1 < Formula
   end
 
   bottle do
-    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/go@1-1.16beta1"
-    sha256 big_sur:  "080ce8bdcf953d6c6219180a3f35a06825e6044db93c1cec895420ac1836c2ca"
-    sha256 catalina: "97eb8e3a6b59bb40534597a345c7517fb56ab6e27146e95b368eb01c62ab5506"
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/go@1-1.16"
+    sha256 catalina:     "c3644d8b15ec9c6b92185437eb3cdaa94ccda481232eb5628f1f0a2982f75bc5"
+    sha256 x86_64_linux: "10a091146d7969c58237b32f699bf70c92d73b905f050401bdb252d19dc5db15"
   end
 
   keg_only :versioned_formula
