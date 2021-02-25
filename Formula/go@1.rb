@@ -77,10 +77,6 @@ class GoAT1 < Formula
     system bin/"go", "fmt", "hello.go"
     assert_equal "Hello World\n", shell_output("#{bin}/go run hello.go")
 
-    # godoc was installed
-    assert_predicate libexec/"bin/godoc", :exist?
-    assert_predicate libexec/"bin/godoc", :executable?
-
     ENV["GOOS"] = "freebsd"
     ENV["GOARCH"] = "amd64"
     system bin/"go", "build", "hello.go"
