@@ -6,9 +6,9 @@ class Ameba < Formula
   license "MIT"
 
   bottle do
-    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/ameba-0.14.1"
-    sha256 cellar: :any, big_sur:  "8979054a17a43df4d75528b30b2c37c05272248ef417980acc67ceba5d2817a4"
-    sha256 cellar: :any, catalina: "aa7356544aba27ec1b6c2c0e5982993a2848ac34516e83349ecd4752a22c1ce0"
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/ameba-0.14.2"
+    sha256 cellar: :any, big_sur:  "2cf7e747c23ebb149cc49825a63542d988b0a19fd86bc1a3abc4e97536352dcc"
+    sha256 cellar: :any, catalina: "ba45f55be0be9aedf04882d7e725428bc4259109baf8eeb50621d586863fc227"
   end
 
   depends_on "crystal" => :build
