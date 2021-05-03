@@ -2,8 +2,8 @@ class Devscripts < Formula
   desc "Scripts to make the life of a Debian maintainer easier"
   homepage "https://salsa.debian.org/debian/devscripts"
   url "https://salsa.debian.org/debian/devscripts.git",
-    tag:      "v2.21.1",
-    revision: "d6f7f6927cc1035ca3fb7ab6ab86b3c7430e6d00"
+    tag:      "v2.21.2",
+    revision: "1ff7c56d8ea6eb19ad157d4c9ab586cc76ee1376"
   license "GPL-2.0-only"
 
   bottle do
