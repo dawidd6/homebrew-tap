@@ -7,8 +7,8 @@ class Devscripts < Formula
   license "GPL-2.0-only"
 
   bottle do
-    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/devscripts-2.21.1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "6beb53f02830b5506ab41b766a31b04a836f9693f41e9cb8c2a82f08185cf55a"
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/devscripts-2.21.2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "c9a94c1df5b9c83529dff8bd47faba1a56180e2f8c15178c22a365b7d15435fa"
   end
 
   def scripts
