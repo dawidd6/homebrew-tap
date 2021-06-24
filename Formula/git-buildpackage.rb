@@ -10,10 +10,10 @@ class GitBuildpackage < Formula
   head "https://github.com/agx/git-buildpackage.git"
 
   bottle do
-    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/git-buildpackage-0.9.22"
-    sha256 cellar: :any_skip_relocation, big_sur:      "b4556ece31ddcafc0ca02c5fc46b8a664519466b824ea13fac2014cb30f837f2"
-    sha256 cellar: :any_skip_relocation, catalina:     "0ed0afddcfe72b2a8ca4281d5d272620c820fd2b86b844cc85195381640c06dd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "8ac24c65dd2ab0495ecbae09cd6e820bb6923627a485e11b8198810d9364361b"
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/git-buildpackage-0.9.23"
+    sha256 cellar: :any_skip_relocation, big_sur:      "6e47489201a33b559d6a0d1477123fc135737815bd6419f654576739434c6dbb"
+    sha256 cellar: :any_skip_relocation, catalina:     "2fd675ddb8758a7526c78da3c3ed303c088bea5ba32ce4844c6d9a11d1d10a9b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "df051b90cb44647141eb702afbda93e30ad5613414e1d9fb51949ac9401886e6"
   end
 
   depends_on "pristine-tar"
