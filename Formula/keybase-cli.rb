@@ -1,8 +1,8 @@
 class KeybaseCli < Formula
   desc "Command-line interface to Keybase.io"
   homepage "https://keybase.io"
-  url "https://github.com/keybase/client/archive/v5.6.1.tar.gz"
-  sha256 "d54c2444e18b83e6c3f39c3d96ee87d1c178fd2812cda0718b70d10289b76685"
+  url "https://github.com/keybase/client/archive/v5.7.1.tar.gz"
+  sha256 "9b51262582db59c0f9b3b63f488632f4cad2b769aded0aaaa8a4e5c85988e5bb"
   license "BSD-3-Clause"
 
   bottle do
