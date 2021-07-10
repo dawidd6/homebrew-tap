@@ -1,12 +1,24 @@
-name: Building
+name: Testing
 
 on:
   pull_request:
     paths:
       - 'Formula/*'
+  push:
+    - master
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/homebrew/ubuntu16.04:master
+    steps:
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+      - name: Check formulae
+        run: brew test-bot --only-tap-syntax
   build:
+    if: github.event_name == 'pull_request'
     strategy:
       fail-fast: false
       matrix:
