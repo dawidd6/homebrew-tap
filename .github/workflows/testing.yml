@@ -17,6 +17,7 @@ jobs:
         run: brew test-bot --only-tap-syntax
   build:
     if: github.event_name == 'pull_request'
+    needs: check
     strategy:
       fail-fast: false
       matrix:
