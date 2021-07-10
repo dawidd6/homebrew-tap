@@ -2,8 +2,8 @@ name: Bumping
 
 on:
   schedule:
-    # Every 12 hours
-    - cron: '0 */12 * * *'
+    # Every day at 6am
+    - cron: '0 6 * * *'
   workflow_dispatch:
 
 jobs:
