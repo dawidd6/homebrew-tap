@@ -2,10 +2,9 @@ name: Testing
 
 on:
   pull_request:
-    paths:
-      - 'Formula/*'
   push:
-    - master
+    branches:
+      - master
 
 jobs:
   check:
