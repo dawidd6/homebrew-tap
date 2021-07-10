@@ -12,7 +12,7 @@ jobs:
     container: ghcr.io/homebrew/ubuntu16.04:master
     steps:
       - name: Set up Homebrew
-        uses: Homebrew/actions/setup-homebrew@master
+        uses: Homebrew/actions/setup-homebrew@test
       - name: Check formulae
         run: brew test-bot --only-tap-syntax
   build:
