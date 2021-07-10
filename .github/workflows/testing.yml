@@ -9,8 +9,7 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
-    container:
-      image: homebrew/brew
+    container: ghcr.io/homebrew/ubuntu20.04
     steps:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
