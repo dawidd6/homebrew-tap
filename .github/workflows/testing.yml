@@ -10,7 +10,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     container:
-      image: homebrew/ubuntu16.04:master
+      image: homebrew/brew
     steps:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
