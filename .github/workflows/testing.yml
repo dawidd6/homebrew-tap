@@ -9,10 +9,12 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
-    container: ghcr.io/homebrew/ubuntu16.04:master
+    container:
+      image: ghcr.io/homebrew/ubuntu16.04:master
+      options: --user=linuxbrew
     steps:
       - name: Set up Homebrew
-        uses: Homebrew/actions/setup-homebrew@test
+        uses: Homebrew/actions/setup-homebrew@master
       - name: Check formulae
         run: brew test-bot --only-tap-syntax
   build:
