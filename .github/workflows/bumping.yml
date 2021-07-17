@@ -10,6 +10,8 @@ jobs:
   bump:
     continue-on-error: true
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/homebrew/ubuntu16.04:master
     steps:
       - name: Bump formulae
         uses: dawidd6/action-homebrew-bump-formula@v3
