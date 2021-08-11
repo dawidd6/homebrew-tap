@@ -1,10 +1,9 @@
 class CloneOrg < Formula
   desc "Clone all repos of a github organization"
   homepage "https://github.com/caarlos0/clone-org"
-  url "https://github.com/caarlos0/clone-org/archive/v1.2.0.tar.gz"
-  sha256 "930c1c71da669d45a9e8e006a1f2d5782c268bc35443bb7e648b7d1690936026"
+  url "https://github.com/caarlos0/clone-org/archive/v1.4.0.tar.gz"
+  sha256 "93f56f023a8abcecf53c523ffabedbb9971f355f29d481ce7abdb62dd3a33c99"
   license "MIT"
-  revision 1
   head "https://github.com/caarlos0/clone-org.git"
 
   bottle do
