@@ -17,11 +17,9 @@ jobs:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
       - name: Build bottles
-        env:
-          FORMULA:  ${{github.event.inputs.formula}}
         run: |
           brew test-bot --only-cleanup-before
-          brew test-bot --only-formulae --skip-recursive-dependents --keep-old $FORMULA
+          brew test-bot --only-formulae --skip-recursive-dependents --keep-old ${{github.event.inputs.formula}}
       - name: Upload bottles
         if: always()
         uses: actions/upload-artifact@v2
