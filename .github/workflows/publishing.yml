@@ -9,6 +9,8 @@ jobs:
   publish:
     if: contains(github.event.pull_request.labels.*.name, 'ok')
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/homebrew/ubuntu16.04:master
     steps:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
@@ -17,15 +19,11 @@ jobs:
       - name: Pull bottles
         env:
           HOMEBREW_GITHUB_API_TOKEN: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
-          PR: ${{github.event.pull_request.number}}
-          WORKFLOW: testing.yml
-        run: brew pr-pull --autosquash --tap=$GITHUB_REPOSITORY --workflows=$WORKFLOW $PR
+        run: brew pr-pull --autosquash --tap=${{github.repository}} --workflows=testing.yml ${{github.event.pull_request.number}}
       - name: Push commits
         uses: Homebrew/actions/git-try-push@master
         with:
           token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
       - name: Delete branch
         if: github.event.pull_request.head.repo.fork == false
-        env:
-          BRANCH: ${{github.event.pull_request.head.ref}}
-        run: git push --delete origin $BRANCH
+        run: git push --delete origin ${{github.event.pull_request.head.ref}}
