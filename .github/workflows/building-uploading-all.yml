@@ -1,4 +1,4 @@
-name: Building and Uploading
+name: Building and Uploading all
 
 on:
   workflow_dispatch:
