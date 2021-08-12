@@ -29,8 +29,6 @@ jobs:
   upload:
     needs: build
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/homebrew/ubuntu16.04:master
     steps:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
