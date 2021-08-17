@@ -1,8 +1,8 @@
 class GoAT1 < Formula
   desc "Go compiler 1.x (includes beta, alpha and rc releases)"
   homepage "https://golang.org"
-  url "https://dl.google.com/go/go1.17rc2.src.tar.gz"
-  sha256 "5ab21d75552390c63087518e4eba2972fb009aea97ff2bcc42dff264c5f46fe9"
+  url "https://dl.google.com/go/go1.17.src.tar.gz"
+  sha256 "3a70e5055509f347c0fb831ca07a2bf3b531068f349b14a3c652e9b5b67beb5d"
   license "BSD-3-Clause"
 
   livecheck do
