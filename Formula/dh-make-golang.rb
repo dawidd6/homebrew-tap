@@ -2,8 +2,8 @@ class DhMakeGolang < Formula
   desc "Automatically creates Debian packaging for Go packages"
   homepage "https://github.com/Debian/dh-make-golang"
   url "https://github.com/Debian/dh-make-golang.git",
-    tag:      "v0.5.0",
-    revision: "97f4545313cab2d689c3e493d276332ab259873a"
+    tag:      "v0.6.0",
+    revision: "1f3d77058a1bb9edadad78dbb0ad479cc26000cf"
   license "BSD-3-Clause"
   version_scheme 1
   head "https://github.com/Debian/dh-make-golang.git"
