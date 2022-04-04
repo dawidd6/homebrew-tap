@@ -1,9 +1,7 @@
 require "linkage_checker"
 
 class LinkageChecker
-  def check_dylibs(rebuild_cache:)
-    generic_check_dylibs(rebuild_cache: rebuild_cache)
-  end
+  alias generic_check_dylibs check_dylibs
 end
 
 class SpotifyLinux < Formula
