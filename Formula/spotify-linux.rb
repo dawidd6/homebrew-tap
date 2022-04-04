@@ -1,3 +1,9 @@
+class LinkageChecker
+  def check_dylibs(rebuild_cache:)
+    generic_check_dylibs(rebuild_cache: rebuild_cache)
+  end
+end
+
 class SpotifyLinux < Formula
   desc "Music streaming service"
   homepage "https://spotify.com"
