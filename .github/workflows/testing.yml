@@ -30,6 +30,10 @@ jobs:
     steps:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
+        with:
+          test-bot: false
+      - name: Tap test-bot
+        run: brew tap homebrew/test-bot https://github.com/dawidd6/homebrew-test-bot
       - name: Build bottles
         run: |
           brew test-bot --only-cleanup-before
