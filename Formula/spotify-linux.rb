@@ -11,6 +11,11 @@ class SpotifyLinux < Formula
     regex(/Version: [0-9]:(\d+(?:\.\d+)+\.?[a-z0-9]*)/i)
   end
 
+  bottle do
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/spotify-linux-1.1.72.439.gc253025e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "1b8ba34b1c23a9b2b12dc7138b4b3162522de729332e5f85ee4d5ebecaadc13b"
+  end
+
   depends_on arch: :x86_64
   depends_on :linux
 
