@@ -1,9 +1,3 @@
-require "linkage_checker"
-
-class LinkageChecker
-  alias generic_check_dylibs check_dylibs
-end
-
 class SpotifyLinux < Formula
   desc "Music streaming service"
   homepage "https://spotify.com"
