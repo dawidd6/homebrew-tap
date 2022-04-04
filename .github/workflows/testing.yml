@@ -33,7 +33,7 @@ jobs:
         with:
           test-bot: false
       - name: Tap test-bot
-        run: brew tap dawidd6/test-bot
+        run: brew tap homebrew/test-bot https://github.com/dawidd6/homebrew-test-bot
       - name: Build bottles
         run: |
           brew test-bot --only-cleanup-before
