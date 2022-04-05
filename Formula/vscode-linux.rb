@@ -8,7 +8,7 @@ class VscodeLinux < Formula
 
   livecheck do
     url "http://packages.microsoft.com/repos/vscode/dists/stable/main/binary-amd64/Packages"
-    regex(/Version: [0-9]:(\d+(?:\.\d+)+-[0-9]+)/i)
+    regex(/Version: (\d+(?:\.\d+)+-[0-9]+)/i)
   end
 
   depends_on arch: :x86_64
@@ -16,7 +16,7 @@ class VscodeLinux < Formula
 
   def install
     system "ar", "x", stable.downloader.basename
-    system "tar", "xzf", "data.tar.gz"
+    system "tar", "xJf", "data.tar.xz"
     system "tree"
     prefix.install "usr/share"
     bin.install_symlink share/"code/code"
