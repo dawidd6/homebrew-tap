@@ -17,23 +17,20 @@ class VscodeLinux < Formula
   def install
     system "ar", "x", stable.downloader.basename
     system "tar", "xJf", "data.tar.xz"
-    system "tar", "xJf", "control.tar.xz"
-    system "cat", "postinst"
-    system "tree"
-    system "false"
     prefix.install "usr/share"
     bin.install_symlink share/"code/bin/code"
     inreplace share/"applications/code.desktop" do |s|
       s.gsub! "Exec=/usr/share/code/code", "Exec=#{bin}/code"
+      s.gsub! "Icon=com.visualstudio.code", "Icon=#{share}/pixmaps/com.visualstudio.code.png"
+    end
+    inreplace share/"applications/code-url-handler.desktop" do |s|
+      s.gsub! "Exec=/usr/share/code/code", "Exec=#{bin}/code"
+      s.gsub! "Icon=com.visualstudio.code", "Icon=#{share}/pixmaps/com.visualstudio.code.png"
     end
   end
 
   def post_install
-    Dir[share/"code/icons/code-linux-*.png"].each do |file|
-      size = File.basename(file, ".png").split("-").last
-      system "xdg-icon-resource", "install", "--noupdate", "--size", size, file, "code"
-    end
-    system "xdg-icon-resource", "forceupdate"
+    system "xdg-desktop-menu", "install", "--novendor", share/"applications/code-url-handler.desktop"
     system "xdg-desktop-menu", "install", "--novendor", share/"applications/code.desktop"
     system "xdg-desktop-menu", "forceupdate"
   end
