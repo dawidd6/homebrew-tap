@@ -20,6 +20,7 @@ class VscodeLinux < Formula
     system "tar", "xJf", "control.tar.xz"
     system "cat", "postinst"
     system "tree"
+    system "false"
     prefix.install "usr/share"
     bin.install_symlink share/"code/bin/code"
     inreplace share/"applications/code.desktop" do |s|
@@ -38,6 +39,6 @@ class VscodeLinux < Formula
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/code --version")
+    assert_match version.to_s.split("-").first, shell_output("#{bin}/code --version")
   end
 end
