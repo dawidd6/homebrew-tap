@@ -13,7 +13,7 @@ class SpotifyLinux < Formula
 
   bottle do
     root_url "https://github.com/dawidd6/homebrew-tap/releases/download/spotify-linux-1.1.84.716.gc5f8b819"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "1b8ba34b1c23a9b2b12dc7138b4b3162522de729332e5f85ee4d5ebecaadc13b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "7b7bc418772e00f89d7abeafb29a8b6080d47f3914f32777645ae9186c083965"
   end
 
   depends_on arch: :x86_64
