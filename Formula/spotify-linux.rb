@@ -1,9 +1,9 @@
 class SpotifyLinux < Formula
   desc "Music streaming service"
   homepage "https://spotify.com"
-  url "https://repository-origin.spotify.com/pool/non-free/s/spotify-client/spotify-client_1.1.72.439.gc253025e_amd64.deb"
-  version "1.1.72.439.gc253025e"
-  sha256 "c211a16b6ed6627c4b7d8ca6997376f8345dca638938696933c5495405ce9e16"
+  url "https://repository-origin.spotify.com/pool/non-free/s/spotify-client/spotify-client_1.1.84.716.gc5f8b819_amd64.deb"
+  version "1.1.84.716.gc5f8b819"
+  sha256 "08e6b2666dc2a39624890e553a3046d05ecebe17bcc2fe930d49314b2fb812c7"
   license :cannot_represent
 
   livecheck do
@@ -12,7 +12,7 @@ class SpotifyLinux < Formula
   end
 
   bottle do
-    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/spotify-linux-1.1.72.439.gc253025e"
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/spotify-linux-1.1.84.716.gc5f8b819"
     sha256 cellar: :any_skip_relocation, x86_64_linux: "1b8ba34b1c23a9b2b12dc7138b4b3162522de729332e5f85ee4d5ebecaadc13b"
   end
 
