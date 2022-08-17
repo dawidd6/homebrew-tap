@@ -24,7 +24,6 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            workdir: /github/home
             container:
               image: ghcr.io/homebrew/ubuntu16.04:master
               options: --user=linuxbrew
@@ -36,12 +35,14 @@ jobs:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
       - name: Build bottles
-        working-directory: ${{matrix.workdir || github.workspace}}
-        run: brew test-bot
+        run: |
+          mkdir /tmp/bottles
+          cd /tmp/bottles
+          brew test-bot
       - name: Upload bottles
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: bottles
-          path: "${{matrix.workdir || github.workspace}}/*.bottle.*"
+          path: /tmp/bottles
           if-no-files-found: error
