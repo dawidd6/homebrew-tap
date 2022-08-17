@@ -17,4 +17,3 @@ jobs:
           token: ${{secrets.HOMEBREW_GITHUB_API_TOKEN}}
           tap: ${{github.repository}}
           livecheck: true
-          message: "@dawidd6"
