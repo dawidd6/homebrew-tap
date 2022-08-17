@@ -22,11 +22,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os:
-          - ubuntu-18.04
-          - macos-11
-          - macos-12
+        include:
+          - os: ubuntu-18.04
+            container:
+              image: ghcr.io/homebrew/ubuntu16.04:master
+              options: --user=linuxbrew
+          - os: macos-11
+          - os: macos-12
     runs-on: ${{matrix.os}}
+    container: ${{matrix.container}}
     steps:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
