@@ -4,7 +4,6 @@ class Gothanks < Formula
   url "https://github.com/psampaz/gothanks/archive/v0.4.0.tar.gz"
   sha256 "300b705751a43f6ae25df57d6c9a5b0c859e92d61fa83cf894329ea9662525f2"
   license "MIT"
-  revision 1
 
   bottle do
     root_url "https://github.com/dawidd6/homebrew-tap/releases/download/gothanks-0.4.0"
