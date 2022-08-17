@@ -36,7 +36,7 @@ jobs:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
       - name: Build bottles
-        working-directory: ${{matrix.workdir || github.workspace}}
+        working-directory: ${{matrix.workdir}}
         run: |
           mkdir bottles
           cd bottles
