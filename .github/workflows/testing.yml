@@ -36,14 +36,11 @@ jobs:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
       - name: Build bottles
-        working-directory: ${{matrix.workdir}}
-        run: |
-          mkdir bottles
-          cd bottles
-          brew test-bot
+        working-directory: ${{matrix.workdir || github.workspace}}
+        run: brew test-bot
       - name: Upload bottles
         if: always()
         uses: actions/upload-artifact@v2
         with:
           name: bottles
-          path: ${{matrix.workdir || github.workspace}}/bottles
+          path: "${{matrix.workdir || github.workspace}}/*.bottle.*"
