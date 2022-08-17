@@ -36,13 +36,13 @@ jobs:
         uses: Homebrew/actions/setup-homebrew@master
       - name: Build bottles
         run: |
-          mkdir /tmp/bottles
-          cd /tmp/bottles
+          mkdir ~/bottles
+          cd ~/bottles
           brew test-bot
       - name: Upload bottles
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: bottles
-          path: /tmp/bottles
+          path: ~/bottles
           if-no-files-found: error
