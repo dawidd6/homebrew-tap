@@ -40,7 +40,8 @@ jobs:
         run: brew test-bot
       - name: Upload bottles
         if: always()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: bottles
           path: "${{matrix.workdir || github.workspace}}/*.bottle.*"
+          if-no-files-found: error
