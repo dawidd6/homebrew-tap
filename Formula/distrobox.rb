@@ -6,6 +6,11 @@ class Distrobox < Formula
   license "GPL-3.0-only"
   head "https://github.com/89luca89/distrobox.git", branch: "main"
 
+  bottle do
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/distrobox-1.3.1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "86b0209d18b036a68b5560f4f0fa0ee850008cbea0abefdeb5ea145791411ed8"
+  end
+
   depends_on :linux
 
   def install
