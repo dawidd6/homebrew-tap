@@ -15,8 +15,10 @@ class Quickemu < Formula
 
   depends_on "bash"
   depends_on "qemu"
+  depends_on "spice-gtk"
 
   def install
+    inreplace "quickemu", "/usr/share", share
     bin.install "quickget"
     bin.install "quickemu"
     man1.install "docs/quickget.1"
