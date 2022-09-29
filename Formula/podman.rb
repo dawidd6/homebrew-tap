@@ -10,10 +10,8 @@ class Podman < Formula
   # Try to switch to the latest go on the next release
   depends_on "go@1.18" => :build
   depends_on "pkg-config" => :build
-  depends_on "device-mapper"
   depends_on "gpgme"
   depends_on :linux
-  depends_on "qemu"
 
   resource "gvproxy" do
     url "https://github.com/containers/gvisor-tap-vsock/archive/v0.4.0.tar.gz"
@@ -39,7 +37,7 @@ class Podman < Formula
   end
 
   def install
-    ENV["BUILDTAGS"] = "exclude_graphdriver_btrfs"
+    ENV["BUILDTAGS"] = "exclude_graphdriver_btrfs exclude_graphdriver_devicemapper"
     ENV["HELPER_BINARIES_DIR"] = "$$BINDIR/../libexec/podman"
     ENV["PREFIX"] = prefix
     system "make"
