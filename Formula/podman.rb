@@ -6,12 +6,14 @@ class Podman < Formula
   license "Apache-2.0"
 
   depends_on "go-md2man" => :build
-  # Required latest gvisor.dev/gvisor/pkg/gohacks
-  # Try to switch to the latest go on the next release
-  depends_on "go@1.18" => :build
+  depends_on "go" => :build
   depends_on "pkg-config" => :build
+  depends_on "conmon"
+  depends_on "crun"
+  depends_on "fuse-overlayfs"
   depends_on "gpgme"
   depends_on :linux
+  depends_on "slirp4netns"
 
   def install
     ENV["PREFIX"] = prefix
