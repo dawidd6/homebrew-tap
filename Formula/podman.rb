@@ -10,6 +10,7 @@ class Podman < Formula
   # Try to switch to the latest go on the next release
   depends_on "go@1.18" => :build
   depends_on "pkg-config" => :build
+  depends_on "device-mapper"
   depends_on "gpgme"
   depends_on :linux
   depends_on "qemu"
