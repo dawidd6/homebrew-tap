@@ -11,19 +11,12 @@ class Podman < Formula
   depends_on "go@1.18" => :build
   depends_on "pkg-config" => :build
   depends_on "gpgme"
-  depends_on "llvm"
   depends_on :linux
 
-  resource "gvproxy" do
-    url "https://github.com/containers/gvisor-tap-vsock/archive/v0.4.0.tar.gz"
-    sha256 "896cf02fbabce9583a1bba21e2b384015c0104d634a73a16d2f44552cf84d972"
-  end
-
   def install
-    ENV["BUILDTAGS"] = "exclude_graphdriver_btrfs exclude_graphdriver_devicemapper"
     ENV["PREFIX"] = prefix
-    system "make", "podman", "docs"
-    system "make", "install.bin", "install.man", "install.completions"
+    system "make", "build-no-cgo"
+    system "make", "install.bin", "install.remote", "install.man", "install.completions"
   end
 
   test do
