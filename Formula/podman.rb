@@ -20,6 +20,6 @@ class Podman < Formula
   end
 
   test do
-    system bin/"podman"
+    system bin/"podman", "run", "--rm", "docker.io/library/alpine", "true"
   end
 end
