@@ -5,8 +5,8 @@ class Podman < Formula
   sha256 "b10004e91a9f5528da450466ec8e6f623eaa28ada79e3044c238895b2c8d1df3"
   license "Apache-2.0"
 
-  depends_on "go-md2man" => :build
   depends_on "go" => :build
+  depends_on "go-md2man" => :build
   depends_on "pkg-config" => :build
   depends_on "conmon"
   depends_on "crun"
@@ -22,6 +22,6 @@ class Podman < Formula
   end
 
   test do
-    system bin/"podman", "run", "--rm", "docker.io/library/alpine", "true"
+    system bin/"podman", "system", "info"
   end
 end
