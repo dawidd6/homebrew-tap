@@ -11,6 +11,7 @@ class Podman < Formula
   depends_on "go@1.18" => :build
   depends_on "pkg-config" => :build
   depends_on "gpgme"
+  depends_on "llvm"
   depends_on :linux
 
   resource "gvproxy" do
