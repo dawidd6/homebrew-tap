@@ -6,6 +6,13 @@ class Quickemu < Formula
   license "MIT"
   head "https://github.com/quickemu-project/quickemu.git", branch: "master"
 
+  bottle do
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/quickemu-4.3"
+    sha256 cellar: :any_skip_relocation, monterey:     "1d72f793b84d9533ea1119e66df6b8438cc63b6fa07bc09f5a8c53f97c16d0c8"
+    sha256 cellar: :any_skip_relocation, big_sur:      "7acfc23719ab285f55928dfb4706c33e996e45de347ecea964d9fb08fe658eb2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "ad3b6c71a3fa6c795a70fdff722458b7eda15048e37434df7700cdfda266766d"
+  end
+
   depends_on "bash"
   depends_on "qemu"
 
