@@ -1,0 +1,17 @@
+name: Checking
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/homebrew/ubuntu22.04:master
+    steps:
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+      - name: Check formulae
+        run: brew test-bot --only-tap-syntax
