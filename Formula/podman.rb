@@ -39,7 +39,7 @@ class Podman < Formula
   end
 
   def install
-    ENV["BUILDTAGS"] = ""
+    ENV["BUILDTAGS"] = "exclude_graphdriver_btrfs"
     ENV["HELPER_BINARIES_DIR"] = "$$BINDIR/../libexec/podman"
     ENV["PREFIX"] = prefix
     system "make"
