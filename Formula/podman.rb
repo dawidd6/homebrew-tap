@@ -7,7 +7,8 @@ class Podman < Formula
 
   bottle do
     root_url "https://github.com/dawidd6/homebrew-tap/releases/download/podman-4.2.1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "871b99aa71ea5f264dae3fa416b07a285c32128688791848e2aac58ab41b9fff"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "33116702d0144fc6be18ccef270843545263e375660a131d06e247ee29a287db"
   end
 
   depends_on "go" => :build
