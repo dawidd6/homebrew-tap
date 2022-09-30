@@ -22,9 +22,10 @@ class Podman < Formula
   depends_on "slirp4netns"
 
   def install
-    (bulidpath/".brew_home/.config/go/env").write <<~EOS
+    (buildpath/".brew_home/.config/go/env").write <<~EOS
       CC=gcc
     EOS
+    ENV.O0
     ENV["CGO_CFLAGS"] = ""
     ENV["BUILDTAGS"] = "exclude_graphdriver_devicemapper exclude_graphdriver_btrfs seccomp"
     ENV["PREFIX"] = prefix
