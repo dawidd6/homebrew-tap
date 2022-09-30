@@ -22,7 +22,7 @@ class Podman < Formula
   depends_on "slirp4netns"
 
   def install
-    (bulidpath/".brew_home/.config/go/env" <<~EOS
+    (bulidpath/".brew_home/.config/go/env").write <<~EOS
       CC=gcc
     EOS
     ENV["CGO_CFLAGS"] = ""
