@@ -24,13 +24,14 @@ class Podman < Formula
 
   def install
     ENV.O0
-    # ENV["BUILDTAGS"] = "exclude_graphdriver_devicemapper exclude_graphdriver_btrfs seccomp systemd"
     ENV["PREFIX"] = prefix
     system "make", "podman", "podman-remote", "rootlessport", "docs"
     system "make", "install.bin", "install.remote", "install.man", "install.completions"
   end
 
   test do
-    assert_match "is not a shared mount", shell_output("#{bin}/podman run --rm docker.io/library/alpine true 2>&1", 125)
+    out = shell_output("#{bin}/podman run --rm docker.io/library/alpine true 2>&1", 125)
+    assert_match "is not a shared mount", out
+    assert_match "this could cause issues or missing mounts with rootless containers", out
   end
 end
