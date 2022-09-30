@@ -5,6 +5,11 @@ class Uidmap < Formula
   sha256 "3d3ec447cfdd11ab5f0486ebc47d15718349d13fea41fc8584568bc118083ccd"
   license "BSD-3-Clause"
 
+  bottle do
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/uidmap-4.12.3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "dfa6f63286f7bd0467ba0bb20392fda549b09bb978145355c25169803acb69f6"
+  end
+
   depends_on "libxcrypt"
   depends_on :linux
 
