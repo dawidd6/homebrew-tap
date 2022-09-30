@@ -22,6 +22,7 @@ class Podman < Formula
   depends_on :linux
   depends_on "slirp4netns"
   depends_on "systemd"
+  depends_on "uidmap"
 
   def install
     ENV.O0
