@@ -29,6 +29,8 @@ class Podman < Formula
     ENV["PREFIX"] = prefix
     system "make", "podman", "podman-remote", "rootlessport", "docs"
     system "make", "install.bin", "install.remote", "install.man", "install.completions"
+    (etc/"containers").install "test/policy.json"
+    (etc/"containers").install "test/registries.conf"
   end
 
   test do
