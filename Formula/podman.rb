@@ -17,16 +17,22 @@ class Podman < Formula
   depends_on "crun"
   depends_on "fuse-overlayfs"
   depends_on "gpgme"
+  depends_on "libseccomp"
   depends_on :linux
   depends_on "slirp4netns"
 
   def install
+    (bulidpath/".brew_home/.config/go/env" <<~EOS
+      CC=gcc
+    EOS
+    ENV["CGO_CFLAGS"] = ""
+    ENV["BUILDTAGS"] = "exclude_graphdriver_devicemapper exclude_graphdriver_btrfs seccomp"
     ENV["PREFIX"] = prefix
-    system "make", "build-no-cgo"
+    system "make", "podman", "podman-remote", "rootlessport", "docs"
     system "make", "install.bin", "install.remote", "install.man", "install.completions"
   end
 
   test do
-    system bin/"podman", "--help"
+    system bin/"podman", "run", "--rm", "docker.io/library/alpine", "true"
   end
 end
