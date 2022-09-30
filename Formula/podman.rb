@@ -17,16 +17,21 @@ class Podman < Formula
   depends_on "crun"
   depends_on "fuse-overlayfs"
   depends_on "gpgme"
+  depends_on "libseccomp"
   depends_on :linux
   depends_on "slirp4netns"
+  depends_on "systemd"
 
   def install
+    ENV.O0
     ENV["PREFIX"] = prefix
-    system "make", "build-no-cgo"
+    system "make", "podman", "podman-remote", "rootlessport", "docs"
     system "make", "install.bin", "install.remote", "install.man", "install.completions"
   end
 
   test do
-    system bin/"podman", "--help"
+    out = shell_output("#{bin}/podman run --rm docker.io/library/alpine true 2>&1", 125)
+    assert_match "is not a shared mount", out
+    assert_match "this could cause issues or missing mounts with rootless containers", out
   end
 end
