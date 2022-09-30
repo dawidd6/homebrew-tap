@@ -22,6 +22,6 @@ class Podman < Formula
   end
 
   test do
-    system bin/"podman", "version"
+    system bin/"podman", "--help"
   end
 end
