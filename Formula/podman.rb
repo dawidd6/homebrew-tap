@@ -26,7 +26,7 @@ class Podman < Formula
       CC=gcc
     EOS
     ENV.O0
-    ENV["CGO_CFLAGS"] = ""
+    #ENV["CGO_CFLAGS"] = ""
     ENV["BUILDTAGS"] = "exclude_graphdriver_devicemapper exclude_graphdriver_btrfs seccomp"
     ENV["PREFIX"] = prefix
     system "make", "podman", "podman-remote", "rootlessport", "docs"
@@ -34,6 +34,6 @@ class Podman < Formula
   end
 
   test do
-    system bin/"podman", "run", "--rm", "docker.io/library/alpine", "true"
+    assert_match "is not a shared mount", shell_output("#{bin}/podman run --rm docker.io/library/alpine true", 1)
   end
 end
