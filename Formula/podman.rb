@@ -22,11 +22,10 @@ class Podman < Formula
   depends_on "slirp4netns"
 
   def install
-    (buildpath/".brew_home/.config/go/env").write <<~EOS
-      CC=gcc
-    EOS
+    #(buildpath/".brew_home/.config/go/env").write <<~EOS
+    #  CC=gcc
+    #EOS
     ENV.O0
-    #ENV["CGO_CFLAGS"] = ""
     ENV["BUILDTAGS"] = "exclude_graphdriver_devicemapper exclude_graphdriver_btrfs seccomp"
     ENV["PREFIX"] = prefix
     system "make", "podman", "podman-remote", "rootlessport", "docs"
@@ -34,6 +33,6 @@ class Podman < Formula
   end
 
   test do
-    assert_match "is not a shared mount", shell_output("#{bin}/podman run --rm docker.io/library/alpine true", 1)
+    assert_match "is not a shared mount", shell_output("#{bin}/podman run --rm docker.io/library/alpine true", 125)
   end
 end
