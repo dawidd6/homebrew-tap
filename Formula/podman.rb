@@ -22,7 +22,6 @@ class Podman < Formula
   depends_on :linux
   depends_on "slirp4netns"
   depends_on "systemd"
-  depends_on "uidmap"
 
   def install
     ENV.O0
@@ -31,6 +30,12 @@ class Podman < Formula
     system "make", "install.bin", "install.remote", "install.man", "install.completions"
     (etc/"containers").install "test/policy.json"
     (etc/"containers").install "test/registries.conf"
+  end
+
+  def caveats
+    <<~EOS
+      Needs newuidmap and newgidmap installed system-wide as root.
+    EOS
   end
 
   test do
