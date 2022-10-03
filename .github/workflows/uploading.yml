@@ -8,7 +8,7 @@ on:
 jobs:
   uploading:
     if: contains(github.event.pull_request.labels.*.name, 'ok')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
