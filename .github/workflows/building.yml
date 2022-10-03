@@ -5,26 +5,23 @@ on:
 
 jobs:
   build:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-latest
-            container:
-              image: ghcr.io/homebrew/ubuntu22.04:master
-              options: --user=linuxbrew
-          - os: macos-11
-          - os: macos-12
-    runs-on: ${{matrix.os}}
-    container: ${{matrix.container}}
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/homebrew/ubuntu22.04:master
+      options: --user=linuxbrew --privileged
     steps:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Install uidmap in container
+        run: sudo apt update && sudo apt install -y uidmap
+
       - name: Build bottles
         run: |
           mkdir ~/bottles
           cd ~/bottles
           brew test-bot
+
       - name: Upload bottles
         if: always()
         uses: actions/upload-artifact@v3
