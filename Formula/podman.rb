@@ -3,7 +3,8 @@ class Podman < Formula
   homepage "https://podman.io/"
   url "https://github.com/containers/podman/archive/v4.2.1.tar.gz"
   sha256 "b10004e91a9f5528da450466ec8e6f623eaa28ada79e3044c238895b2c8d1df3"
-  license "Apache-2.0"
+  license all_of: ["Apache-2.0", "GPL-3.0-or-later"]
+  revision 1
 
   bottle do
     root_url "https://github.com/dawidd6/homebrew-tap/releases/download/podman-4.2.1"
@@ -26,11 +27,6 @@ class Podman < Formula
   depends_on "slirp4netns"
   depends_on "systemd"
 
-  resource "storage.conf" do
-    url "https://src.fedoraproject.org/rpms/containers-common/raw/23d18a07d33c4db77905a38a77278c7a499ee097/f/storage.conf"
-    sha256 "c426db62a5dd5e5af54f3b4608cbc4da2ef682f0a6b02d9cb9000c1231df48dc"
-  end
-
   resource "catatonit" do
     url "https://github.com/openSUSE/catatonit/archive/refs/tags/v0.1.7.tar.gz"
     sha256 "e22bc72ebc23762dad8f5d2ed9d5ab1aaad567bdd54422f1d1da775277a93296"
@@ -52,22 +48,43 @@ class Podman < Formula
     sha256 "434163027660feebb87e288d9c9f8468a1a9d1a632d1f9fe0a84585dfde3f4dd"
   end
 
-  # Patch to fix "podman run --rm" hanging on stopping the container.
-  patch :DATA
-
   def install
+    etc_containers_paths = %w[
+      pkg/trust/policy.go
+      pkg/trust/registries.go
+      vendor/github.com/containers/common/libnetwork/network/interface_linux.go
+      vendor/github.com/containers/common/pkg/config/default.go
+      vendor/github.com/containers/common/pkg/hooks/hooks.go
+      vendor/github.com/containers/common/pkg/machine/machine.go
+      vendor/github.com/containers/common/pkg/subscriptions/subscriptions.go
+      vendor/github.com/containers/image/v5/pkg/sysregistriesv2/paths_common.go
+      vendor/github.com/containers/image/v5/signature/policy_paths_common.go
+      vendor/github.com/containers/storage/types/options_linux.go
+    ]
+    etc_paths = %w[
+      vendor/github.com/containers/common/pkg/config/config_linux.go
+    ]
+    inreplace etc_containers_paths, "/etc/containers/", etc/"containers/"
+    inreplace etc_paths, "/etc", etc
     ENV.O0
     ENV["PREFIX"] = prefix
-    ENV["EXTRA_LDFLAGS"] = %W[
-      -X github.com/containers/storage/types.defaultConfigFile=#{etc}/containers/storage.conf
-      -X github.com/containers/image/v5/signature.systemDefaultPolicyPath=#{etc}/containers/policy.json
-      -X github.com/containers/common/pkg/config.additionalHelperBinariesDir=#{libexec}/podman
-      -X github.com/containers/common/pkg/config.additionalConmonEnvPath=#{HOMEBREW_PREFIX}/bin
-    ].join(" ")
+    ENV["HELPER_BINARIES_DIR"] = opt_libexec/"podman"
     system "make", "podman", "podman-remote", "rootlessport", "docs"
     system "make", "install.bin", "install.remote", "install.man", "install.completions"
-    (etc/"containers").install "test/policy.json"
-    (etc/"containers").install resource("storage.conf")
+    (prefix/"etc/containers/policy.json").write <<~EOS
+      {"default":[{"type":"insecureAcceptAnything"}]}
+    EOS
+    (prefix/"etc/containers/storage.conf").write <<~EOS
+      [storage]
+      driver="overlay"
+    EOS
+    (prefix/"etc/containers/registries.conf").write <<~EOS
+      unqualified-search-registries=["docker.io"]
+    EOS
+    (prefix/"etc/containers/containers.conf").write <<~EOS
+      [engine]
+      conmon_env_vars=["PATH=#{HOMEBREW_PREFIX}/bin:/usr/sbin:/usr/bin"]
+    EOS
     resource("catatonit").stage do
       system "./autogen.sh"
       system "./configure"
@@ -122,31 +139,10 @@ class Podman < Formula
     assert_match "graphDriverName: overlay", out
     # Pull the image earlier so we won't measure the network bandwidth below too.
     # It checks if policy.json file is properly read.
-    system bin/"podman", "pull", "docker.io/library/alpine"
+    # It checks if registries.conf is recognized.
+    system bin/"podman", "pull", "alpine"
     # Below command should be fast.
-    # It checks if "podman run --rm" patch is still working.
-    system "timeout", "5", bin/"podman", "run", "--rm", "docker.io/library/alpine", "true"
+    # It checks if containers.conf is properly filled (conmon_env_vars).
+    system "timeout", "5", bin/"podman", "run", "--rm", "alpine", "true"
   end
 end
-__END__
-diff --git a/vendor/github.com/containers/common/pkg/config/default.go b/vendor/github.com/containers/common/pkg/config/default.go
-index 161a9c8d6..003a3f34e 100644
---- a/vendor/github.com/containers/common/pkg/config/default.go
-+++ b/vendor/github.com/containers/common/pkg/config/default.go
-@@ -103,6 +103,7 @@ var (
- 	// should be set during link-time, if different packagers put their
- 	// helper binary in a different location.
- 	additionalHelperBinariesDir string
-+	additionalConmonEnvPath string
- )
- 
- // nolint:unparam
-@@ -359,7 +360,7 @@ func defaultConfigFromMemory() (*EngineConfig, error) {
- 	c.OCIRuntime = c.findRuntime()
- 
- 	c.ConmonEnvVars = []string{
--		"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
-+		fmt.Sprintf("PATH=%s:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", additionalConmonEnvPath),
- 	}
- 	c.ConmonPath = []string{
- 		"/usr/libexec/podman/conmon",
