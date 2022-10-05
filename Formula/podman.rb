@@ -47,6 +47,9 @@ class Podman < Formula
     sha256 "434163027660feebb87e288d9c9f8468a1a9d1a632d1f9fe0a84585dfde3f4dd"
   end
 
+  # Fix conmon PATH. Remove on next release.
+  patch :DATA
+
   def install
     etc_containers_paths = %w[
       pkg/trust/policy.go
@@ -79,10 +82,6 @@ class Podman < Formula
     EOS
     (prefix/"etc/containers/registries.conf").write <<~EOS
       unqualified-search-registries=["docker.io"]
-    EOS
-    (prefix/"etc/containers/containers.conf").write <<~EOS
-      [engine]
-      conmon_env_vars=["PATH=#{HOMEBREW_PREFIX}/bin:/usr/sbin:/usr/bin"]
     EOS
     resource("catatonit").stage do
       system "./autogen.sh"
@@ -145,3 +144,26 @@ class Podman < Formula
     system "timeout", "5", bin/"podman", "run", "--rm", "alpine", "true"
   end
 end
+__END__
+diff --git a/libpod/oci_conmon_linux.go b/libpod/oci_conmon_linux.go
+index c3725cdb46788837f692371802ad1cc2392c8fb7..2c7c39726568d7dccc50f707b53074c3dd4448c6 100644
+--- a/libpod/oci_conmon_linux.go
++++ b/libpod/oci_conmon_linux.go
+@@ -1221,10 +1221,15 @@ func (r *ConmonOCIRuntime) configureConmonEnv(runtimeDir string) []string {
+ 			env = append(env, e)
+ 		}
+ 	}
+-	conf, ok := os.LookupEnv("CONTAINERS_CONF")
+-	if ok {
++	if path, ok := os.LookupEnv("PATH"); ok {
++		env = append(env, fmt.Sprintf("PATH=%s", path))
++	}
++	if conf, ok := os.LookupEnv("CONTAINERS_CONF"); ok {
+ 		env = append(env, fmt.Sprintf("CONTAINERS_CONF=%s", conf))
+ 	}
++	if conf, ok := os.LookupEnv("CONTAINERS_HELPER_BINARY_DIR"); ok {
++		env = append(env, fmt.Sprintf("CONTAINERS_HELPER_BINARY_DIR=%s", conf))
++	}
+ 	env = append(env, fmt.Sprintf("XDG_RUNTIME_DIR=%s", runtimeDir))
+ 	env = append(env, fmt.Sprintf("_CONTAINERS_USERNS_CONFIGURED=%s", os.Getenv("_CONTAINERS_USERNS_CONFIGURED")))
+ 	env = append(env, fmt.Sprintf("_CONTAINERS_ROOTLESS_UID=%s", os.Getenv("_CONTAINERS_ROOTLESS_UID")))
