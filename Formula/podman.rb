@@ -47,6 +47,13 @@ class Podman < Formula
     sha256 "434163027660feebb87e288d9c9f8468a1a9d1a632d1f9fe0a84585dfde3f4dd"
   end
 
+  # Fix conmon PATH. Remove on next release.
+  patch do
+    url "https://github.com/containers/podman/commit/940d3d889221e21cc24705381b2c2d11d75f39bf.patch?full_index=1"
+    sha256 "fd8aa13afbdb3fdf8c9780e46f0951e76201d4eca45db89f4d534e9e4044f2df"
+    file "libpod/oci_conmon_linux.go"
+  end
+
   def install
     etc_containers_paths = %w[
       pkg/trust/policy.go
@@ -79,10 +86,6 @@ class Podman < Formula
     EOS
     (prefix/"etc/containers/registries.conf").write <<~EOS
       unqualified-search-registries=["docker.io"]
-    EOS
-    (prefix/"etc/containers/containers.conf").write <<~EOS
-      [engine]
-      conmon_env_vars=["PATH=#{HOMEBREW_PREFIX}/bin:/usr/sbin:/usr/bin"]
     EOS
     resource("catatonit").stage do
       system "./autogen.sh"
