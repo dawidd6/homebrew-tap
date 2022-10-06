@@ -48,11 +48,7 @@ class Podman < Formula
   end
 
   # Fix conmon PATH. Remove on next release.
-  patch do
-    url "https://github.com/containers/podman/commit/940d3d889221e21cc24705381b2c2d11d75f39bf.patch?full_index=1"
-    sha256 "fd8aa13afbdb3fdf8c9780e46f0951e76201d4eca45db89f4d534e9e4044f2df"
-    file "libpod/oci_conmon_linux.go"
-  end
+  patch :DATA
 
   def install
     etc_containers_paths = %w[
@@ -148,3 +144,26 @@ class Podman < Formula
     system "timeout", "5", bin/"podman", "run", "--rm", "alpine", "true"
   end
 end
+__END__
+diff --git a/libpod/oci_conmon_linux.go b/libpod/oci_conmon_linux.go
+index c3725cdb46788837f692371802ad1cc2392c8fb7..2c7c39726568d7dccc50f707b53074c3dd4448c6 100644
+--- a/libpod/oci_conmon_linux.go
++++ b/libpod/oci_conmon_linux.go
+@@ -1221,10 +1221,15 @@ func (r *ConmonOCIRuntime) configureConmonEnv(runtimeDir string) []string {
+ 			env = append(env, e)
+ 		}
+ 	}
+-	conf, ok := os.LookupEnv("CONTAINERS_CONF")
+-	if ok {
++	if path, ok := os.LookupEnv("PATH"); ok {
++		env = append(env, fmt.Sprintf("PATH=%s", path))
++	}
++	if conf, ok := os.LookupEnv("CONTAINERS_CONF"); ok {
+ 		env = append(env, fmt.Sprintf("CONTAINERS_CONF=%s", conf))
+ 	}
++	if conf, ok := os.LookupEnv("CONTAINERS_HELPER_BINARY_DIR"); ok {
++		env = append(env, fmt.Sprintf("CONTAINERS_HELPER_BINARY_DIR=%s", conf))
++	}
+ 	env = append(env, fmt.Sprintf("XDG_RUNTIME_DIR=%s", runtimeDir))
+ 	env = append(env, fmt.Sprintf("_CONTAINERS_USERNS_CONFIGURED=%s", os.Getenv("_CONTAINERS_USERNS_CONFIGURED")))
+ 	env = append(env, fmt.Sprintf("_CONTAINERS_ROOTLESS_UID=%s", os.Getenv("_CONTAINERS_ROOTLESS_UID")))
