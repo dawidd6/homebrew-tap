@@ -8,7 +8,8 @@ class Podman < Formula
 
   bottle do
     root_url "https://github.com/dawidd6/homebrew-tap/releases/download/podman-4.2.1_1"
-    sha256 x86_64_linux: "da795edda1123c24f350e6b7391be9bc891fe2a8804a742b7351d574274de4d5"
+    rebuild 1
+    sha256 x86_64_linux: "30c25e81159e9378957926d57e5d52e1c199a39b14c543db9ac770db01ba0eae"
   end
 
   depends_on "autoconf" => :build
