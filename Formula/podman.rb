@@ -6,9 +6,8 @@ class Podman < Formula
   license all_of: ["Apache-2.0", "GPL-3.0-or-later"]
 
   bottle do
-    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/podman-4.2.1_1"
-    rebuild 1
-    sha256 x86_64_linux: "30c25e81159e9378957926d57e5d52e1c199a39b14c543db9ac770db01ba0eae"
+    root_url "https://github.com/dawidd6/homebrew-tap/releases/download/podman-4.3.0"
+    sha256 x86_64_linux: "a3c4c96e0db2e902a3dfac545a9969e35d0dfe52541630c644b2a08e19acad29"
   end
 
   depends_on "autoconf" => :build
