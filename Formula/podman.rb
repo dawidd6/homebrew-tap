@@ -1,10 +1,9 @@
 class Podman < Formula
   desc "Tool for managing OCI containers and pods"
   homepage "https://podman.io/"
-  url "https://github.com/containers/podman/archive/v4.2.1.tar.gz"
-  sha256 "b10004e91a9f5528da450466ec8e6f623eaa28ada79e3044c238895b2c8d1df3"
+  url "https://github.com/containers/podman/archive/v4.3.0.tar.gz"
+  sha256 "55a3a09b80f23f78aaeb74fbf878fa0b1ef1842e5b282ad61e82a9dc4c74bf34"
   license all_of: ["Apache-2.0", "GPL-3.0-or-later"]
-  revision 1
 
   bottle do
     root_url "https://github.com/dawidd6/homebrew-tap/releases/download/podman-4.2.1_1"
@@ -48,52 +47,44 @@ class Podman < Formula
     sha256 "434163027660feebb87e288d9c9f8468a1a9d1a632d1f9fe0a84585dfde3f4dd"
   end
 
-  # Fix conmon PATH. Remove on next release.
-  patch :DATA
-
   def install
-    etc_containers_paths = %w[
-      pkg/trust/policy.go
-      pkg/trust/registries.go
-      vendor/github.com/containers/common/libnetwork/network/interface_linux.go
-      vendor/github.com/containers/common/pkg/config/default.go
-      vendor/github.com/containers/common/pkg/hooks/hooks.go
-      vendor/github.com/containers/common/pkg/machine/machine.go
-      vendor/github.com/containers/common/pkg/subscriptions/subscriptions.go
-      vendor/github.com/containers/image/v5/pkg/sysregistriesv2/paths_common.go
-      vendor/github.com/containers/image/v5/signature/policy_paths_common.go
-      vendor/github.com/containers/storage/types/options_linux.go
-    ]
-    etc_paths = %w[
-      vendor/github.com/containers/common/pkg/config/config_linux.go
-    ]
-    inreplace etc_containers_paths, "/etc/containers/", etc/"containers/"
-    inreplace etc_paths, "/etc", etc
+    paths = Dir["**/*.go"].select do |file|
+      (buildpath/file).read.lines.grep(%r{/etc/containers/}).any?
+    end
+    inreplace paths, "/etc/containers/", etc/"containers/"
+
     ENV.O0
     ENV["PREFIX"] = prefix
     ENV["HELPER_BINARIES_DIR"] = opt_libexec/"podman"
-    system "make", "podman", "podman-remote", "rootlessport", "docs"
-    system "make", "install.bin", "install.remote", "install.man", "install.completions"
+
+    system "make"
+    system "make", "install", "install.completions"
+
     (prefix/"etc/containers/policy.json").write <<~EOS
       {"default":[{"type":"insecureAcceptAnything"}]}
     EOS
+
     (prefix/"etc/containers/storage.conf").write <<~EOS
       [storage]
       driver="overlay"
     EOS
+
     (prefix/"etc/containers/registries.conf").write <<~EOS
       unqualified-search-registries=["docker.io"]
     EOS
+
     resource("catatonit").stage do
       system "./autogen.sh"
       system "./configure"
       system "make"
       mv "catatonit", libexec/"podman/"
     end
+
     resource("netavark").stage do
       system "cargo", "install", *std_cargo_args
       mv bin/"netavark", libexec/"podman/"
     end
+
     resource("aardvark-dns").stage do
       system "cargo", "install", *std_cargo_args
       mv bin/"aardvark-dns", libexec/"podman/"
@@ -102,7 +93,8 @@ class Podman < Formula
 
   def caveats
     <<~EOS
-      Needs newuidmap and newgidmap installed system-wide as root.
+      You need "newuidmap" and "newgidmap" binaries installed system-wide
+      for rootless containers to work properly.
     EOS
   end
 
@@ -145,26 +137,3 @@ class Podman < Formula
     system "timeout", "5", bin/"podman", "run", "--rm", "alpine", "true"
   end
 end
-__END__
-diff --git a/libpod/oci_conmon_linux.go b/libpod/oci_conmon_linux.go
-index c3725cdb46788837f692371802ad1cc2392c8fb7..2c7c39726568d7dccc50f707b53074c3dd4448c6 100644
---- a/libpod/oci_conmon_linux.go
-+++ b/libpod/oci_conmon_linux.go
-@@ -1221,10 +1221,15 @@ func (r *ConmonOCIRuntime) configureConmonEnv(runtimeDir string) []string {
- 			env = append(env, e)
- 		}
- 	}
--	conf, ok := os.LookupEnv("CONTAINERS_CONF")
--	if ok {
-+	if path, ok := os.LookupEnv("PATH"); ok {
-+		env = append(env, fmt.Sprintf("PATH=%s", path))
-+	}
-+	if conf, ok := os.LookupEnv("CONTAINERS_CONF"); ok {
- 		env = append(env, fmt.Sprintf("CONTAINERS_CONF=%s", conf))
- 	}
-+	if conf, ok := os.LookupEnv("CONTAINERS_HELPER_BINARY_DIR"); ok {
-+		env = append(env, fmt.Sprintf("CONTAINERS_HELPER_BINARY_DIR=%s", conf))
-+	}
- 	env = append(env, fmt.Sprintf("XDG_RUNTIME_DIR=%s", runtimeDir))
- 	env = append(env, fmt.Sprintf("_CONTAINERS_USERNS_CONFIGURED=%s", os.Getenv("_CONTAINERS_USERNS_CONFIGURED")))
- 	env = append(env, fmt.Sprintf("_CONTAINERS_ROOTLESS_UID=%s", os.Getenv("_CONTAINERS_ROOTLESS_UID")))
