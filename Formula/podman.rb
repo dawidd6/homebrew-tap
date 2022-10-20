@@ -52,39 +52,39 @@ class Podman < Formula
       (buildpath/file).read.lines.grep(%r{/etc/containers/}).any?
     end
     inreplace paths, "/etc/containers/", etc/"containers/"
-    
+
     ENV.O0
     ENV["PREFIX"] = prefix
     ENV["HELPER_BINARIES_DIR"] = opt_libexec/"podman"
-    
+
     system "make"
     system "make", "install", "install.completions"
-    
+
     (prefix/"etc/containers/policy.json").write <<~EOS
       {"default":[{"type":"insecureAcceptAnything"}]}
     EOS
-    
+
     (prefix/"etc/containers/storage.conf").write <<~EOS
       [storage]
       driver="overlay"
     EOS
-    
+
     (prefix/"etc/containers/registries.conf").write <<~EOS
       unqualified-search-registries=["docker.io"]
     EOS
-    
+
     resource("catatonit").stage do
       system "./autogen.sh"
       system "./configure"
       system "make"
       mv "catatonit", libexec/"podman/"
     end
-    
+
     resource("netavark").stage do
       system "cargo", "install", *std_cargo_args
       mv bin/"netavark", libexec/"podman/"
     end
-    
+
     resource("aardvark-dns").stage do
       system "cargo", "install", *std_cargo_args
       mv bin/"aardvark-dns", libexec/"podman/"
