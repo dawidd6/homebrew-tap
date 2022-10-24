@@ -1,4 +1,5 @@
 {
     "apidoc": "homebrew/core",
-    "distrobox": "homebrew/core"
+    "distrobox": "homebrew/core",
+    "podman": "homebrew/core"
 }
