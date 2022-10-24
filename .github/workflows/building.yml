@@ -8,13 +8,10 @@ jobs:
     runs-on: ubuntu-22.04
     container:
       image: ghcr.io/homebrew/ubuntu22.04:master
-      options: --user=linuxbrew --privileged
+      options: --user=linuxbrew
     steps:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
-
-      - name: Install uidmap in container
-        run: sudo apt update && sudo apt install -y uidmap
 
       - name: Build bottles
         run: |
