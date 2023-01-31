@@ -11,5 +11,5 @@ Only Linux is tested and bottled currently.
 Installing any package from this tap is easy, as it usually is:
 
 ```sh
-brew install dawidd6/tap/FORMULA
+brew install tedim52/tap/FORMULA
 ```
