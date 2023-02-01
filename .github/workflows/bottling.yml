@@ -6,6 +6,8 @@ on:
 
 jobs:
   bottle:
+    name: "Bottle it up baby"
+    runs-on: ubuntu-latest
     steps:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@master
