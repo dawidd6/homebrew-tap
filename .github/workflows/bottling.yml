@@ -1,0 +1,17 @@
+name: Bottling
+
+on:
+  push: 
+    branches: [master]
+
+jobs:
+  bottle:
+    steps:
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Build bottles
+        run: |
+          mkdir ~/bottles
+          cd ~/bottles
+          brew test-bot
